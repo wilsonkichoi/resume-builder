@@ -1,7 +1,7 @@
 # Resume Builder — Developer Instructions
 
 ## What This Is
-Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP server, and a Python CLI (`rb`). Contains no user data — all resume content lives in the target project.
+Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP server, and a Python CLI (`resume-builder`). Contains no user data — all resume content lives in the target project.
 
 ## Development
 
@@ -16,7 +16,7 @@ uv run pytest tests/ -v
 - `agents/` — Review persona definitions (.agent.md files). Invoked by `/review`.
 - `src/resume_builder/` — Python package.
   - `core.py` — Shared logic used by both CLI and MCP server.
-  - `cli.py` — `rb generate` and `rb verify` (Click CLI wrapper around core).
+  - `cli.py` — `resume-builder generate` and `resume-builder verify` (Click CLI wrapper around core).
   - `mcp_server.py` — FastMCP server exposing tools via stdio (MCP wrapper around core).
   - `models/resume.py` — Pydantic IR with Provenance model.
   - `parser/` — YAML to ResumeIR.
@@ -44,6 +44,6 @@ uv run pytest tests/ -v
 
 ### Python Tooling
 - `uv` for everything (never pip/conda).
-- `uv run rb generate` / `uv run rb verify` to test CLI.
-- `uv run rb-mcp` to start MCP server (stdio).
+- `uv run resume-builder generate` / `uv run resume-builder verify` to test CLI.
+- `uv run resume-builder-mcp` to start MCP server (stdio).
 - `uv run pytest tests/ -v` to run tests.

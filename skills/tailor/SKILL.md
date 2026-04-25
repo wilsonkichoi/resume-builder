@@ -40,13 +40,13 @@ Create `tailored_resume.yaml` (never modify the original resume.yaml):
 - Adjust summary paragraph for target role
 
 ### Step 4 — Verify
-Run `rb verify --resume tailored_resume.yaml` to check:
+Run `resume-builder verify --resume tailored_resume.yaml` to check:
 - No fabricated claims
 - All content traces to original resume.yaml
 - No metrics were modified
 
 ### Step 5 — Generate Outputs
-Run `rb generate --resume tailored_resume.yaml --output-dir ./tailored/`
+Run `resume-builder generate --resume tailored_resume.yaml --output-dir ./tailored/`
 
 ### Step 6 — Score
 Run /score against the JD to see improvement:

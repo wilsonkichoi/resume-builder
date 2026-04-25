@@ -20,53 +20,77 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 
 ## Installation
 
-### Claude Code (plugin)
+### Claude Code Plugin (recommended)
 
-Load the plugin when starting Claude Code:
+```bash
+# Add the marketplace
+/plugin marketplace add wilsonkichoi/resume-builder
+
+# Install the plugin — select "Install for you, in this repo only (local scope)"
+/plugin install resume-builder@wilsonkichoi-resume-builder
+```
+
+When prompted for install scope, choose **"Install for you, in this repo only"** (local scope). This keeps the plugin scoped to your project rather than applying globally.
+
+After installation:
+
+- Skills are available as `/resume-builder:init`, `/resume-builder:generate`, `/resume-builder:tailor`, etc.
+- Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`)
+- MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
+- Auto-updates when the repo is updated
+
+**Updating:**
+
+```bash
+/plugin marketplace update wilsonkichoi-resume-builder
+```
+
+> **Tip:** Enable auto-updates in `/plugin` → **Marketplaces** tab → select marketplace → enable auto-update.
+
+### Codex CLI
+
+```bash
+codex plugin install wilsonkichoi/resume-builder
+```
+
+After installation:
+
+- Skills are available as `/init`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`
+- Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`)
+- MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
+
+> **Note:** Codex CLI does not support per-project plugin scoping. Installed plugins are always global. If you need project-level control, use Claude Code's local scope install instead.
+
+### CLI Only (limited)
+
+The CLI provides `resume-builder generate` and `resume-builder verify` without requiring an LLM. However, the full feature set — tailoring, scoring, matching, multi-persona review, and ingestion — requires Claude Code or Codex CLI skills.
+
+```bash
+uv tool install git+https://github.com/wilsonkichoi/resume-builder
+```
+
+This installs the package into an isolated environment at `~/.local/share/uv/tools/resume-builder/` and symlinks the `resume-builder` executable into `~/.local/bin/`. No clone or virtual environment management needed.
+
+Then from your resume project directory:
+
+```bash
+resume-builder generate --format pdf,docx,html,md
+resume-builder verify --resume resume.yaml
+resume-builder verify --resume resume.yaml --generated resume_tailored.md
+```
+
+**Updating:**
+
+```bash
+uv tool upgrade resume-builder
+```
+
+### Local Plugin Testing
+
+For development and testing only:
 
 ```bash
 claude --plugin-dir /path/to/resume-builder
-```
-
-Or add it permanently in your project's `.claude/settings.json`:
-
-```json
-{
-  "plugins": ["/path/to/resume-builder"]
-}
-```
-
-This gives you access to all skills (`/resume-builder:init`, `/resume-builder:generate`, etc.) and exposes the MCP tools (`generate`, `verify`, `verify_against_generated`) automatically.
-
-### Codex CLI (MCP server)
-
-Add the MCP server to your project's `.codex/config.toml`:
-
-```toml
-[mcp_servers.resume-builder]
-command = "uv"
-args = ["run", "--directory", "/path/to/resume-builder", "rb-mcp"]
-```
-
-This exposes the same tools: `generate`, `verify`, `verify_against_generated`.
-
-### Manual CLI Usage
-
-You can also run the tools directly from your terminal without Claude Code or Codex:
-
-```bash
-# From your resume project directory:
-uv run --directory /path/to/resume-builder rb generate --format pdf,docx,html,md
-uv run --directory /path/to/resume-builder rb verify --resume resume.yaml
-uv run --directory /path/to/resume-builder rb verify --resume resume.yaml --generated resume_tailored.md
-```
-
-Or install globally:
-
-```bash
-uv tool install /path/to/resume-builder
-rb generate --format pdf,docx,html,md
-rb verify --resume resume.yaml
 ```
 
 ## Quick Start

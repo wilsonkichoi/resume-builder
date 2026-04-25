@@ -16,8 +16,8 @@ dependencies = [
 ]
 
 [project.scripts]
-rb = "resume_builder.cli:main"
-rb-mcp = "resume_builder.mcp_server:main"
+resume-builder = "resume_builder.cli:main"
+resume-builder-mcp = "resume_builder.mcp_server:main"
 
 [tool.uv]
 dev-dependencies = [

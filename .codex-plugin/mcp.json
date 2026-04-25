@@ -2,7 +2,7 @@
   "mcpServers": {
     "resume-builder": {
       "command": "uv",
-      "args": ["run", "rb-mcp"],
+      "args": ["run", "resume-builder-mcp"],
       "cwd": "."
     }
   }

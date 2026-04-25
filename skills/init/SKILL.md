@@ -86,7 +86,7 @@ Ask clarification questions to fill gaps. Do NOT proceed until these are resolve
 - Projects with no URLs — ask if they're public
 
 **Ask if migrating from existing project:**
-- "Should I preserve your existing generation scripts (generate_resume_pdf.py, etc.) or will you use `rb generate` instead?"
+- "Should I preserve your existing generation scripts (generate_resume_pdf.py, etc.) or will you use `resume-builder generate` instead?"
 - "Your existing CLAUDE.md has instructions — should I merge them with resume-builder's instructions or replace?"
 
 **Do NOT ask:**
@@ -129,16 +129,16 @@ After user confirms:
 
 3. **Update `.gitignore`** if it exists — add `knowledge/sessions/*.yaml` (session logs are local, not committed)
 
-4. **Run `rb verify --resume resume.yaml`** to validate the new file
+4. **Run `resume-builder verify --resume resume.yaml`** to validate the new file
 
 5. **Report results**:
    ```
    ✓ resume.yaml created — 20 bullets, 4 projects, all verified
    ✓ knowledge/ directory initialized
-   ✓ rb verify passed
+   ✓ resume-builder verify passed
    
    Next steps:
-     rb generate --format md    — generate resume.md from resume.yaml
+     resume-builder generate --format md    — generate resume.md from resume.yaml
      /ingest <project-path>     — add achievements from project artifacts
      /tailor <job-description>  — tailor for a specific role
    ```

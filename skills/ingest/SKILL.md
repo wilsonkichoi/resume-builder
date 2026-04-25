@@ -81,7 +81,7 @@ Wait for user review and approval before making any changes.
 After user approval:
 1. Update resume.yaml with approved content (set `verified: true` on confirmed items)
 2. Update skills.yaml if new technologies were approved
-3. Run `rb verify --resume resume.yaml` to confirm provenance integrity
+3. Run `resume-builder verify --resume resume.yaml` to confirm provenance integrity
 4. Log the session to `knowledge/sessions/ingest_{date}_{project}.yaml`
 
 ## Session Log Format

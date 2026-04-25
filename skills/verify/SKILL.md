@@ -10,7 +10,7 @@ Verify that all claims in resume.yaml trace back to source artifacts and no fabr
 
 ## Process
 
-1. Run `rb verify --resume resume.yaml` for deterministic provenance check
+1. Run `resume-builder verify --resume resume.yaml` for deterministic provenance check
 2. Review each bullet for:
    - **Fabricated claims**: metrics, technologies, or experiences not backed by provenance
    - **Overclaiming**: embellished scope, inflated metrics, solo credit for team work
