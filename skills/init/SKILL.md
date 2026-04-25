@@ -129,7 +129,7 @@ After user confirms:
 
 3. **Update `.gitignore`** if it exists — add `knowledge/sessions/*.yaml` (session logs are local, not committed)
 
-4. **Run `resume-builder verify --resume resume.yaml`** to validate the new file
+4. **Run `resume-builder verify`** to validate the new file
 
 5. **Report results**:
    ```

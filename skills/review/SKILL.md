@@ -22,12 +22,28 @@ Invoke 6 independent review personas, each evaluating the resume from their prof
 ### Step 1 — Prepare Context
 Read resume.yaml (and optionally a JD for targeted feedback).
 
-### Step 2 — Invoke Personas
-For each persona, evaluate the resume and produce:
+### Step 2 — Load and Invoke Personas
+
+For each persona, read its agent definition file to load the full evaluation criteria,
+then adopt that persona and evaluate the resume.
+
+Agent definitions (relative to this plugin's root):
+
+1. **ats-bot**: Read `agents/ats-bot.agent.md`
+2. **recruiter**: Read `agents/recruiter.agent.md`
+3. **hiring-manager**: Read `agents/hiring-manager.agent.md`
+4. **hr-screener**: Read `agents/hr-screener.agent.md`
+5. **technical-reviewer**: Read `agents/technical-reviewer.agent.md`
+6. **engineer-peer**: Read `agents/engineer-peer.agent.md`
+
+For each persona, produce:
 - **Strengths** (1-3 specific items with evidence)
 - **Weaknesses** (1-3 specific items with evidence)
 - **Score** (1-10)
 - **Action Items** (1-3 concrete, specific recommendations)
+- Any persona-specific extras defined in the agent file
+
+If a specific persona is requested via `--persona <name>`, load only that agent file.
 
 ### Step 3 — Consolidate
 Merge all persona feedback into:

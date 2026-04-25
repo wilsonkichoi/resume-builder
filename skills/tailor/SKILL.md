@@ -48,6 +48,19 @@ Run `resume-builder verify --resume tailored_resume.yaml` to check:
 ### Step 5 — Generate Outputs
 Run `resume-builder generate --resume tailored_resume.yaml --output-dir ./tailored/`
 
+### Step 5.5 — Quick Persona Check
+
+Before scoring, spot-check the tailored resume with two personas:
+
+1. Read `agents/recruiter.agent.md` — does the tailored version still pass the 6-second scan?
+2. Read `agents/hiring-manager.agent.md` — does the reordering create a coherent narrative for this role?
+
+Output a brief check:
+- **Recruiter**: PASS / FLAG (1-line explanation if flagged)
+- **Hiring Manager**: PASS / FLAG (1-line explanation if flagged)
+
+If either flags an issue, note it in the tailoring report. Do not block generation.
+
 ### Step 6 — Score
 Run /score against the JD to see improvement:
 - Report before/after ATS and HR scores

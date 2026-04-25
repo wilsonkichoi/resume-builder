@@ -11,9 +11,9 @@ Run the deterministic generation pipeline. No LLM content generation — pure pa
 ## Process
 
 1. Verify `resume.yaml` exists in the project
-2. Run: `resume-builder generate --format pdf,docx,html,md --resume resume.yaml --output-dir .`
+2. Run: `resume-builder generate --format pdf,docx,html,md --output-dir .`
 3. Report which files were generated and their sizes
-4. Run: `resume-builder verify --resume resume.yaml` to confirm provenance integrity
+4. Run: `resume-builder verify` to confirm provenance integrity
 
 ## Options
 - Generate all formats: `resume-builder generate`
