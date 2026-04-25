@@ -8,12 +8,14 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
 - `agents/` — Review persona definitions (.agent.md files). Invoked by `/review`, `/tailor`, and `/cover-letter`.
 - `src/resume_builder/` — Python package.
   - `core.py` — Shared logic used by both CLI and MCP server.
-  - `cli.py` — Click CLI wrapper around core (`resume-builder generate`, `resume-builder verify`).
+  - `cli.py` — Click CLI wrapper around core (`resume-builder generate`, `resume-builder verify`, `resume-builder template-export`, `resume-builder template-validate`).
   - `mcp_server.py` — FastMCP server exposing tools via stdio.
+  - `templates.py` — Template discovery, loading, resolution, export, and validation.
   - `models/resume.py` — Pydantic IR with Provenance model.
   - `models/company.py` — CompanyProfile Pydantic model with SourcedFact traceability.
+  - `models/template_config.py` — TemplateConfig Pydantic model for PDF/DOCX style customization.
   - `parser/` — YAML to ResumeIR.
-  - `renderers/` — ResumeIR to md, pdf, docx, html.
+  - `renderers/` — ResumeIR to md, pdf, docx, html. Accepts optional TemplateConfig for style customization.
   - `verification/provenance.py` — ClaimRegistry, diff checker, corrections integration.
   - `knowledge/` — SessionStore, AchievementStore, and CompanyStore (data layer, no files shipped).
 - `.mcp.json` — MCP server config loaded by Claude Code when plugin is installed.
@@ -88,8 +90,11 @@ Do not consider a feature complete until all documentation is updated.
 
 ### CLI and MCP Commands
 ```bash
-uv run resume-builder generate    # Generate outputs
-uv run resume-builder verify      # Verify provenance
-uv run resume-builder-mcp         # Start MCP server (stdio)
-uv run pytest tests/ -v           # Run tests
+uv run resume-builder generate              # Generate outputs
+uv run resume-builder generate --template-dir templates  # Generate with custom templates
+uv run resume-builder verify                # Verify provenance
+uv run resume-builder template-export       # Export default templates to templates/
+uv run resume-builder template-validate     # Validate template files
+uv run resume-builder-mcp                   # Start MCP server (stdio)
+uv run pytest tests/ -v                     # Run tests
 ```

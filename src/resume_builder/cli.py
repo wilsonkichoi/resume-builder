@@ -18,11 +18,12 @@ def main():
 @click.option("--format", "formats", default="pdf,docx,html,md", help="Comma-separated output formats")
 @click.option("--resume", "resume_path", default="resume.yaml", type=click.Path(exists=True), help="Path to resume.yaml")
 @click.option("--output-dir", default=".", type=click.Path(), help="Output directory")
-def generate(formats: str, resume_path: str, output_dir: str):
+@click.option("--template-dir", default=None, type=click.Path(exists=True), help="Directory with template overrides (default: templates/ next to resume.yaml)")
+def generate(formats: str, resume_path: str, output_dir: str, template_dir: str | None):
     """Generate resume outputs from resume.yaml."""
     console.print(f"[bold]Parsing[/bold] {resume_path}")
     fmt_list = [f.strip() for f in formats.split(",")]
-    results = generate_outputs(resume_path, fmt_list, output_dir)
+    results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir)
     for r in results:
         console.print(f"[green]✓[/green] Generated {r.path} ({r.size:,} bytes)")
 
@@ -62,3 +63,32 @@ def verify(resume_path: str, generated_path: str | None, corrections_path: str):
 
         if not report.passed:
             raise SystemExit(1)
+
+
+@main.command("template-export")
+@click.option("--output-dir", default="templates", type=click.Path(), help="Directory to write default templates")
+@click.option("--format", "formats", default="pdf,docx,html,css", help="Which template files to export (pdf, docx, html, css)")
+def template_export(output_dir: str, formats: str):
+    """Export default template files as a starting point for customization."""
+    from resume_builder.templates import export_defaults
+
+    fmt_list = [f.strip() for f in formats.split(",")]
+    created = export_defaults(output_dir, fmt_list)
+    for path in created:
+        console.print(f"[green]✓[/green] Exported {path}")
+    console.print(f"\nEdit the files in [bold]{output_dir}/[/bold], then run:")
+    console.print(f"  resume-builder generate --template-dir {output_dir}")
+
+
+@main.command("template-validate")
+@click.option("--template-dir", default="templates", type=click.Path(exists=True), help="Directory with template files to validate")
+def template_validate(template_dir: str):
+    """Validate template configuration files."""
+    from resume_builder.templates import validate_templates
+
+    errors = validate_templates(template_dir)
+    if errors:
+        for e in errors:
+            console.print(f"[red]ERROR[/red] {e}")
+        raise SystemExit(1)
+    console.print("[green]✓[/green] All template files valid.")

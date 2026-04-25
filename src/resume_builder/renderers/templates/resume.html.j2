@@ -412,6 +412,10 @@
     }
   </style>
 
+  {% if custom_css %}
+  <style>{{ custom_css | safe }}</style>
+  {% endif %}
+
   <!-- Prevent FOUC: apply saved theme before paint -->
   <script>
     (function () {

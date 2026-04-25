@@ -24,10 +24,19 @@ def generate_outputs(
     resume_path: str | Path,
     formats: list[str],
     output_dir: str | Path = ".",
+    template_dir: str | Path | None = None,
 ) -> list[GenerateResult]:
     resume_path = Path(resume_path)
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
+
+    from resume_builder.templates import (
+        discover_html_template,
+        discover_template_dir,
+        load_template_config,
+    )
+
+    resolved_dir = discover_template_dir(template_dir, resume_path)
 
     ir = parse_resume(resume_path)
     results: list[GenerateResult] = []
@@ -40,15 +49,18 @@ def generate_outputs(
         elif fmt == "pdf":
             from resume_builder.renderers.pdf_renderer import render_pdf
             out_path = output / "resume.pdf"
-            render_pdf(ir, str(out_path))
+            config = load_template_config(resolved_dir, "pdf")
+            render_pdf(ir, str(out_path), config=config)
         elif fmt == "docx":
             from resume_builder.renderers.docx_renderer import render_docx
             out_path = output / "resume.docx"
-            render_docx(ir, str(out_path))
+            config = load_template_config(resolved_dir, "docx")
+            render_docx(ir, str(out_path), config=config)
         elif fmt == "html":
             from resume_builder.renderers.html_renderer import render_html
             out_path = output / "index.html"
-            out_path.write_text(render_html(ir))
+            tmpl_path, css_path = discover_html_template(resolved_dir)
+            out_path.write_text(render_html(ir, template_path=tmpl_path, css_path=css_path))
         else:
             continue
         results.append(GenerateResult(fmt, str(out_path), out_path.stat().st_size))

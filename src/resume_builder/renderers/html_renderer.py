@@ -69,28 +69,50 @@ def _parse_skill_items(items: str) -> list[str]:
     return pills
 
 
-def render_html(ir: ResumeIR) -> str:
+def render_html(
+    ir: ResumeIR,
+    template_path: Path | None = None,
+    css_path: Path | None = None,
+) -> str:
     """Render the resume IR to a full HTML page.
 
     Parameters
     ----------
     ir:
         Populated ``ResumeIR`` model containing all resume data.
+    template_path:
+        Optional path to a custom Jinja2 template file.  When ``None``,
+        the built-in ``resume.html.j2`` is used.
+    css_path:
+        Optional path to a CSS file whose contents are injected as a
+        ``<style>`` block after the built-in styles.
 
     Returns
     -------
     str
         Complete HTML document as a string.
     """
+    if template_path is not None:
+        loader = FileSystemLoader(str(template_path.parent))
+        template_name = template_path.name
+    else:
+        loader = FileSystemLoader(str(_TEMPLATE_DIR))
+        template_name = "resume.html.j2"
+
     env = Environment(
-        loader=FileSystemLoader(str(_TEMPLATE_DIR)),
-        autoescape=True,        # Escape user data (& → &amp; etc.)
+        loader=loader,
+        autoescape=True,
         keep_trailing_newline=True,
     )
     env.globals["parse_skill_items"] = _parse_skill_items
 
-    template = env.get_template("resume.html.j2")
+    custom_css: str | None = None
+    if css_path is not None and css_path.exists():
+        custom_css = css_path.read_text()
+
+    template = env.get_template(template_name)
     return template.render(
         ir=ir,
         current_year=datetime.now().year,
+        custom_css=custom_css,
     )

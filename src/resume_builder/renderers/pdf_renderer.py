@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from reportlab.lib.pagesizes import letter
+from types import SimpleNamespace
+
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.colors import HexColor
 from reportlab.lib.units import inch
-from reportlab.lib.enums import TA_CENTER
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -15,193 +14,33 @@ from reportlab.platypus import (
 )
 
 from resume_builder.models.resume import Bullet, ResumeIR
+from resume_builder.models.template_config import TemplateConfig
+from resume_builder.templates import (
+    resolve_colors,
+    resolve_page_size,
+    resolve_pdf_styles,
+)
 
-# ── Colors ────────────────────────────────────────────────────────────
-DARK = HexColor("#1A1A2E")
-ACCENT = HexColor("#2E5090")
-MUTED = HexColor("#555555")
-LIGHT_BG = HexColor("#F0F4F8")
-RULE_COLOR = HexColor("#2E5090")
-
-# ── Styles ────────────────────────────────────────────────────────────
-STYLES = {
-    "name": ParagraphStyle(
-        "Name",
-        fontName="Helvetica-Bold",
-        fontSize=18,
-        leading=22,
-        alignment=TA_CENTER,
-        textColor=DARK,
-        spaceAfter=2,
-    ),
-    "title": ParagraphStyle(
-        "Title",
-        fontName="Helvetica",
-        fontSize=11,
-        leading=14,
-        alignment=TA_CENTER,
-        textColor=ACCENT,
-        spaceAfter=4,
-    ),
-    "contact": ParagraphStyle(
-        "Contact",
-        fontName="Helvetica",
-        fontSize=9.5,
-        leading=12,
-        alignment=TA_CENTER,
-        textColor=MUTED,
-        spaceAfter=6,
-    ),
-    "section": ParagraphStyle(
-        "Section",
-        fontName="Helvetica-Bold",
-        fontSize=11,
-        leading=14,
-        textColor=ACCENT,
-        spaceBefore=10,
-        spaceAfter=2,
-    ),
-    "company": ParagraphStyle(
-        "Company",
-        fontName="Helvetica-Bold",
-        fontSize=11,
-        leading=14,
-        textColor=DARK,
-        spaceBefore=8,
-        spaceAfter=1,
-    ),
-    "company_desc": ParagraphStyle(
-        "CompanyDesc",
-        fontName="Helvetica-Oblique",
-        fontSize=9.5,
-        leading=12,
-        textColor=MUTED,
-        spaceAfter=1,
-    ),
-    "role": ParagraphStyle(
-        "Role",
-        fontName="Helvetica-BoldOblique",
-        fontSize=10,
-        leading=13,
-        textColor=DARK,
-        spaceBefore=5,
-        spaceAfter=1,
-    ),
-    "role_desc": ParagraphStyle(
-        "RoleDesc",
-        fontName="Helvetica-Oblique",
-        fontSize=9.5,
-        leading=12,
-        textColor=MUTED,
-        spaceAfter=2,
-    ),
-    "bullet": ParagraphStyle(
-        "Bullet",
-        fontName="Helvetica",
-        fontSize=10,
-        leading=13,
-        textColor=DARK,
-        leftIndent=18,
-        bulletIndent=6,
-        spaceBefore=2,
-        spaceAfter=2,
-    ),
-    "body": ParagraphStyle(
-        "Body",
-        fontName="Helvetica",
-        fontSize=10,
-        leading=13,
-        textColor=DARK,
-        spaceBefore=2,
-        spaceAfter=2,
-    ),
-    "skill_label": ParagraphStyle(
-        "SkillLabel",
-        fontName="Helvetica-Bold",
-        fontSize=9.5,
-        leading=12,
-        textColor=DARK,
-    ),
-    "skill_value": ParagraphStyle(
-        "SkillValue",
-        fontName="Helvetica",
-        fontSize=9.5,
-        leading=12,
-        textColor=DARK,
-    ),
-    "project_title": ParagraphStyle(
-        "ProjectTitle",
-        fontName="Helvetica-Bold",
-        fontSize=10,
-        leading=13,
-        textColor=DARK,
-        spaceBefore=4,
-        spaceAfter=1,
-    ),
-    "project_desc": ParagraphStyle(
-        "ProjectDesc",
-        fontName="Helvetica",
-        fontSize=10,
-        leading=13,
-        textColor=DARK,
-        spaceAfter=4,
-    ),
-    "education": ParagraphStyle(
-        "Education",
-        fontName="Helvetica",
-        fontSize=10,
-        leading=13,
-        textColor=DARK,
-        spaceBefore=2,
-    ),
-}
 
 # ── Internal paragraph helpers ────────────────────────────────────────
 
-_DATE_RIGHT = ParagraphStyle(
-    "DateRight",
-    fontName="Helvetica",
-    fontSize=10,
-    leading=13,
-    textColor=MUTED,
-    alignment=2,  # TA_RIGHT
-)
-
-_ROLE_DATE_RIGHT = ParagraphStyle(
-    "RoleDateRight",
-    fontName="Helvetica-Oblique",
-    fontSize=10,
-    leading=13,
-    textColor=MUTED,
-    alignment=2,
-)
-
-_ZERO_PAD_TABLE_STYLE = TableStyle([
-    ("VALIGN", (0, 0), (-1, -1), "BOTTOM"),
-    ("LEFTPADDING", (0, 0), (-1, -1), 0),
-    ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-    ("TOPPADDING", (0, 0), (-1, -1), 0),
-    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-])
-
-
-def _link(text: str) -> str:
+def _link(text: str, accent_hex: str) -> str:
     """Colored link text (visually distinct, not clickable)."""
-    return f'<font color="#2E5090">{text}</font>'
+    return f'<font color="{accent_hex}">{text}</font>'
 
 
 def _b(text: str) -> str:
     return f"<b>{text}</b>"
 
 
-def _section_heading(text: str) -> list:
+def _section_heading(text: str, styles: dict, colors: SimpleNamespace) -> list:
     return [
         Spacer(1, 4),
-        Paragraph(text.upper(), STYLES["section"]),
+        Paragraph(text.upper(), styles["section"]),
         HRFlowable(
             width="100%",
             thickness=1.5,
-            color=RULE_COLOR,
+            color=colors.rule,
             spaceBefore=0,
             spaceAfter=4,
         ),
@@ -211,57 +50,82 @@ def _section_heading(text: str) -> list:
 def _company_header(
     name: str,
     location: str,
+    styles: dict,
+    muted_hex: str,
     description: str | None = None,
     dates: str | None = None,
 ) -> list:
     elements: list = []
-    left = Paragraph(f"<b>{name}</b>  |  {location}", STYLES["company"])
+    left = Paragraph(f"<b>{name}</b>  |  {location}", styles["company"])
+    date_style = ParagraphStyle(
+        "DateRight",
+        fontName=styles["company"].fontName,
+        fontSize=styles["body"].fontSize,
+        leading=styles["body"].leading,
+        textColor=styles["company_desc"].textColor,
+        alignment=2,  # TA_RIGHT
+    )
     right = (
-        Paragraph(f"<font color='#555555'>{dates}</font>", _DATE_RIGHT)
+        Paragraph(f'<font color="{muted_hex}">{dates}</font>', date_style)
         if dates
-        else Paragraph("", STYLES["body"])
+        else Paragraph("", styles["body"])
     )
     t = Table([[left, right]], colWidths=[4.5 * inch, 2.5 * inch])
     t.setStyle(_ZERO_PAD_TABLE_STYLE)
     elements.append(t)
     if description:
-        elements.append(Paragraph(description, STYLES["company_desc"]))
+        elements.append(Paragraph(description, styles["company_desc"]))
     return elements
 
 
-def _role_header(title: str, dates: str | None = None) -> list:
-    left = Paragraph(title, STYLES["role"])
+def _role_header(
+    title: str,
+    styles: dict,
+    dates: str | None = None,
+) -> list:
+    role_date_style = ParagraphStyle(
+        "RoleDateRight",
+        fontName=styles["role"].fontName,
+        fontSize=styles["role"].fontSize,
+        leading=styles["role"].leading,
+        textColor=styles["role_desc"].textColor,
+        alignment=2,
+    )
+    left = Paragraph(title, styles["role"])
     right = (
-        Paragraph(dates, _ROLE_DATE_RIGHT)
+        Paragraph(dates, role_date_style)
         if dates
-        else Paragraph("", STYLES["role"])
+        else Paragraph("", styles["role"])
     )
     t = Table([[left, right]], colWidths=[5.0 * inch, 2.0 * inch])
     t.setStyle(_ZERO_PAD_TABLE_STYLE)
     return [t]
 
 
-def _role_desc(text: str) -> list:
-    return [Paragraph(text, STYLES["role_desc"])]
+def _role_desc(text: str, styles: dict) -> list:
+    return [Paragraph(text, styles["role_desc"])]
 
 
-def _bullet(text: str) -> Paragraph:
-    return Paragraph(text, STYLES["bullet"], bulletText="•")
+def _bullet(text: str, styles: dict) -> Paragraph:
+    return Paragraph(text, styles["bullet"], bulletText="•")
 
 
 def _format_bullet(bullet: Bullet) -> str:
-    """Build the rich-text string for a single bullet from the IR model."""
     if bullet.label:
         return f"{_b(bullet.label + ':')} {bullet.text}"
     return bullet.text
 
 
-def _skills_table(rows: list[tuple[str, str]]) -> Table:
+def _skills_table(
+    rows: list[tuple[str, str]],
+    styles: dict,
+    colors: SimpleNamespace,
+) -> Table:
     table_data = []
     for label, value in rows:
         table_data.append([
-            Paragraph(label, STYLES["skill_label"]),
-            Paragraph(value, STYLES["skill_value"]),
+            Paragraph(label, styles["skill_label"]),
+            Paragraph(value, styles["skill_value"]),
         ])
     col_widths = [1.55 * inch, 5.45 * inch]
     t = Table(table_data, colWidths=col_widths)
@@ -273,80 +137,105 @@ def _skills_table(rows: list[tuple[str, str]]) -> Table:
         ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
     ]
     for i in range(len(table_data)):
-        style_cmds.append(("BACKGROUND", (0, i), (0, i), LIGHT_BG))
+        style_cmds.append(("BACKGROUND", (0, i), (0, i), colors.light_bg))
     t.setStyle(TableStyle(style_cmds))
     return t
+
+
+_ZERO_PAD_TABLE_STYLE = TableStyle([
+    ("VALIGN", (0, 0), (-1, -1), "BOTTOM"),
+    ("LEFTPADDING", (0, 0), (-1, -1), 0),
+    ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+    ("TOPPADDING", (0, 0), (-1, -1), 0),
+    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+])
 
 
 # ── Public API ────────────────────────────────────────────────────────
 
 
-def render_pdf(ir: ResumeIR, output_path: str) -> None:
+def render_pdf(
+    ir: ResumeIR,
+    output_path: str,
+    config: TemplateConfig | None = None,
+) -> None:
     """Render a ResumeIR model to a styled PDF at *output_path*."""
+    config = config or TemplateConfig()
+    colors = resolve_colors(config)
+    styles = resolve_pdf_styles(config)
+    accent_hex = config.colors.accent
+    muted_hex = config.colors.muted
+    page_size = resolve_page_size(config)
+    margins = config.page.margins
+
     doc = SimpleDocTemplate(
         output_path,
-        pagesize=letter,
-        leftMargin=0.75 * inch,
-        rightMargin=0.75 * inch,
-        topMargin=0.6 * inch,
-        bottomMargin=0.6 * inch,
+        pagesize=page_size,
+        leftMargin=margins.left * inch,
+        rightMargin=margins.right * inch,
+        topMargin=margins.top * inch,
+        bottomMargin=margins.bottom * inch,
     )
 
     story: list = []
 
     # ── Header ────────────────────────────────────────────────────────
-    story.append(Paragraph(ir.header.name, STYLES["name"]))
-    story.append(Paragraph(ir.header.title, STYLES["title"]))
+    story.append(Paragraph(ir.header.name, styles["name"]))
+    story.append(Paragraph(ir.header.title, styles["title"]))
     story.append(Paragraph(
         f"{ir.header.location} &nbsp;|&nbsp; {ir.header.email} &nbsp;|&nbsp; "
-        f"{_link(ir.header.linkedin)} &nbsp;|&nbsp; "
-        f"{_link(ir.header.github)}",
-        STYLES["contact"],
+        f"{_link(ir.header.linkedin, accent_hex)} &nbsp;|&nbsp; "
+        f"{_link(ir.header.github, accent_hex)}",
+        styles["contact"],
     ))
 
     # ── Professional Summary ──────────────────────────────────────────
-    story.extend(_section_heading("Professional Summary"))
-    story.append(Paragraph(ir.summary.paragraph, STYLES["body"]))
+    story.extend(_section_heading("Professional Summary", styles, colors))
+    story.append(Paragraph(ir.summary.paragraph, styles["body"]))
     for sb in ir.summary.bullets:
-        story.append(_bullet(f"{_b(sb.label + ':')} {sb.text}"))
+        story.append(_bullet(f"{_b(sb.label + ':')} {sb.text}", styles))
 
     # ── Skills ────────────────────────────────────────────────────────
-    story.extend(_section_heading("Skills"))
-    story.append(_skills_table([
-        (skill.category, skill.items) for skill in ir.skills
-    ]))
+    story.extend(_section_heading("Skills", styles, colors))
+    story.append(_skills_table(
+        [(skill.category, skill.items) for skill in ir.skills],
+        styles,
+        colors,
+    ))
 
     # ── Professional Experience ───────────────────────────────────────
-    story.extend(_section_heading("Professional Experience"))
+    story.extend(_section_heading("Professional Experience", styles, colors))
     for company in ir.experience:
         story.extend(_company_header(
             name=company.company,
             location=company.location,
+            styles=styles,
+            muted_hex=muted_hex,
             description=company.description,
             dates=company.dates,
         ))
         for role in company.roles:
-            story.extend(_role_header(role.title, role.dates))
+            story.extend(_role_header(role.title, styles, role.dates))
             if role.description:
-                story.extend(_role_desc(role.description))
-            for bullet in role.bullets:
-                story.append(_bullet(_format_bullet(bullet)))
+                story.extend(_role_desc(role.description, styles))
+            for bul in role.bullets:
+                story.append(_bullet(_format_bullet(bul), styles))
 
     # ── Personal Projects ─────────────────────────────────────────────
-    story.extend(_section_heading("Personal Projects"))
+    story.extend(_section_heading("Personal Projects", styles, colors))
     for project in ir.projects:
         url_display = project.url.removeprefix("https://")
         story.append(Paragraph(
-            f"{_b(project.name)} — {_link(url_display)}",
-            STYLES["project_title"],
+            f"{_b(project.name)} — {_link(url_display, accent_hex)}",
+            styles["project_title"],
         ))
-        story.append(Paragraph(project.description, STYLES["project_desc"]))
+        story.append(Paragraph(project.description, styles["project_desc"]))
 
     # ── Education ─────────────────────────────────────────────────────
-    story.extend(_section_heading("Education"))
+    story.extend(_section_heading("Education", styles, colors))
     story.append(Paragraph(
         f"{_b(ir.education.degree)} | {ir.education.institution}",
-        STYLES["education"],
+        styles["education"],
     ))
 
     doc.build(story)

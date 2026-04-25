@@ -13,6 +13,7 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 - **Match** against job descriptions with gap analysis
 - **Review** with 7 AI personas (ATS bot, recruiter, hiring manager, HR screener, technical reviewer, engineer peer, sales strategist)
 - **Verify** every claim traces back to source — catches fabricated metrics, technologies, and embellishments
+- **Cover letters** — generate tailored cover letters with claim verification
 - **Ingest** project artifacts to extract verified achievements with provenance
 
 ## Prerequisites
@@ -36,7 +37,7 @@ When prompted for install scope, choose **"Install for you, in this repo only"**
 
 After installation:
 
-- Skills are available as `/resume-builder:init`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:research`, `/resume-builder:qualify`, etc.
+- Skills are available as `/resume-builder:init`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`, etc.
 - Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 - Auto-updates when the repo is updated
@@ -57,7 +58,7 @@ codex plugin install wilsonkichoi/resume-builder
 
 After installation:
 
-- Skills are available as `/init`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`
+- Skills are available as `/init`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`, `/cover-letter`
 - Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`, `sales-strategist`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 
@@ -138,7 +139,7 @@ Analyzes source code, READMEs, infrastructure-as-code, and git history. Extracts
 /resume-builder:tailor
 ```
 
-Paste a job description. The skill reorders, emphasizes, and trims your resume for the target role while enforcing anti-fabrication rules.
+Paste a job description. The skill reorders, emphasizes, and trims your resume for the target role while enforcing anti-fabrication rules. (Runs `/match`, `/verify`, and `/score` internally. For sharper results, run `/research` first.)
 
 ### 5. Score your resume
 
@@ -162,7 +163,7 @@ Identifies skill matches, gaps, and suggests how to position existing experience
 /resume-builder:research Acme Corp https://acme.com/careers/backend-engineer
 ```
 
-Builds a CompanyProfile from user-provided links and supplementary web research. Captures company basics, products, pain points, tech stack, culture signals, growth signals, and key people — with every fact traced to its source. Profiles persist in `knowledge/companies/` for reuse across skills.
+Builds a CompanyProfile from user-provided links and supplementary web research. Captures company basics, products, pain points, tech stack, culture signals, growth signals, and key people — with every fact traced to its source. Profiles persist in `knowledge/companies/` for reuse across skills. (Feeds into `/tailor`, `/qualify`, `/review`, and `/cover-letter` for better results.)
 
 ### 8. Qualify an opportunity
 
@@ -170,7 +171,7 @@ Builds a CompanyProfile from user-provided links and supplementary web research.
 /resume-builder:qualify Acme Corp
 ```
 
-Flips the match lens: instead of "do I meet their bar?", assesses "how much do they need me?" Scores across 6 dimensions:
+Flips the match lens: instead of "do I meet their bar?", assesses "how much do they need me?" (Sharper with a CompanyProfile from `/research`.) Scores across 6 dimensions:
 
 | Dimension | Weight | Question |
 |-----------|--------|----------|
@@ -189,7 +190,7 @@ Produces a strategic brief with positioning recommendations or reasons to pass.
 /resume-builder:review
 ```
 
-Gets feedback from up to 7 AI personas:
+Gets feedback from up to 7 AI personas. (Sales Strategist persona activates when a CompanyProfile exists.)
 
 | Persona | Focus |
 |---------|-------|
@@ -213,15 +214,272 @@ Checks:
 - No previously corrected errors are reintroduced
 - No fabricated technologies or metrics
 
+**Not sure which skills to run?** See [Workflows](#workflows) for scenario-based guides.
+
+## Workflows
+
+For a full description of each skill, see [Quick Start](#quick-start).
+
+### Pick Your Workflow
+
+| Scenario | When to Use | Skills | Time |
+|----------|------------|--------|------|
+| [First-Time Setup](#1-first-time-setup) | Just installed, no resume.yaml | init, generate | 15-30 min |
+| [Quick Apply](#2-quick-apply) | Have resume, need to tailor fast | tailor | 5-10 min |
+| [Dream Job Deep-Dive](#3-dream-job-deep-dive) | High-value opportunity, full prep | research, qualify, tailor, review, cover-letter | 30-60 min |
+| [Resume Maintenance](#4-resume-maintenance) | Finished a project, capture achievements | ingest, generate | 10-20 min |
+| [Pre-Interview Prep](#5-pre-interview-prep) | Got an interview, need company intel | research, qualify, review | 15-30 min |
+| [Opportunity Evaluation](#6-opportunity-evaluation) | Deciding whether to apply | match, qualify | 10-20 min |
+
+### How Skills Connect
+
+```
+init ──→ resume.yaml ──→ generate (outputs)
+               │
+               ├──→ ingest ──→ verify (auto)
+               │
+               ├──→ research ──→ CompanyProfile ─┬─→ qualify
+               │                                 ├─→ tailor ──→ verify (auto) ──→ score
+               │                                 ├─→ review (enables sales-strategist)
+               │                                 └─→ cover-letter
+               │
+               ├──→ match (called internally by tailor, cover-letter, qualify)
+               │
+               ├──→ score
+               ├──→ review
+               └──→ verify
+
+Arrows show data flow, not required ordering.
+"auto" means the skill runs it internally.
+Skills work without optional inputs but produce better results with them.
+```
+
+### 1. First-Time Setup
+
+**When**: You just installed the plugin and need to create `resume.yaml`.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:init` | Yes | Scans existing resume files, interviews you, creates resume.yaml and knowledge/ |
+| 2 | `/resume-builder:generate` | Yes | Creates PDF, DOCX, HTML, Markdown outputs |
+| 3 | `/resume-builder:review` | Optional | Baseline feedback before any tailoring |
+
+**You'll have**: `resume.yaml`, generated outputs in 4 formats, `knowledge/` directory.
+
+**Next**: Add achievements with `/ingest` or jump to [Quick Apply](#2-quick-apply) when you find a posting.
+
+### 2. Quick Apply
+
+**When**: You have `resume.yaml` and a job posting. Want a tailored resume fast.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:tailor` | Yes | Paste JD. Internally runs match, tailors, verifies, generates, scores, and does a quick persona check. |
+
+One command. `/tailor` handles match analysis, anti-fabrication verification, output generation, before/after scoring, and a quick check from recruiter + hiring-manager personas.
+
+**You'll have**: `tailored_resume.yaml`, tailored outputs (PDF, DOCX, HTML, MD), ATS + HR scores.
+
+| Optional add-on | Command | Why |
+|-----------------|---------|-----|
+| Cover letter | `/resume-builder:cover-letter` | If the posting requests one. Runs match internally. |
+| Full review | `/resume-builder:review` | Deeper 6-persona feedback beyond tailor's quick check. |
+
+### 3. Dream Job Deep-Dive
+
+**When**: High-value opportunity worth 30-60 minutes of preparation. Company research unlocks sharper tailoring, strategic positioning, sales-strategist feedback, and stronger cover letters.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:research CompanyName [URLs]` | Yes | Builds CompanyProfile — pain points, tech stack, culture, key people. Provide job posting URL, company blog, etc. |
+| 2 | `/resume-builder:qualify CompanyName` | Recommended | Scores opportunity across 6 strategic dimensions. Tells you how to position — or whether to pass. |
+| 3 | `/resume-builder:tailor` | Yes | Tailors resume using CompanyProfile pain points for sharper results. |
+| 4 | `/resume-builder:review` | Recommended | Full 7-persona review. Sales-strategist activates because CompanyProfile exists. |
+| 5 | `/resume-builder:cover-letter` | Recommended | Cover letter with company-specific hooks from pain points and recent news. |
+
+**Decision gate after step 2**: If qualify weighted average is below 5.0 ("consider passing"), the brief explains why. Save your time or address the gaps first.
+
+**You'll have**: CompanyProfile, strategic qualification brief, tailored resume with outputs, 7-persona review, cover letter with claim verification.
+
+### 4. Resume Maintenance
+
+**When**: You finished a project or hit a milestone. Capture achievements while details are fresh.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:ingest ~/src/my-project` | Yes | Analyzes source code, git history, READMEs. Proposes bullets with provenance. Runs verify after. |
+| 2 | `/resume-builder:generate` | Yes | Regenerate outputs with new content. |
+
+**You'll have**: Updated `resume.yaml` with verified bullets, fresh outputs.
+
+**Tip**: Run this after every significant project, not just when job hunting. A resume with fresh, verified achievements is always ready.
+
+### 5. Pre-Interview Prep
+
+**When**: You already applied and got an interview. Need to understand the company and prepare talking points.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:research CompanyName [URLs]` | Yes | Deep company intelligence — pain points, tech stack, culture, key people. |
+| 2 | `/resume-builder:qualify CompanyName` | Recommended | Strategic brief with positioning angle, interview talking points, and discovery questions to ask them. |
+| 3 | `/resume-builder:review` | Optional | 7-persona review with sales-strategist feedback on how you're selling yourself. |
+
+**You'll have**: CompanyProfile, strategic brief with talking points, understanding of where you're strong vs. where to compensate.
+
+**Key output**: The qualify brief produces interview talking points and discovery questions — questions you ask *them* to demonstrate buyer understanding.
+
+### 6. Opportunity Evaluation
+
+**When**: You see a posting and aren't sure if it's worth applying.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:match` | Yes | Quick gap analysis — match percentage, missing skills, transferable experience. |
+| 2 | `/resume-builder:research CompanyName` | Optional | Builds CompanyProfile for deeper evaluation. Can be lightweight (just the JD link). |
+| 3 | `/resume-builder:qualify CompanyName` | Recommended | Strategic go/no-go recommendation across 6 dimensions. |
+
+**Decision points**:
+- After step 1: Match below 50%? Probably skip unless you have a referral.
+- After step 3: Qualify below 5.0 = consider passing. Above 7.0 = proceed to [Dream Job Deep-Dive](#3-dream-job-deep-dive).
+
+**Lightweight version**: Just `/match` alone for a 2-minute skills check. No research needed.
+
+## Template Customization
+
+Generated outputs use a built-in design by default. You can customize colors, fonts, margins, and layout by placing template files in a `templates/` directory next to `resume.yaml`.
+
+### Quick Start
+
+```bash
+# 1. Export default templates as a starting point
+resume-builder template-export
+
+# 2. Edit the files in templates/ (only change what you want)
+# 3. Generate — templates are auto-discovered
+resume-builder generate
+
+# Or specify explicitly
+resume-builder generate --template-dir templates
+
+# Validate before generating
+resume-builder template-validate
+```
+
+### Template Files
+
+| File | Format | What it controls |
+|------|--------|-----------------|
+| `templates/pdf_styles.yaml` | PDF | Colors, fonts, margins, page size, element styles |
+| `templates/docx_styles.yaml` | DOCX | Same schema as PDF (font names auto-mapped) |
+| `templates/resume.html.j2` | HTML | Full Jinja2 template replacement |
+| `templates/style.css` | HTML | CSS custom property overrides for the built-in template |
+
+### PDF/DOCX Style Schema
+
+Both `pdf_styles.yaml` and `docx_styles.yaml` use the same schema. Override only what you want — everything else uses built-in defaults.
+
+```yaml
+colors:
+  dark: "#1A1A2E"       # Name, company, role, body text
+  accent: "#2E5090"     # Title, section headings, links, rules
+  muted: "#555555"      # Dates, descriptions, contact info
+  light_bg: "#F0F4F8"   # Skill category background
+  rule: "#2E5090"       # Horizontal rules under section headings
+
+page:
+  size: letter           # "letter" or "a4"
+  margins:               # inches
+    top: 0.625
+    bottom: 0.625
+    left: 0.75
+    right: 0.75
+
+fonts:
+  primary: Helvetica              # DOCX auto-maps Helvetica → Arial
+  primary_bold: Helvetica-Bold
+  primary_italic: Helvetica-Oblique
+  primary_bold_italic: Helvetica-BoldOblique
+
+styles:
+  name:                  # Your name at the top
+    font_size: 18        # points
+    alignment: center    # left, center, right
+  title:                 # Job title below name
+    font_size: 11
+  section:               # Section headings (SKILLS, EXPERIENCE, etc.)
+    font_size: 11
+  bullet:                # Resume bullet points
+    font_size: 10
+    left_indent: 18
+    bullet_indent: 6
+  # Also: contact, company, company_desc, role, role_desc, body,
+  #        skill_label, skill_value, project_title, project_desc, education
+```
+
+**Color cascade**: Changing `colors.accent` automatically changes all styles that reference it (title, section headings, links, rules). Override `styles.title.text_color` to break the link for a specific element.
+
+**Style entry fields**: `font_name`, `font_size`, `leading` (line height), `alignment`, `text_color`, `space_before`, `space_after`, `left_indent`, `bullet_indent`. All optional — omit to use defaults.
+
+### HTML Template Reference
+
+**CSS-only overrides** (`templates/style.css`) — override CSS custom properties:
+
+```css
+[data-theme="dark"] {
+  --accent: #E53E3E;
+  --accent-bright: #FC8181;
+}
+```
+
+**Full template replacement** (`templates/resume.html.j2`) — your template receives:
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `ir` | `ResumeIR` | All resume data (header, summary, skills, experience, projects, education) |
+| `current_year` | `int` | For copyright footers |
+| `parse_skill_items` | `callable` | Splits skill strings into individual pills |
+| `custom_css` | `str \| None` | Contents of `style.css` if present |
+
+### Examples
+
+**Change just the accent color** (3 lines):
+```yaml
+# templates/pdf_styles.yaml
+colors:
+  accent: "#E53E3E"
+```
+
+**Use A4 page size**:
+```yaml
+# templates/pdf_styles.yaml
+page:
+  size: a4
+```
+
+### Creating Templates with AI Assistance
+
+Template files are structured data (YAML, CSS, Jinja2) that LLMs handle well. Start from exported defaults (`resume-builder template-export`) and ask an AI to modify them:
+
+- [Claude Design](https://www.anthropic.com/news/claude-design-anthropic-labs) — generate and iterate on HTML template designs with visual preview
+- [Google Stitch](https://stitch.withgoogle.com/) — rapid HTML/CSS prototyping for the HTML template
+- Anthropic's open-source skills for Claude Code:
+  - [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) — HTML/CSS generation for `resume.html.j2`
+  - [pdf](https://github.com/anthropics/skills/tree/main/skills/pdf) — ReportLab PDF layout for `pdf_styles.yaml` tuning
+  - [docx](https://github.com/anthropics/skills/tree/main/skills/docx) — python-docx generation for `docx_styles.yaml` tuning
+
+The schema validates your changes before rendering — no blind box.
+
 ## MCP Tools
 
-The MCP server exposes three tools that both Claude Code and Codex can call directly:
+The MCP server exposes tools that both Claude Code and Codex can call directly:
 
 | Tool | Description |
 |------|-------------|
-| `generate` | Generate resume outputs from resume.yaml. Parameters: `resume_path`, `formats`, `output_dir` |
+| `generate` | Generate resume outputs from resume.yaml. Parameters: `resume_path`, `formats`, `output_dir`, `template_dir` |
 | `verify` | Check provenance of all claims. Parameters: `resume_path` |
 | `verify_against_generated` | Anti-fabrication diff check. Parameters: `resume_path`, `generated_path`, `corrections_path` |
+| `export_templates` | Export default template files. Parameters: `output_dir`, `formats` |
+| `validate_templates` | Validate template configuration. Parameters: `template_dir` |
 
 ## Anti-Fabrication Rules
 

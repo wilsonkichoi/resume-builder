@@ -15,10 +15,11 @@ def generate(
     resume_path: str = "resume.yaml",
     formats: str = "pdf,docx,html,md",
     output_dir: str = ".",
+    template_dir: str | None = None,
 ) -> str:
-    """Generate resume outputs (pdf, docx, html, md) from resume.yaml."""
+    """Generate resume outputs (pdf, docx, html, md) from resume.yaml. Optionally pass template_dir for style customization."""
     fmt_list = [f.strip() for f in formats.split(",")]
-    results = generate_outputs(resume_path, fmt_list, output_dir)
+    results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir)
     lines = [f"{r.format}: {r.path} ({r.size:,} bytes)" for r in results]
     return f"Generated {len(results)} file(s):\n" + "\n".join(lines)
 
@@ -56,6 +57,32 @@ def verify_against_generated(
     status = "PASSED" if report.passed else "FAILED"
 
     return f"Anti-fabrication check: {status}\n" + "\n".join(lines) + f"\n\n{summary}"
+
+
+@mcp.tool()
+def export_templates(
+    output_dir: str = "templates",
+    formats: str = "pdf,docx,html,css",
+) -> str:
+    """Export default template files as a starting point for customization."""
+    from resume_builder.templates import export_defaults
+
+    fmt_list = [f.strip() for f in formats.split(",")]
+    created = export_defaults(output_dir, fmt_list)
+    return f"Exported {len(created)} file(s) to {output_dir}/:\n" + "\n".join(f"  {p}" for p in created)
+
+
+@mcp.tool()
+def validate_templates(
+    template_dir: str = "templates",
+) -> str:
+    """Validate template configuration files before generating."""
+    from resume_builder.templates import validate_templates as _validate
+
+    errors = _validate(template_dir)
+    if errors:
+        return f"{len(errors)} error(s):\n" + "\n".join(f"  {e}" for e in errors)
+    return "All template files valid."
 
 
 def main() -> None:
