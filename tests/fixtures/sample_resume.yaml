@@ -1,0 +1,123 @@
+header:
+  name: "Jane Doe"
+  title: "Senior Software Engineer"
+  location: "San Francisco, CA"
+  email: "jane@example.com"
+  linkedin: "linkedin.com/in/janedoe"
+  github: "github.com/janedoe"
+
+summary:
+  paragraph: >-
+    Software engineer with 10+ years of experience building distributed systems
+    and cloud-native applications.
+  bullets:
+    - label: "Track Record"
+      text: >-
+        Scaled e-commerce platform from 100 to 10,000 requests per second
+        while maintaining 99.9% uptime across 3 regions.
+      provenance: { source: "manual", artifacts: [], verified: true }
+    - label: "Leadership"
+      text: >-
+        Led a team of 5 engineers delivering real-time analytics pipeline
+        processing 2M events per day.
+      provenance: { source: "manual", artifacts: [], verified: true }
+    - label: "Core Strengths"
+      text: >-
+        Distributed systems, cloud architecture, API design, team leadership.
+      provenance: { source: "manual", artifacts: [], verified: true }
+
+skills:
+  - category: "Languages"
+    items: "Python, Go, TypeScript"
+    provenance: { source: "manual", artifacts: [], verified: true }
+  - category: "Cloud"
+    items: "AWS (Lambda, DynamoDB, S3, ECS), GCP (BigQuery)"
+    provenance: { source: "manual", artifacts: [], verified: true }
+  - category: "Databases"
+    items: "PostgreSQL, Redis, DynamoDB"
+    provenance: { source: "manual", artifacts: [], verified: true }
+
+experience:
+  - company: "Acme Corp"
+    location: "San Francisco, CA"
+    description: "Enterprise SaaS platform for logistics."
+    dates: "2018 – 2024"
+    roles:
+      - title: "Senior Software Engineer"
+        dates: "2021 – 2024"
+        description: "Led backend architecture for real-time tracking system."
+        bullets:
+          - label: "API Redesign"
+            text: >-
+              Redesigned the REST API layer using FastAPI, reducing p99 latency
+              from 500ms to 120ms and improving throughput by 3x.
+            technologies: [FastAPI, Python, Redis]
+            metrics: ["500ms to 120ms", "3x"]
+            provenance: { source: "manual", artifacts: [], verified: true }
+          - label: "Event Pipeline"
+            text: >-
+              Built real-time event processing pipeline using Kafka and Lambda,
+              handling 2M events per day with exactly-once delivery guarantees.
+            technologies: [Kafka, Lambda, Python]
+            metrics: ["2M events per day"]
+            provenance: { source: "manual", artifacts: [], verified: true }
+          - label: "Observability"
+            text: >-
+              Implemented distributed tracing with OpenTelemetry and built
+              Grafana dashboards reducing MTTR from 45 minutes to 8 minutes.
+            technologies: [OpenTelemetry, Grafana]
+            metrics: ["45 minutes to 8 minutes"]
+            provenance: { source: "manual", artifacts: [], verified: true }
+      - title: "Software Engineer"
+        dates: "2018 – 2021"
+        bullets:
+          - label: "Migration"
+            text: >-
+              Migrated monolithic Django application to microservices architecture,
+              reducing deploy times from 30 minutes to 3 minutes.
+            technologies: [Django, Docker, Kubernetes]
+            metrics: ["30 minutes to 3 minutes"]
+            provenance: { source: "manual", artifacts: [], verified: true }
+          - label: "Database Optimization"
+            text: >-
+              Optimized PostgreSQL queries and implemented read replicas,
+              reducing database load by 60% during peak hours.
+            technologies: [PostgreSQL]
+            metrics: ["60%"]
+            provenance: { source: "manual", artifacts: [], verified: true }
+
+  - company: "StartupXYZ"
+    location: "Remote"
+    dates: "2014 – 2018"
+    roles:
+      - title: "Software Engineer"
+        dates: "2014 – 2018"
+        bullets:
+          - label: "Full Stack"
+            text: >-
+              Built customer-facing dashboard using React and Node.js,
+              serving 50K monthly active users.
+            technologies: [React, Node.js]
+            metrics: ["50K monthly active users"]
+            provenance: { source: "manual", artifacts: [], verified: true }
+
+projects:
+  - name: "OpenTracer"
+    url: "https://github.com/janedoe/opentracer"
+    description: >-
+      Open-source distributed tracing library for Python microservices.
+      Supports OpenTelemetry, Jaeger, and Zipkin backends.
+    technologies: [Python, OpenTelemetry, gRPC]
+    provenance: { source: "manual", artifacts: ["github:janedoe/opentracer"], verified: true }
+
+  - name: "KVStore"
+    url: "https://github.com/janedoe/kvstore"
+    description: >-
+      High-performance key-value store built in Go with Raft consensus
+      for distributed coordination. Benchmarked at 100K ops/sec.
+    technologies: [Go, Raft]
+    provenance: { source: "manual", artifacts: ["github:janedoe/kvstore"], verified: true }
+
+education:
+  degree: "B.S. Computer Science"
+  institution: "University of California, Berkeley"

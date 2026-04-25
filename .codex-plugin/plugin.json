@@ -1,0 +1,12 @@
+{
+  "name": "resume-builder",
+  "description": "Resume generation, ATS scoring, JD matching, anti-fabrication verification, and multi-persona review",
+  "version": "0.1.0",
+  "skills": "./skills/",
+  "mcpServers": "./.codex-plugin/mcp.json",
+  "author": {
+    "name": "Wilson Choi"
+  },
+  "repository": "https://github.com/wilsonkichoi/resume-builder",
+  "license": "MIT"
+}

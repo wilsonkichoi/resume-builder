@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "resume-builder": {
+      "command": "uv",
+      "args": ["run", "--directory", "${CLAUDE_PLUGIN_ROOT}", "rb-mcp"],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}"
+    }
+  }
+}
