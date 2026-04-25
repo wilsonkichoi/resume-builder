@@ -23,9 +23,10 @@ Generate a cover letter tailored to a specific job description using resume.yaml
 ### Step 1 — Gather Inputs
 - Read `resume.yaml` from the project root.
 - Accept JD as file path or pasted text. A JD is **required** — a cover letter without a target is generic and weak.
+- Check `knowledge/companies/` for an existing CompanyProfile. If found, load it — this replaces the need to ask the user for company research. Use `CompanyProfile.pain_points` for problem-solver hooks, `CompanyProfile.recent_news` for specific-company-knowledge hooks, and `CompanyProfile.mission_vision` + `CompanyProfile.culture_signals` for the closing paragraph.
 - Check `knowledge/sessions/` for existing `/match` sessions for this company/role. If found, read the match analysis to leverage gap data.
 - Ask the user for optional inputs:
-  - **Company research**: "Do you know anything specific about this company — mission, recent news, team culture, specific projects? This strengthens the opening hook."
+  - **Company research** *(skip if CompanyProfile exists)*: "Do you know anything specific about this company — mission, recent news, team culture, specific projects? This strengthens the opening hook."
   - **Talking points**: "Any specific experiences or angles you want to emphasize?"
   - **Hook preference**: "Any preference for opening style?" (list the 5 types below, or auto-select the strongest based on available context)
 
@@ -45,7 +46,7 @@ Based on match analysis and user inputs, create a plan:
 4. **Impressive achievement** — open with your strongest relevant metric
 5. **Industry insight** — demonstrate domain expertise with a relevant observation
 
-If the user provided company research, prefer type 1. If they have a referral, prefer type 2. Otherwise, select the strongest from types 3-5 based on match analysis.
+If a CompanyProfile exists with pain points, prefer type 3 (Problem-solver) with specific pain points. If the user provided company research or a CompanyProfile has recent news, prefer type 1. If they have a referral, prefer type 2. Otherwise, select the strongest from types 3-5 based on match analysis.
 
 **Strongest qualification**: Identify the 1-2 resume bullets that best match the JD's top requirements.
 
@@ -86,6 +87,10 @@ Output a brief check:
 - **Claim-Resume Alignment**: PASS / FLAG
 - **Tone**: PASS / FLAG
 - **Beyond-Resume Value**: PASS / FLAG
+
+If a CompanyProfile exists for the target company, also read `agents/sales-strategist.agent.md` and evaluate whether the cover letter sells solutions or features:
+- **Buyer Empathy**: PASS / FLAG
+- **Problem-Solution Framing**: PASS / FLAG
 
 If any item is flagged, note the issue and suggest a revision. Do not block output.
 

@@ -23,7 +23,9 @@ Create a tailored version of resume.yaml optimized for a specific job descriptio
 Run /match analysis to understand fit, gaps, and recommendations.
 
 ### Step 2 — Generate Tailoring Plan
-Based on match analysis, create a plan:
+Check `knowledge/companies/` for an existing CompanyProfile for this company. If found, load it and use `CompanyProfile.pain_points` to prioritize bullets that directly address company pain points — not just JD keyword matches.
+
+Based on match analysis (and CompanyProfile if available), create a plan:
 - Which summary bullets to lead with
 - Which skills categories to reorder/trim
 - Which experience bullets to emphasize (move up) or trim (remove)
@@ -54,12 +56,14 @@ Before scoring, spot-check the tailored resume with two personas:
 
 1. Read `agents/recruiter.agent.md` — does the tailored version still pass the 6-second scan?
 2. Read `agents/hiring-manager.agent.md` — does the reordering create a coherent narrative for this role?
+3. *(If CompanyProfile exists)* Read `agents/sales-strategist.agent.md` — is the tailored resume selling solutions to this company's pain points, or just listing features?
 
 Output a brief check:
 - **Recruiter**: PASS / FLAG (1-line explanation if flagged)
 - **Hiring Manager**: PASS / FLAG (1-line explanation if flagged)
+- **Sales Strategist** *(if applicable)*: PASS / FLAG (1-line explanation if flagged)
 
-If either flags an issue, note it in the tailoring report. Do not block generation.
+If any flags an issue, note it in the tailoring report. Do not block generation.
 
 ### Step 6 — Score
 Run /score against the JD to see improvement:

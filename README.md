@@ -1,15 +1,17 @@
 # Resume Builder
 
-A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement.
+A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
 
 ## What It Does
 
 - **Single source of truth** — `resume.yaml` with provenance tracking on every bullet
 - **Generate** resume outputs in Markdown, PDF, DOCX, and HTML from one YAML file
+- **Research** companies to build intelligence profiles — pain points, tech stack, culture, growth signals
+- **Qualify** opportunities with dimensional scoring — assess how much they need you, not just whether you meet their bar
 - **Tailor** resumes for specific job descriptions while preventing fabrication
 - **Score** with ATS and HR rubrics
 - **Match** against job descriptions with gap analysis
-- **Review** with 6 AI personas (ATS bot, recruiter, hiring manager, HR screener, technical reviewer, engineer peer)
+- **Review** with 7 AI personas (ATS bot, recruiter, hiring manager, HR screener, technical reviewer, engineer peer, sales strategist)
 - **Verify** every claim traces back to source — catches fabricated metrics, technologies, and embellishments
 - **Ingest** project artifacts to extract verified achievements with provenance
 
@@ -34,7 +36,7 @@ When prompted for install scope, choose **"Install for you, in this repo only"**
 
 After installation:
 
-- Skills are available as `/resume-builder:init`, `/resume-builder:generate`, `/resume-builder:tailor`, etc.
+- Skills are available as `/resume-builder:init`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:research`, `/resume-builder:qualify`, etc.
 - Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 - Auto-updates when the repo is updated
@@ -55,8 +57,8 @@ codex plugin install wilsonkichoi/resume-builder
 
 After installation:
 
-- Skills are available as `/init`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`
-- Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`)
+- Skills are available as `/init`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`
+- Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`, `sales-strategist`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 
 > **Note:** Codex CLI does not support per-project plugin scoping. Installed plugins are always global. If you need project-level control, use Claude Code's local scope install instead.
@@ -111,6 +113,7 @@ your-resume-project/
   knowledge/
     corrections.yaml       # Fabrication error log
     sessions/              # Session history
+    companies/             # Company research profiles
 ```
 
 ### 2. Generate outputs
@@ -153,13 +156,40 @@ Scores against ATS (8 components) and HR (6 dimensions) rubrics with actionable 
 
 Identifies skill matches, gaps, and suggests how to position existing experience.
 
-### 7. Multi-persona review
+### 7. Research a company
+
+```
+/resume-builder:research Acme Corp https://acme.com/careers/backend-engineer
+```
+
+Builds a CompanyProfile from user-provided links and supplementary web research. Captures company basics, products, pain points, tech stack, culture signals, growth signals, and key people — with every fact traced to its source. Profiles persist in `knowledge/companies/` for reuse across skills.
+
+### 8. Qualify an opportunity
+
+```
+/resume-builder:qualify Acme Corp
+```
+
+Flips the match lens: instead of "do I meet their bar?", assesses "how much do they need me?" Scores across 6 dimensions:
+
+| Dimension | Weight | Question |
+|-----------|--------|----------|
+| Pain-Solution Match | 25% | Do my skills address their pain points? |
+| Value Density | 20% | How many needs can I *uniquely* address? |
+| Growth Alignment | 15% | Am I growing where they're heading? |
+| Culture Fit | 15% | Do they fit me? (bidirectional) |
+| Leverage Position | 15% | Am I entering from strength or weakness? |
+| ROI Potential | 10% | Can I articulate quantifiable value? |
+
+Produces a strategic brief with positioning recommendations or reasons to pass.
+
+### 9. Multi-persona review
 
 ```
 /resume-builder:review
 ```
 
-Gets feedback from 6 AI personas:
+Gets feedback from up to 7 AI personas:
 
 | Persona | Focus |
 |---------|-------|
@@ -169,8 +199,9 @@ Gets feedback from 6 AI personas:
 | HR Screener | Red flags, compliance, gaps |
 | Technical Reviewer | Accuracy of technical claims |
 | Engineer Peer | Overclaim detection (most valuable for staff+ level) |
+| Sales Strategist | Selling solutions vs. features (activated when CompanyProfile exists) |
 
-### 8. Verify anti-fabrication
+### 10. Verify anti-fabrication
 
 ```
 /resume-builder:verify

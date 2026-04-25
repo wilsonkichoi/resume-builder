@@ -16,11 +16,14 @@ Invoke 6 independent review personas, each evaluating the resume from their prof
 4. **hr-screener** — Compliance (gaps, red flags, culture fit)
 5. **technical-reviewer** — Peer review (technical accuracy, overstatement)
 6. **engineer-peer** — Staff/principal engineer (architecture depth, hands-on signal, overclaim detection)
+7. **sales-strategist** *(conditional)* — B2B sales lens: selling solutions vs. features (only when a CompanyProfile exists in `knowledge/companies/` for the target company)
 
 ## Process
 
 ### Step 1 — Prepare Context
 Read resume.yaml (and optionally a JD for targeted feedback).
+
+If a JD is provided, extract the company name and check `knowledge/companies/` for an existing CompanyProfile. If found, load it — this enables the sales-strategist persona and enriches other personas with buyer context.
 
 ### Step 2 — Load and Invoke Personas
 
@@ -35,6 +38,7 @@ Agent definitions (relative to this plugin's root):
 4. **hr-screener**: Read `agents/hr-screener.agent.md`
 5. **technical-reviewer**: Read `agents/technical-reviewer.agent.md`
 6. **engineer-peer**: Read `agents/engineer-peer.agent.md`
+7. **sales-strategist** *(conditional)*: Read `agents/sales-strategist.agent.md` — only invoke when a CompanyProfile exists for the target company. Pass the CompanyProfile as context.
 
 For each persona, produce:
 - **Strengths** (1-3 specific items with evidence)
@@ -58,6 +62,7 @@ Merge all persona feedback into:
 | HR Screener | X/10 | ... | ... |
 | Technical Reviewer | X/10 | ... | ... |
 | Engineer Peer | X/10 | ... | ... |
+| Sales Strategist | X/10 | ... | ... |
 
 ## Prioritized Action Items (by impact)
 1. ...
