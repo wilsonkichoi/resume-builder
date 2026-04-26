@@ -25,24 +25,11 @@ Ask the user what they have:
 - Blog post or write-up
 - YouTube talk/demo link
 - Architecture diagrams
+- Document exports (HTML, PDF, markdown — from Confluence, Notion, Google Docs, etc.)
 - Any metrics they can provide (users, requests/sec, cost savings, etc.)
 
 ### Step 2 — Analyze Artifacts
-For source code:
-- Read `pyproject.toml`, `package.json`, `requirements.txt`, `Cargo.toml` for tech stack
-- Read infrastructure-as-code (CDK, Terraform, CloudFormation) for architecture
-- Read tests for scale and coverage metrics
-- Read README for project description and purpose
-- Check git log for contribution scope and timeline
-
-For GitHub repos:
-- Check repo description, topics, and README
-- Review languages and dependency files
-- Look at CI/CD workflows for deployment patterns
-
-For blog posts / demos:
-- Extract claims and check if they're supported by code
-- Note any metrics mentioned with their context
+Analyze the provided artifacts to extract tech stack, architecture patterns, scale metrics, contribution scope, and timeline. Cross-reference claims across artifact types when possible.
 
 ### Step 3 — Extract Verifiable Facts
 Categorize findings:

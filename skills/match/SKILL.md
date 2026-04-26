@@ -12,12 +12,7 @@ Analyze how well resume.yaml matches a specific job description. Identify gaps, 
 ## Process
 
 ### Step 1 — Parse the Job Description
-Extract and categorize:
-- **Required skills** — explicitly stated as required/must-have
-- **Preferred skills** — nice-to-have, bonus, preferred
-- **Domain terminology** — industry-specific terms
-- **Experience level** — years, seniority signals
-- **Red flags** — overwork language, "rockstar", vague compensation
+Parse the JD to extract requirements, preferences, experience level, domain terminology, and red flags.
 
 ### Step 2 — Match Against Resume
 Read resume.yaml and skills.yaml, then score:

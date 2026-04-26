@@ -39,14 +39,7 @@ If no existing match session found for this company/role, run `/match` analysis 
 ### Step 3 — Plan the Cover Letter
 Based on match analysis and user inputs, create a plan:
 
-**Hook type selection** — choose from:
-1. **Specific company knowledge** — reference a recent initiative, product, or value (requires user-provided research)
-2. **Mutual connection** — leverage a referral or shared network (requires user input)
-3. **Problem-solver** — lead with the JD's core challenge and your solution
-4. **Impressive achievement** — open with your strongest relevant metric
-5. **Industry insight** — demonstrate domain expertise with a relevant observation
-
-If a CompanyProfile exists with pain points, prefer type 3 (Problem-solver) with specific pain points. If the user provided company research or a CompanyProfile has recent news, prefer type 1. If they have a referral, prefer type 2. Otherwise, select the strongest from types 3-5 based on match analysis.
+**Hook type**: Select the strongest opening based on available context — company pain points, referrals, standout achievements, or domain expertise. Leverage CompanyProfile data if available.
 
 **Strongest qualification**: Identify the 1-2 resume bullets that best match the JD's top requirements.
 

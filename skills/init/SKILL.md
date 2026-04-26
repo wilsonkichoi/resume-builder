@@ -1,6 +1,7 @@
 ---
 name: init
 description: "Initialize resume-builder in a project. Scans for existing resume files and project documents, interviews the user, then creates resume.yaml and project structure. Use when: 'init', 'set up resume', 'initialize', 'migrate resume', 'import resume'."
+argument-hint: "[path to existing resume files or project documents]"
 ---
 
 # /init — Initialize Resume Builder
@@ -12,22 +13,16 @@ Bootstrap resume-builder in the current project directory. Handles both fresh st
 
 ### Phase 1 — Discovery
 
-Scan the current directory and one level of subdirectories for existing resume artifacts:
+Scan the current directory and one level of subdirectories for existing resume artifacts. If the user provides an external path (e.g., `/init ../resume/projects/`), scan that path as well for project documents and Confluence exports.
 
-**Resume files** (prioritize in this order):
-- `resume.yaml` — already in resume-builder format, validate and adopt
-- `resume.md`, `resume.txt` — markdown/text resume to parse
-- `resume.pdf` — extract text content
-- `resume.docx`, `resume.doc` — extract text content
-- `*.json` with resume-like keys (header, experience, education)
+**Resume files**: Scan for existing resume artifacts in any common format (YAML, markdown, PDF, DOCX, JSON, HTML). Prioritize `resume.yaml` if it already exists in resume-builder format.
 
-**Supporting documents:**
-- `skills.yaml` — existing skill inventory
-- `projects/` directory — project artifacts, architecture docs
-- `*.html` — portfolio/resume HTML pages
-- `generate_resume_*.py`, `generate_resume_*.js` — existing generation scripts
-- `CLAUDE.md`, `AGENTS.md`, `GEMINI.md` — existing AI instructions
-- `.github/workflows/` — existing CI/CD
+**Supporting documents**: Look for skill inventories, project directories, existing generation scripts, AI instructions, and CI/CD config.
+
+**External documents** (when the user provides an external path):
+- Read and understand any document format found (HTML exports, PDFs, markdown, text files, etc.)
+- Skip asset/support directories that don't contain meaningful content
+- Extract project names, technologies, architecture, metrics, and timelines from whatever format is present
 
 **Report findings to the user:**
 ```
@@ -39,6 +34,10 @@ Found in current directory:
   ✓ index.html (59 KB) — portfolio page
   ✗ resume.yaml — not found (will create)
   ✗ knowledge/ — not found (will create)
+
+Found in ../resume/projects/:
+  ✓ 15 document exports (ASR for IVR, Call Recording Architecture, SIP Trunking, ...)
+  ✓ 2 project directories (helios, email_cleansing)
 ```
 
 ### Phase 2 — Parse Existing Resume
@@ -68,6 +67,28 @@ If an existing resume file is found:
      Education: B.S. Computer Science, Cal Poly Pomona
    
    Does this look complete? Anything missing or incorrect?
+   ```
+
+If external documents are found:
+
+1. **Read each document** — extract the meaningful content, skipping boilerplate, navigation chrome, and asset directories.
+
+2. **Categorize extracted content** per document:
+   - Technologies and tech stack
+   - Architecture patterns and design decisions
+   - Scale/volume metrics
+   - Timelines and delivery dates
+   - Ticket or issue references
+
+3. **Present summary to the user:**
+   ```
+   Parsed from 15 project documents:
+     ASR for IVR — UniMRCP, FreeSWITCH, Azure, 70-80k calls/month
+     Call Recording Architecture — S3, Lambda, transcription pipeline
+     SIP Trunking — Kamailio, FreeSWITCH, HA design
+     ...
+   
+   Which of these projects should be included in your resume?
    ```
 
 ### Phase 3 — Interview

@@ -37,21 +37,10 @@ Always ask: "Do you have any of these? The more sources, the sharper the profile
 Check `knowledge/companies/` for an existing profile for this company. If found, ask: "I have an existing profile from {date}. Update it with new sources, or start fresh?"
 
 ### Step 2 — Process User-Provided Documents
-For each provided document or URL:
-- Use WebFetch to retrieve content
-- Extract structured facts: company size, tech stack, products, challenges, culture signals
-- Tag EVERY fact with its source URL
-- Separate what is directly stated from what must be inferred
-- Note the date of the source — recent sources are higher confidence
+For each provided document or URL, fetch and extract structured facts. Tag every fact with its source URL. Separate stated facts from inferences. Note source dates — recent sources are higher confidence.
 
 ### Step 3 — Supplementary Web Research
-Use WebSearch to fill gaps that user-provided documents did not cover. Search for:
-- `{company name} engineering blog`
-- `{company name} glassdoor reviews`
-- `{company name} funding OR series OR raised`
-- `{company name} {year} news`
-- `{company name} tech stack OR architecture`
-- `{company name} hiring OR careers`
+Use WebSearch to fill gaps not covered by user-provided documents — engineering culture, funding, tech stack, recent news, hiring activity.
 
 For each result, apply the same extraction and tagging process as Step 2.
 
