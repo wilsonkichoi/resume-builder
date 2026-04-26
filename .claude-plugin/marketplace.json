@@ -1,0 +1,16 @@
+{
+  "name": "wilsonkichoi-resume-builder",
+  "owner": {
+    "name": "Wilson Choi"
+  },
+  "metadata": {
+    "description": "Resume generation, ATS scoring, JD matching, company research, strategic qualification, anti-fabrication verification, and multi-persona review"
+  },
+  "plugins": [
+    {
+      "name": "resume-builder",
+      "source": "./",
+      "description": "Resume generation, ATS scoring, JD matching, company research, strategic qualification, anti-fabrication verification, and multi-persona review"
+    }
+  ]
+}
