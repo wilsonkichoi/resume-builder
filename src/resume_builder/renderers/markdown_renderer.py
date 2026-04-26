@@ -12,7 +12,7 @@ def render_markdown(ir: ResumeIR) -> str:
     lines.append("")
 
     lines.append("### Professional Summary")
-    lines.append(f"**{ir.summary.paragraph.split(' with ')[0].strip()}** with {' with '.join(ir.summary.paragraph.split(' with ')[1:]).strip()}")
+    lines.append(ir.summary.paragraph)
     lines.append("")
     for bullet in ir.summary.bullets:
         lines.append(f"* **{bullet.label}:** {bullet.text}")

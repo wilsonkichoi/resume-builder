@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>{{ ir.header.name }} — {{ ir.header.title.split('|')[0].strip() }}</title>
+  <title>{{ ir.header.name }} — {{ ir.header.title }}</title>
   <meta name="description"
     content="{{ ir.summary.paragraph }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -440,7 +440,7 @@
     <div class="backdrop-blur-xl border-b" style="background: var(--nav-bg); border-color: var(--nav-border);">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <a href="#" class="text-sm font-semibold tracking-tight text-fg hover:opacity-80 transition-opacity">
-          WKC
+          {{ ir.header.name.split() | map('first') | join | upper }}
         </a>
         <!-- Desktop nav -->
         <div class="hidden md:flex items-center gap-6">
@@ -511,7 +511,7 @@
       <div class="max-w-5xl mx-auto text-center">
         <div class="reveal">
           <span class="inline-block font-mono text-xs tracking-widest text-accent uppercase mb-6">
-            {{ ir.header.title.split('|')[0].strip() }}
+            {{ ir.header.title }}
           </span>
         </div>
         <h1
@@ -521,14 +521,7 @@
         </h1>
         <p class="reveal hero-subtitle text-base sm:text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10"
           style="transition-delay: 0.16s;">
-          {%- set title_parts = ir.header.title.split('|') -%}
-          {%- if title_parts | length > 1 -%}
-          <span class="accent-gradient-text font-semibold">{{ title_parts[1].strip() }}</span> with 15+ years building
-          high-scale distributed systems. Expert in Python, hybrid cloud, and bridging
-          Data Science with Production Engineering.
-          {%- else %}
-          <span class="accent-gradient-text font-semibold">{{ ir.header.title }}</span>
-          {%- endif %}
+          {{ ir.summary.paragraph }}
         </p>
         <div class="reveal flex flex-wrap items-center justify-center gap-4 text-sm" style="transition-delay: 0.24s;">
           <span class="text-muted">{{ ir.header.location }}</span>
@@ -551,18 +544,16 @@
     <section class="py-10 md:py-14 px-4 sm:px-6">
       <div class="max-w-5xl mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {#- Summary card SVG icons keyed by bullet label -#}
-          {%- set summary_icons = {
-            "Track Record": '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" /></svg>',
-            "Leadership": '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>',
-            "Core Strengths": '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>'
-          } -%}
-          {#- Default icon for unknown labels -#}
-          {%- set default_icon = '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>' -%}
+          {#- Summary card SVG icons — cycled by position -#}
+          {%- set summary_icons = [
+            '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" /></svg>',
+            '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>',
+            '<svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>'
+          ] -%}
           {% for bullet in ir.summary.bullets %}
           <div class="reveal spotlight-card themed-card rounded-2xl p-6"{% if not loop.first %} style="transition-delay: {{ '%.2f' | format(loop.index0 * 0.08) }}s;"{% endif %}>
             <div class="w-10 h-10 rounded-xl icon-box flex items-center justify-center mb-4">
-              {{ summary_icons.get(bullet.label, default_icon) | safe }}
+              {{ summary_icons[loop.index0 % summary_icons | length] | safe }}
             </div>
             <h3 class="text-sm font-semibold text-fg mb-2">{{ bullet.label }}</h3>
             <p class="text-sm text-muted leading-relaxed">
@@ -678,28 +669,9 @@
           </h2>
         </div>
 
-        {#-
-          Grid column spans per skill category.
-          The original layout uses a 6-column grid with specific spans per card.
-          Categories not listed here default to md:col-span-2.
-        -#}
-        {%- set col_spans = {
-          "Cloud & Infrastructure": "sm:col-span-2 md:col-span-4",
-          "Languages": "md:col-span-2",
-          "MLOps": "sm:col-span-2 md:col-span-3",
-          "Databases": "sm:col-span-2 md:col-span-3",
-          "Frameworks & Tools": "md:col-span-2",
-          "Telephony & Protocols": "md:col-span-2",
-          "CI/CD & Observability": "md:col-span-2"
-        } -%}
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4">
-          {#- Render skill cards in the order they appear in ir.skills.
-              The first card has the widest span (4 col) and uses a special
-              column layout. A Languages card with progress bar is inserted
-              after the first pill-based card to match the original design. -#}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {% for skill in ir.skills %}
-          {%- set span = col_spans.get(skill.category, "md:col-span-2") %}
-          <div class="reveal spotlight-card themed-card {{ span }} rounded-2xl p-6"{% if not loop.first %} style="transition-delay: {{ '%.2f' | format(loop.index0 * 0.04 + 0.08) }}s;"{% endif %}>
+          <div class="reveal spotlight-card themed-card rounded-2xl p-6"{% if not loop.first %} style="transition-delay: {{ '%.2f' | format(loop.index0 * 0.04 + 0.08) }}s;"{% endif %}>
             <span class="font-mono text-xs tracking-widest text-accent uppercase">{{ skill.category }}</span>
             <div class="flex flex-wrap gap-2 mt-4">
               {%- for pill in parse_skill_items(skill.items) %}
@@ -707,23 +679,6 @@
               {%- endfor %}
             </div>
           </div>
-          {#- Insert Languages card after the first skill (Cloud & Infrastructure) -#}
-          {%- if loop.first %}
-          <div class="reveal spotlight-card themed-card md:col-span-2 rounded-2xl p-6" style="transition-delay: 0.08s;">
-            <span class="font-mono text-xs tracking-widest text-accent uppercase">Languages</span>
-            <div class="mt-4 space-y-3">
-              <div>
-                <div class="flex justify-between text-xs mb-1.5">
-                  <span class="text-fg font-medium">Python</span>
-                  <span class="text-muted">15+ years</span>
-                </div>
-                <div class="h-1.5 rounded-full overflow-hidden" style="background: var(--progress-track);">
-                  <div class="h-full rounded-full bg-accent w-[95%]"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {%- endif %}
           {% endfor %}
         </div>
       </div>
