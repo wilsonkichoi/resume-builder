@@ -1,0 +1,101 @@
+version: "0.1.5"
+
+# Files the plugin creates and operates on
+source_files:
+  - path: resume.yaml
+    description: "Single source of truth for all resume content"
+    created_by: setup
+    consumed_by: [generate, tailor, score, match, review, verify, import, cover-letter, qualify]
+    required: true
+
+  - path: knowledge/corrections.yaml
+    description: "Fabrication error log — records corrected claims"
+    created_by: setup
+    consumed_by: [verify]
+    required: true
+
+  - path: knowledge/sessions/
+    description: "Session history (YAML files, gitignored)"
+    created_by: setup
+    consumed_by: [tailor, match, cover-letter, qualify, research, import]
+    required: true
+    gitignored: true
+
+  - path: knowledge/companies/
+    description: "Company research profiles (YAML files)"
+    created_by: research
+    consumed_by: [qualify, tailor, review, cover-letter]
+    required: false
+
+  - path: artifacts/
+    description: "Project documents for /ingest — Confluence exports, architecture diagrams, design docs, etc."
+    created_by: user
+    consumed_by: [ingest]
+    required: false
+
+# Files generated as output (do not edit directly)
+generated_files:
+  - path: resume.md
+    format: markdown
+    created_by: generate
+
+  - path: resume.pdf
+    format: pdf
+    created_by: generate
+
+  - path: resume.docx
+    format: docx
+    created_by: generate
+
+  - path: index.html
+    format: html
+    created_by: generate
+    description: >
+      Portfolio-quality page with dark/light theme toggle, spotlight hover effects,
+      scroll reveal animations, hero parallax, ambient glow, gradient text,
+      card-based layouts, timeline visualization, skill pills, mobile responsive
+
+  - path: tailored_resume.yaml
+    created_by: tailor
+
+  - path: "tailored/"
+    created_by: tailor
+
+  - path: "cover_letter_*.md"
+    created_by: cover-letter
+
+# Optional user customization files
+customization_files:
+  - path: templates/pdf_styles.yaml
+    description: "Override PDF colors, fonts, margins, styles"
+
+  - path: templates/docx_styles.yaml
+    description: "Override DOCX colors, fonts, margins, styles (same schema as PDF)"
+
+  - path: templates/resume.html.j2
+    description: "Full Jinja2 template replacement for HTML output"
+
+  - path: templates/style.css
+    description: "CSS custom property overrides for the built-in HTML template"
+
+# Plugin documentation written to consumer project
+plugin_docs:
+  - path: .claude/rules/resume-builder.md
+    description: "Plugin guide for Claude Code AI — auto-loaded every session"
+    created_by: setup
+  - path: AGENTS.md
+    description: "Plugin guide for Codex CLI AI — auto-loaded every session"
+    created_by: setup
+
+# Files that are NOT part of the plugin (common in legacy resume projects)
+not_plugin_files:
+  - pattern: "skills.yaml"
+    reason: "External skill inventory. Skill data belongs in resume.yaml under the skills: section."
+  - pattern: "generate_resume_*.py"
+    reason: "Legacy generation script. Replaced by resume-builder generate."
+  - pattern: "generate_resume_*.js"
+    reason: "Legacy generation script. Replaced by resume-builder generate."
+  - pattern: "CLAUDE.md"
+    reason: "Project AI instructions. Not resume data — preserved, not migrated."
+  - pattern: "GEMINI.md"
+    reason: "Project AI instructions. Not resume data."

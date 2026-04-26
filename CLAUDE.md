@@ -4,7 +4,10 @@
 Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP server, and a Python CLI (`resume-builder`). Contains no user data — all resume content lives in the target project.
 
 ## Architecture
+- `schema.yaml` — Project structure definition (developer reference). Defines source files, generated files, customization files, and not-plugin-files.
 - `skills/` — Claude Code skills (SKILL.md files). User-facing interface.
+  - `skills/setup/` — Bootstraps project structure and writes plugin docs to `.claude/rules/resume-builder.md` (Claude Code) and `AGENTS.md` (Codex CLI).
+  - `skills/import/` — Imports existing resume into resume.yaml format.
 - `agents/` — Review persona definitions (.agent.md files). Invoked by `/review`, `/tailor`, and `/cover-letter`.
 - `src/resume_builder/` — Python package.
   - `core.py` — Shared logic used by both CLI and MCP server.
@@ -42,10 +45,11 @@ Every change that adds, modifies, or removes user-facing functionality MUST incl
 - **Minor** (0.1.1 → 0.2.0): Breaking changes to existing skill behavior, breaking changes to `knowledge/` schema that invalidate existing data, or breaking changes to CLI flags.
 - **Major** (0.2.0 → 1.0.0): Breaking changes to the plugin API or CLI interface that require users to change how they invoke the tool.
 
-Version MUST be updated in all three files and they MUST match:
+Version MUST be updated in all four files and they MUST match:
 1. `pyproject.toml` — `version = "X.Y.Z"`
 2. `.claude-plugin/plugin.json` — `"version": "X.Y.Z"`
 3. `.codex-plugin/plugin.json` — `"version": "X.Y.Z"`
+4. `schema.yaml` — `version: "X.Y.Z"`
 
 ### Documentation Updates Are Mandatory
 When adding or modifying skills, agents, or Python modules, you MUST update ALL of the following:
@@ -54,6 +58,8 @@ When adding or modifying skills, agents, or Python modules, you MUST update ALL 
 2. **CLAUDE.md** (this file) — Update the Architecture section if new modules/files are added. Keep the test count accurate.
 3. **plugin.json** — Update the `description` field if the change adds a new capability category.
 4. **Cross-references in other skills** — If a new skill produces data consumed by other skills (e.g., `/research` produces CompanyProfile used by `/tailor`, `/cover-letter`, `/qualify`), update those consuming skills to reference the new data source.
+5. **schema.yaml** — Update if source files, generated files, customization files, or not-plugin-files change.
+6. **skills/setup/SKILL.md** — Update the CLAUDE.md content template if skills, workflows, output features, template customization, or schema change. This is the content that gets written to the consumer's CLAUDE.md by `/setup`.
 
 Do not consider a feature complete until all documentation is updated.
 
@@ -88,7 +94,7 @@ Do not consider a feature complete until all documentation is updated.
 
 ### Key Constraints
 - The CLI and MCP server operate on CWD (the target project). All paths are relative to where the user runs it.
-- `knowledge/` directory is created by `/init` in the target project, not shipped with the plugin.
+- `knowledge/` directory is created by `/setup` in the target project, not shipped with the plugin.
 - Skills and agents are the user-facing interface — Python code provides the deterministic pipeline (generation, verification, storage). LLM-dependent logic lives in skills, not Python.
 - The generation pipeline (`core.py` → parsers → renderers) is fully deterministic. Same input = same output. No LLM in this path.
 

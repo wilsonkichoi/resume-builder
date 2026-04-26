@@ -5,6 +5,8 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 ## What It Does
 
 - **Single source of truth** — `resume.yaml` with provenance tracking on every bullet
+- **Setup** bootstraps your project and writes plugin docs so the AI has full context every session
+- **Import** existing resumes from any format (PDF, DOCX, Markdown, YAML) into `resume.yaml`
 - **Generate** resume outputs in Markdown, PDF, DOCX, and HTML from one YAML file
 - **Research** companies to build intelligence profiles — pain points, tech stack, culture, growth signals
 - **Qualify** opportunities with dimensional scoring — assess how much they need you, not just whether you meet their bar
@@ -37,7 +39,7 @@ When prompted for install scope, choose **"Install for you, in this repo only"**
 
 After installation:
 
-- Skills are available as `/resume-builder:init`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`, etc.
+- Skills are available as `/resume-builder:setup`, `/resume-builder:import`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`, etc.
 - Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 - Auto-updates when the repo is updated
@@ -58,7 +60,7 @@ codex plugin install wilsonkichoi/resume-builder
 
 After installation:
 
-- Skills are available as `/init`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`, `/cover-letter`
+- Skills are available as `/setup`, `/import`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`, `/cover-letter`
 - Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`, `sales-strategist`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 
@@ -98,26 +100,39 @@ claude --plugin-dir /path/to/resume-builder
 
 ## Quick Start
 
-### 1. Initialize your resume project
+### 1. Set up your resume project
 
 Open Claude Code in your resume project directory and run:
 
 ```
-/resume-builder:init
+/resume-builder:setup
 ```
 
-This scans for existing resume files (PDF, DOCX, Markdown, YAML), interviews you to fill gaps, and creates:
+This creates the project structure and writes plugin documentation so the AI has full context in every future session:
 
 ```
 your-resume-project/
-  resume.yaml              # Source of truth
+  resume.yaml                        # Source of truth (scaffold)
   knowledge/
-    corrections.yaml       # Fabrication error log
-    sessions/              # Session history
-    companies/             # Company research profiles
+    corrections.yaml                 # Fabrication error log
+    sessions/                        # Session history
+    companies/                       # Company research profiles
+  artifacts/                         # Place project docs here for /ingest
+  .claude/rules/resume-builder.md    # Plugin docs (Claude Code)
+  AGENTS.md                          # Plugin docs (Codex CLI)
 ```
 
-### 2. Generate outputs
+After setup completes, **restart Claude Code / Codex CLI** so it loads the updated docs.
+
+### 2. Import your existing resume (if migrating)
+
+```
+/resume-builder:import ../path/to/old-resume/
+```
+
+Scans for existing resume files (PDF, DOCX, Markdown, YAML), interviews you to fill gaps, and writes `resume.yaml`. Skip this step if building from scratch — edit `resume.yaml` directly.
+
+### 3. Generate outputs
 
 ```
 /resume-builder:generate
@@ -125,7 +140,7 @@ your-resume-project/
 
 Generates `resume.md`, `resume.pdf`, `resume.docx`, and `index.html` from `resume.yaml`.
 
-### 3. Add achievements from a project
+### 4. Add achievements from a project
 
 ```
 /resume-builder:ingest ~/src/my-project
@@ -133,7 +148,7 @@ Generates `resume.md`, `resume.pdf`, `resume.docx`, and `index.html` from `resum
 
 Analyzes source code, READMEs, infrastructure-as-code, and git history. Extracts verifiable facts, drafts resume bullets with provenance, and asks for your confirmation before updating `resume.yaml`.
 
-### 4. Tailor for a job description
+### 5. Tailor for a job description
 
 ```
 /resume-builder:tailor
@@ -141,7 +156,7 @@ Analyzes source code, READMEs, infrastructure-as-code, and git history. Extracts
 
 Paste a job description. The skill reorders, emphasizes, and trims your resume for the target role while enforcing anti-fabrication rules. (Runs `/match`, `/verify`, and `/score` internally. For sharper results, run `/research` first.)
 
-### 5. Score your resume
+### 6. Score your resume
 
 ```
 /resume-builder:score
@@ -149,7 +164,7 @@ Paste a job description. The skill reorders, emphasizes, and trims your resume f
 
 Scores against ATS (8 components) and HR (6 dimensions) rubrics with actionable improvement suggestions.
 
-### 6. Match against a job description
+### 7. Match against a job description
 
 ```
 /resume-builder:match
@@ -157,7 +172,7 @@ Scores against ATS (8 components) and HR (6 dimensions) rubrics with actionable 
 
 Identifies skill matches, gaps, and suggests how to position existing experience.
 
-### 7. Research a company
+### 8. Research a company
 
 ```
 /resume-builder:research Acme Corp https://acme.com/careers/backend-engineer
@@ -165,7 +180,7 @@ Identifies skill matches, gaps, and suggests how to position existing experience
 
 Builds a CompanyProfile from user-provided links and supplementary web research. Captures company basics, products, pain points, tech stack, culture signals, growth signals, and key people — with every fact traced to its source. Profiles persist in `knowledge/companies/` for reuse across skills. (Feeds into `/tailor`, `/qualify`, `/review`, and `/cover-letter` for better results.)
 
-### 8. Qualify an opportunity
+### 9. Qualify an opportunity
 
 ```
 /resume-builder:qualify Acme Corp
@@ -184,7 +199,7 @@ Flips the match lens: instead of "do I meet their bar?", assesses "how much do t
 
 Produces a strategic brief with positioning recommendations or reasons to pass.
 
-### 9. Multi-persona review
+### 10. Multi-persona review
 
 ```
 /resume-builder:review
@@ -202,7 +217,7 @@ Gets feedback from up to 7 AI personas. (Sales Strategist persona activates when
 | Engineer Peer | Overclaim detection (most valuable for staff+ level) |
 | Sales Strategist | Selling solutions vs. features (activated when CompanyProfile exists) |
 
-### 10. Verify anti-fabrication
+### 11. Verify anti-fabrication
 
 ```
 /resume-builder:verify
@@ -224,7 +239,7 @@ For a full description of each skill, see [Quick Start](#quick-start).
 
 | Scenario | When to Use | Skills | Time |
 |----------|------------|--------|------|
-| [First-Time Setup](#1-first-time-setup) | Just installed, no resume.yaml | init, generate | 15-30 min |
+| [First-Time Setup](#1-first-time-setup) | Just installed, no resume.yaml | setup, import, generate | 15-30 min |
 | [Quick Apply](#2-quick-apply) | Have resume, need to tailor fast | tailor | 5-10 min |
 | [Dream Job Deep-Dive](#3-dream-job-deep-dive) | High-value opportunity, full prep | research, qualify, tailor, review, cover-letter | 30-60 min |
 | [Resume Maintenance](#4-resume-maintenance) | Finished a project, capture achievements | ingest, generate | 10-20 min |
@@ -234,7 +249,8 @@ For a full description of each skill, see [Quick Start](#quick-start).
 ### How Skills Connect
 
 ```
-init ──→ resume.yaml ──→ generate (outputs)
+setup ──→ project structure + plugin docs
+import ──→ resume.yaml ──→ generate (outputs)
                │
                ├──→ ingest ──→ verify (auto)
                │
@@ -260,13 +276,17 @@ Skills work without optional inputs but produce better results with them.
 
 | Step | Command | Required? | What it does |
 |------|---------|-----------|-------------|
-| 1 | `/resume-builder:init` | Yes | Scans existing resume files, interviews you, creates resume.yaml and knowledge/ |
-| 2 | `/resume-builder:generate` | Yes | Creates PDF, DOCX, HTML, Markdown outputs |
-| 3 | `/resume-builder:review` | Optional | Baseline feedback before any tailoring |
+| 1 | `/resume-builder:setup` | Yes | Creates project structure, writes plugin docs for AI context |
+| 2 | Restart Claude Code / Codex CLI | Yes | So the AI loads the updated docs |
+| 3 | `/resume-builder:import` | Yes | Scans existing resume files, interviews you, writes resume.yaml |
+| 4 | `/resume-builder:generate` | Yes | Creates PDF, DOCX, HTML, Markdown outputs |
+| 5 | `/resume-builder:review` | Optional | Baseline feedback before any tailoring |
 
-**You'll have**: `resume.yaml`, generated outputs in 4 formats, `knowledge/` directory.
+**You'll have**: `resume.yaml`, generated outputs in 4 formats, `knowledge/` directory, full plugin docs for AI context.
 
 **Next**: Add achievements with `/ingest` or jump to [Quick Apply](#2-quick-apply) when you find a posting.
+
+**After plugin updates**: Re-run `/resume-builder:setup` to refresh the docs, then restart Claude Code / Codex CLI.
 
 ### 2. Quick Apply
 

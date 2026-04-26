@@ -1,7 +1,7 @@
 {
   "name": "resume-builder",
   "description": "Resume generation, ATS scoring, JD matching, company research, strategic qualification, anti-fabrication verification, and multi-persona review",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "skills": "./skills/",
   "mcpServers": "./.codex-plugin/mcp.json",
   "author": {
