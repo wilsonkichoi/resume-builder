@@ -38,6 +38,12 @@ def test_skills_categories():
     assert "Databases" in categories
 
 
+def test_skills_hidden_defaults_false():
+    ir = parse_resume(FIXTURE)
+    for skill in ir.skills:
+        assert skill.hidden is False
+
+
 def test_experience_companies():
     ir = parse_resume(FIXTURE)
     assert len(ir.experience) == 2

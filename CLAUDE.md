@@ -26,7 +26,7 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
 - `.claude-plugin/marketplace.json` — Claude Code marketplace manifest for plugin discovery.
 - `.codex-plugin/plugin.json` — Codex CLI plugin manifest.
 - `.codex-plugin/mcp.json` — Codex CLI MCP server config.
-- `tests/` — 124 tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
+- `tests/` — 126 tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
 
 ## Setup
 ```bash

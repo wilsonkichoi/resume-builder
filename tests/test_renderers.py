@@ -91,6 +91,16 @@ def test_html_contains_experience():
     assert "OpenTracer" in html
 
 
+def test_html_hides_hidden_skill():
+    ir = parse_resume(FIXTURE)
+    from resume_builder.renderers.html_renderer import render_html
+
+    ir.skills[0].hidden = True
+    hidden_category = ir.skills[0].category
+    html = render_html(ir)
+    assert hidden_category not in html
+
+
 # ---------------------------------------------------------------------------
 # Template customization tests
 # ---------------------------------------------------------------------------

@@ -33,6 +33,7 @@ class Summary(BaseModel):
 class SkillCategory(BaseModel):
     category: str
     items: str
+    hidden: bool = False
     provenance: Provenance = Provenance()
 
 
