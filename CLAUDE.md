@@ -19,7 +19,10 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
   - `verification/provenance.py` — ClaimRegistry, diff checker, corrections integration.
   - `knowledge/` — SessionStore, AchievementStore, and CompanyStore (data layer, no files shipped).
 - `.mcp.json` — MCP server config loaded by Claude Code when plugin is installed.
-- `.claude-plugin/plugin.json` — Plugin manifest for distribution.
+- `.claude-plugin/plugin.json` — Claude Code plugin manifest for distribution.
+- `.claude-plugin/marketplace.json` — Claude Code marketplace manifest for plugin discovery.
+- `.codex-plugin/plugin.json` — Codex CLI plugin manifest.
+- `.codex-plugin/mcp.json` — Codex CLI MCP server config.
 - `tests/` — Tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
 
 ## Setup
@@ -39,9 +42,10 @@ Every change that adds, modifies, or removes user-facing functionality MUST incl
 - **Minor** (0.1.1 → 0.2.0): Breaking changes to existing skill behavior, breaking changes to `knowledge/` schema that invalidate existing data, or breaking changes to CLI flags.
 - **Major** (0.2.0 → 1.0.0): Breaking changes to the plugin API or CLI interface that require users to change how they invoke the tool.
 
-Version MUST be updated in both files and they MUST match:
+Version MUST be updated in all three files and they MUST match:
 1. `pyproject.toml` — `version = "X.Y.Z"`
 2. `.claude-plugin/plugin.json` — `"version": "X.Y.Z"`
+3. `.codex-plugin/plugin.json` — `"version": "X.Y.Z"`
 
 ### Documentation Updates Are Mandatory
 When adding or modifying skills, agents, or Python modules, you MUST update ALL of the following:
