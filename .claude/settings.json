@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "resume-builder": {
+      "command": "uv",
+      "args": ["run", "resume-builder-mcp"],
+      "cwd": "."
+    }
+  }
+}
