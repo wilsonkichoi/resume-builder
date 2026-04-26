@@ -521,7 +521,16 @@
         </h1>
         <p class="reveal hero-subtitle text-base sm:text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10"
           style="transition-delay: 0.16s;">
-          {{ ir.summary.paragraph }}
+          {%- set para = ir.summary.paragraph -%}
+          {%- if ' with ' in para -%}
+            {%- set parts = para.split(' with ', 1) -%}
+            <span class="accent-gradient-text font-semibold">{{ parts[0] }}</span> with {{ parts[1] }}
+          {%- elif '. ' in para -%}
+            {%- set parts = para.split('. ', 1) -%}
+            <span class="accent-gradient-text font-semibold">{{ parts[0] }}</span>. {{ parts[1] }}
+          {%- else -%}
+            {{ para }}
+          {%- endif -%}
         </p>
         <div class="reveal flex flex-wrap items-center justify-center gap-4 text-sm" style="transition-delay: 0.24s;">
           <span class="text-muted">{{ ir.header.location }}</span>
@@ -669,15 +678,30 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4">
           {% for skill in ir.skills %}
-          <div class="reveal spotlight-card themed-card rounded-2xl p-6"{% if not loop.first %} style="transition-delay: {{ '%.2f' | format(loop.index0 * 0.04 + 0.08) }}s;"{% endif %}>
+          {%- set pills = parse_skill_items(skill.items) -%}
+          {%- set count = pills | length -%}
+          {%- if count >= 9 -%}
+            {%- set span = 'sm:col-span-2 md:col-span-4' -%}
+          {%- elif count >= 5 -%}
+            {%- set span = 'sm:col-span-2 md:col-span-3' -%}
+          {%- else -%}
+            {%- set span = 'md:col-span-2' -%}
+          {%- endif -%}
+          <div class="reveal spotlight-card themed-card rounded-2xl p-6 {{ span }}"{% if not loop.first %} style="transition-delay: {{ '%.2f' | format(loop.index0 * 0.04 + 0.08) }}s;"{% endif %}>
             <span class="font-mono text-xs tracking-widest text-accent uppercase">{{ skill.category }}</span>
+            {%- if count == 1 %}
+            <div class="mt-5 mb-1">
+              <span class="text-lg font-semibold text-fg" style="border-bottom: 2px solid var(--accent); padding-bottom: 2px;">{{ pills[0] }}</span>
+            </div>
+            {%- else %}
             <div class="flex flex-wrap gap-2 mt-4">
-              {%- for pill in parse_skill_items(skill.items) %}
+              {%- for pill in pills %}
               <span class="skill-pill px-3 py-1.5 rounded-full text-xs text-fg">{{ pill }}</span>
               {%- endfor %}
             </div>
+            {%- endif %}
           </div>
           {% endfor %}
         </div>
