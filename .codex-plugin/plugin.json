@@ -1,6 +1,6 @@
 {
   "name": "resume-builder",
-  "description": "Resume generation, ATS scoring, JD matching, company research, strategic qualification, anti-fabrication verification, and multi-persona review",
+  "description": "Resume management with setup, import, generate, tailor, score, match, review, verify, ingest, research, qualify, and cover-letter skills. Anti-fabrication enforcement, company research, strategic qualification, and multi-persona review.",
   "version": "0.1.5",
   "skills": "./skills/",
   "mcpServers": "./.codex-plugin/mcp.json",

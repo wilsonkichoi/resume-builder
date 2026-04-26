@@ -39,8 +39,8 @@ When prompted for install scope, choose **"Install for you, in this repo only"**
 
 After installation:
 
-- Skills are available as `/resume-builder:setup`, `/resume-builder:import`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`, etc.
-- Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`)
+- Skills are available as `/resume-builder:setup`, `/resume-builder:import`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:score`, `/resume-builder:match`, `/resume-builder:review`, `/resume-builder:verify`, `/resume-builder:ingest`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`
+- Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`, `resume-builder:cover-letter-reviewer`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 - Auto-updates when the repo is updated
 
@@ -61,7 +61,7 @@ codex plugin install wilsonkichoi/resume-builder
 After installation:
 
 - Skills are available as `/setup`, `/import`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`, `/cover-letter`
-- Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`, `sales-strategist`)
+- Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`, `cover-letter-reviewer`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 
 > **Note:** Codex CLI does not support per-project plugin scoping. Installed plugins are always global. If you need project-level control, use Claude Code's local scope install instead.

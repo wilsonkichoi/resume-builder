@@ -189,7 +189,7 @@ Flip the match lens: instead of "do I meet their bar?", assess "how much do they
 Recommendations: >= 7.0 = strong pursue, 5.0-6.9 = pursue with caution, < 5.0 = consider passing. Produces strategic brief with positioning angle, interview talking points, and discovery questions.
 
 ### /cover-letter
-Generate a tailored cover letter (250-400 words) with claim verification. Every factual claim must trace to `resume.yaml`. Structure: hook + position → strongest qualification with metrics → additional value + gap mitigation → closing with call-to-action. Runs `/match` internally. Uses CompanyProfile pain points and recent news for hooks if available.
+Generate a tailored cover letter (250-400 words) with claim verification. Every factual claim must trace to `resume.yaml`. Structure: hook + position → strongest qualification with metrics → additional value + gap mitigation → closing with call-to-action. Runs `/match` internally. Uses CompanyProfile pain points and recent news for hooks if available. Evaluated by the cover-letter-reviewer agent (hiring manager perspective).
 
 ## How Skills Connect
 

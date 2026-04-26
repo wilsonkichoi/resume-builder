@@ -5,10 +5,10 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
 
 ## Architecture
 - `schema.yaml` — Project structure definition (developer reference). Defines source files, generated files, customization files, and not-plugin-files.
-- `skills/` — Claude Code skills (SKILL.md files). User-facing interface.
+- `skills/` — Claude Code skills (SKILL.md files). User-facing interface. 12 skills: setup, import, generate, tailor, score, match, review, verify, ingest, research, qualify, cover-letter.
   - `skills/setup/` — Bootstraps project structure and writes plugin docs to `.claude/rules/resume-builder.md` (Claude Code) and `AGENTS.md` (Codex CLI).
   - `skills/import/` — Imports existing resume into resume.yaml format.
-- `agents/` — Review persona definitions (.agent.md files). Invoked by `/review`, `/tailor`, and `/cover-letter`.
+- `agents/` — Persona definitions (.agent.md files). 8 agents: ats-bot, recruiter, hiring-manager, hr-screener, technical-reviewer, engineer-peer, sales-strategist, cover-letter-reviewer. Invoked by `/review`, `/tailor`, and `/cover-letter`.
 - `src/resume_builder/` — Python package.
   - `core.py` — Shared logic used by both CLI and MCP server.
   - `cli.py` — Click CLI wrapper around core (`resume-builder generate`, `resume-builder verify`, `resume-builder template-export`, `resume-builder template-validate`).
@@ -26,7 +26,7 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
 - `.claude-plugin/marketplace.json` — Claude Code marketplace manifest for plugin discovery.
 - `.codex-plugin/plugin.json` — Codex CLI plugin manifest.
 - `.codex-plugin/mcp.json` — Codex CLI MCP server config.
-- `tests/` — Tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
+- `tests/` — 124 tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
 
 ## Setup
 ```bash
