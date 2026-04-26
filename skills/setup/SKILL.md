@@ -12,7 +12,7 @@ Run this:
 - **First time** after installing the plugin
 - **After plugin updates** to refresh documentation
 
-User flow: `/setup` → restart Claude Code / Codex CLI → use any skill with full context
+User flow: `/setup` → restart Claude Code → use any skill with full context
 
 ## Process
 
@@ -58,26 +58,16 @@ Create the following directories and files. Skip anything that already exists �
   .$*.drawio.dtmp
   ```
 
-### Step 2 — Write Plugin Docs to Platform Instruction Files
+### Step 2 — Write Plugin Docs to CLAUDE.md
 
-Write the plugin documentation to both platform-specific auto-loaded instruction files:
+Write the plugin documentation to the consumer project's `CLAUDE.md`:
 
-**Claude Code:** Write to `.claude/rules/resume-builder.md`
-- Create `.claude/rules/` directory if it doesn't exist
-- No `paths:` frontmatter — auto-loaded every session
 - Use `<!-- resume-builder:start vX.Y.Z -->` / `<!-- resume-builder:end -->` markers
 - If markers exist → replace between them. If file doesn't exist → create it. If no markers → append.
-
-**Codex CLI:** Write the same content to `AGENTS.md`
-- Use the same markers for idempotent replacement
-- If markers exist → replace between them. If file doesn't exist → create it. If no markers → append.
-
-**Migration cleanup:** If CLAUDE.md contains content between `<!-- resume-builder:start -->` / `<!-- resume-builder:end -->` markers (from an older version), remove that section.
-
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.6 -->
+<!-- resume-builder:start v0.1.7 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -108,7 +98,7 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 |---------|-----|
 | `skills.yaml` | Skill data belongs in `resume.yaml` under `skills:` |
 | `generate_resume_*.*` | Legacy script. Replaced by `resume-builder generate` |
-| `CLAUDE.md`, `GEMINI.md` | Project AI instructions — not resume data, preserved |
+| `GEMINI.md` | Project AI instructions — not resume data, preserved |
 
 ## Skills Reference
 
@@ -271,10 +261,9 @@ Every bullet carries a `provenance` field:
 
 ```
 ✓ Project structure created
-✓ .claude/rules/resume-builder.md written (version X.Y.Z)
-✓ AGENTS.md written (version X.Y.Z)
+✓ CLAUDE.md written (version X.Y.Z)
 
-⚠ Restart Claude Code / Codex CLI so it loads the updated docs.
+⚠ Restart Claude Code so it loads the updated docs.
   After restart, the AI will have full plugin context for all skills.
 
 Next: /import to migrate an existing resume, or start building resume.yaml manually.

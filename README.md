@@ -66,6 +66,8 @@ After installation:
 
 > **Note:** Codex CLI does not support per-project plugin scoping. Installed plugins are always global. If you need project-level control, use Claude Code's local scope install instead.
 
+> **Note:** `/setup` writes plugin documentation to `CLAUDE.md`. If Codex CLI does not auto-load `CLAUDE.md`, you may need to manually copy or rename it to `AGENTS.md`.
+
 ### CLI Only (limited)
 
 The CLI provides `resume-builder generate` and `resume-builder verify` without requiring an LLM. However, the full feature set — tailoring, scoring, matching, multi-persona review, and ingestion — requires Claude Code or Codex CLI skills.
@@ -118,11 +120,10 @@ your-resume-project/
     sessions/                        # Session history
     companies/                       # Company research profiles
   artifacts/                         # Place project docs here for /ingest
-  .claude/rules/resume-builder.md    # Plugin docs (Claude Code)
-  AGENTS.md                          # Plugin docs (Codex CLI)
+  CLAUDE.md                          # Plugin docs (marker-delimited section)
 ```
 
-After setup completes, **restart Claude Code / Codex CLI** so it loads the updated docs.
+After setup completes, **restart Claude Code** so it loads the updated docs.
 
 ### 2. Import your existing resume (if migrating)
 
@@ -277,7 +278,7 @@ Skills work without optional inputs but produce better results with them.
 | Step | Command | Required? | What it does |
 |------|---------|-----------|-------------|
 | 1 | `/resume-builder:setup` | Yes | Creates project structure, writes plugin docs for AI context |
-| 2 | Restart Claude Code / Codex CLI | Yes | So the AI loads the updated docs |
+| 2 | Restart Claude Code | Yes | So the AI loads the updated docs |
 | 3 | `/resume-builder:import` | Yes | Scans existing resume files, interviews you, writes resume.yaml |
 | 4 | `/resume-builder:generate` | Yes | Creates PDF, DOCX, HTML, Markdown outputs |
 | 5 | `/resume-builder:review` | Optional | Baseline feedback before any tailoring |
@@ -286,7 +287,7 @@ Skills work without optional inputs but produce better results with them.
 
 **Next**: Add achievements with `/ingest` or jump to [Quick Apply](#2-quick-apply) when you find a posting.
 
-**After plugin updates**: Re-run `/resume-builder:setup` to refresh the docs, then restart Claude Code / Codex CLI.
+**After plugin updates**: Re-run `/resume-builder:setup` to refresh the docs, then restart Claude Code.
 
 ### 2. Quick Apply
 

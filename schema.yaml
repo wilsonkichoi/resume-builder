@@ -1,4 +1,4 @@
-version: "0.1.6"
+version: "0.1.7"
 
 # Files the plugin creates and operates on
 source_files:
@@ -80,11 +80,8 @@ customization_files:
 
 # Plugin documentation written to consumer project
 plugin_docs:
-  - path: .claude/rules/resume-builder.md
-    description: "Plugin guide for Claude Code AI — auto-loaded every session"
-    created_by: setup
-  - path: AGENTS.md
-    description: "Plugin guide for Codex CLI AI — auto-loaded every session"
+  - path: CLAUDE.md
+    description: "Plugin guide for AI — marker-delimited section, auto-loaded every session"
     created_by: setup
 
 # Files that are NOT part of the plugin (common in legacy resume projects)
@@ -95,7 +92,5 @@ not_plugin_files:
     reason: "Legacy generation script. Replaced by resume-builder generate."
   - pattern: "generate_resume_*.js"
     reason: "Legacy generation script. Replaced by resume-builder generate."
-  - pattern: "CLAUDE.md"
-    reason: "Project AI instructions. Not resume data — preserved, not migrated."
   - pattern: "GEMINI.md"
     reason: "Project AI instructions. Not resume data."
