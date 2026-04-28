@@ -67,7 +67,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.7 -->
+<!-- resume-builder:start v0.1.12 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.

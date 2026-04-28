@@ -4,7 +4,7 @@
 Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP server, and a Python CLI (`resume-builder`). Contains no user data — all resume content lives in the target project.
 
 ## Architecture
-- `schema.yaml` — Project structure definition (developer reference). Defines source files, generated files, customization files, and not-plugin-files.
+- `project_structure.yaml` — Project structure definition (developer reference). Defines source files, generated files, customization files, and not-plugin-files.
 - `skills/` — Claude Code skills (SKILL.md files). User-facing interface. 12 skills: setup, import, generate, tailor, score, match, review, verify, ingest, research, qualify, cover-letter.
   - `skills/setup/` — Bootstraps project structure and writes plugin docs to the consumer project's `CLAUDE.md` (marker-delimited section).
   - `skills/import/` — Imports existing resume into resume.yaml format.
@@ -45,11 +45,12 @@ Every change that adds, modifies, or removes user-facing functionality MUST incl
 - **Minor** (0.1.1 → 0.2.0): Breaking changes to existing skill behavior, breaking changes to `knowledge/` schema that invalidate existing data, or breaking changes to CLI flags.
 - **Major** (0.2.0 → 1.0.0): Breaking changes to the plugin API or CLI interface that require users to change how they invoke the tool.
 
-Version MUST be updated in all four files and they MUST match:
+Version MUST be updated in all five files and they MUST match:
 1. `pyproject.toml` — `version = "X.Y.Z"`
 2. `.claude-plugin/plugin.json` — `"version": "X.Y.Z"`
 3. `.codex-plugin/plugin.json` — `"version": "X.Y.Z"`
-4. `schema.yaml` — `version: "X.Y.Z"`
+4. `project_structure.yaml` — `version: "X.Y.Z"`
+5. `skills/setup/SKILL.md` — `<!-- resume-builder:start vX.Y.Z -->` marker in the CLAUDE.md template
 
 ### Documentation Updates Are Mandatory
 When adding or modifying skills, agents, or Python modules, you MUST update ALL of the following:
@@ -58,7 +59,7 @@ When adding or modifying skills, agents, or Python modules, you MUST update ALL 
 2. **CLAUDE.md** (this file) — Update the Architecture section if new modules/files are added. Keep the test count accurate.
 3. **plugin.json** — Update the `description` field if the change adds a new capability category.
 4. **Cross-references in other skills** — If a new skill produces data consumed by other skills (e.g., `/research` produces CompanyProfile used by `/tailor`, `/cover-letter`, `/qualify`), update those consuming skills to reference the new data source.
-5. **schema.yaml** — Update if source files, generated files, customization files, or not-plugin-files change.
+5. **project_structure.yaml** — Update if source files, generated files, customization files, or not-plugin-files change.
 6. **skills/setup/SKILL.md** — Update the CLAUDE.md content template if skills, workflows, output features, template customization, or schema change. This is the content that gets written to the consumer's CLAUDE.md by `/setup`.
 
 Do not consider a feature complete until all documentation is updated.

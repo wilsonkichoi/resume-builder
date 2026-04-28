@@ -1,6 +1,6 @@
 [project]
 name = "resume-builder"
-version = "0.1.10"
+version = "0.1.12"
 description = "Hybrid CLI + Claude Code plugin for resume generation, ATS scoring, JD matching, anti-fabrication, and session memory"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -19,8 +19,8 @@ dependencies = [
 resume-builder = "resume_builder.cli:main"
 resume-builder-mcp = "resume_builder.mcp_server:main"
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
 ]
