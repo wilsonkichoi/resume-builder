@@ -566,7 +566,7 @@
             </div>
             <h3 class="text-sm font-semibold text-fg mb-2">{{ bullet.label }}</h3>
             <p class="text-sm text-muted leading-relaxed">
-              {{ bullet.text }}
+              {{ bullet.text | highlight_tech(ir.keywords) | safe }}
             </p>
           </div>
           {% endfor %}
@@ -595,7 +595,7 @@
             <span class="font-mono text-xs text-muted mt-1 md:mt-0">{{ company.dates }}</span>
           </div>
           {% if company.description %}
-          <p class="text-sm text-muted mb-8">{{ company.location }} &middot; {{ company.description }}</p>
+          <p class="text-sm text-muted mb-8">{{ company.location }} &middot; {{ company.description | highlight_tech(ir.keywords) | safe }}</p>
           {% else %}
           <p class="text-sm text-muted mb-8">{{ company.location }}</p>
           {% endif %}
@@ -612,16 +612,16 @@
                 <span class="font-mono text-xs text-muted">{{ role.dates }}</span>
               </div>
               {%- if role.description %}
-              <p class="text-sm text-muted/80 italic mb-3">{{ role.description }}</p>
+              <p class="text-sm text-muted/80 italic mb-3">{{ role.description | highlight_tech(ir.keywords) | safe }}</p>
               {%- endif %}
               {%- if role.bullets %}
               <ul class="space-y-2">
                 {% for bullet in role.bullets %}
                 <li class="text-sm text-muted leading-relaxed">
                   {%- if bullet.label %}
-                  <span class="text-fg font-medium">{{ bullet.label }}:</span> {{ bullet.text }}
+                  <span class="text-fg font-medium">{{ bullet.label }}:</span> {{ bullet.text | highlight_tech(ir.keywords) | safe }}
                   {%- else %}
-                  {{ bullet.text }}
+                  {{ bullet.text | highlight_tech(ir.keywords) | safe }}
                   {%- endif %}
                 </li>
                 {% endfor %}
@@ -644,16 +644,16 @@
           <div class="pl-4 border-l" style="border-color: var(--twistbox-border);">
             <h4 class="text-base font-semibold text-fg mb-3">{{ role.title }}</h4>
             {%- if role.description %}
-            <p class="text-sm text-muted/80 italic mb-3">{{ role.description }}</p>
+            <p class="text-sm text-muted/80 italic mb-3">{{ role.description | highlight_tech(ir.keywords) | safe }}</p>
             {%- endif %}
             {%- if role.bullets %}
             <ul class="space-y-2">
               {% for bullet in role.bullets %}
               <li class="text-sm text-muted leading-relaxed">
                 {%- if bullet.label %}
-                <span class="text-fg font-medium">{{ bullet.label }}:</span> {{ bullet.text }}
+                <span class="text-fg font-medium">{{ bullet.label }}:</span> {{ bullet.text | highlight_tech(ir.keywords) | safe }}
                 {%- else %}
-                {{ bullet.text }}
+                {{ bullet.text | highlight_tech(ir.keywords) | safe }}
                 {%- endif %}
               </li>
               {% endfor %}
@@ -678,7 +678,7 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4 grid-flow-row-dense">
           {% for skill in ir.skills if not skill.hidden %}
           {%- set pills = parse_skill_items(skill.items) -%}
           {%- set count = pills | length -%}
@@ -742,7 +742,7 @@
             </div>
             <h3 class="text-lg font-semibold text-fg mb-2 group-hover:text-accent transition-colors">{{ project.name }}</h3>
             <p class="text-sm text-muted leading-relaxed mb-4">
-              {{ project.description }}
+              {{ project.description | highlight_tech(ir.keywords) | safe }}
             </p>
             <div class="flex flex-wrap gap-1.5">
               {% for tech in project.technologies %}

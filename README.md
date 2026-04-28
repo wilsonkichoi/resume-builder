@@ -72,11 +72,23 @@ After installation:
 
 The CLI provides `resume-builder generate` and `resume-builder verify` without requiring an LLM. However, the full feature set — tailoring, scoring, matching, multi-persona review, and ingestion — requires Claude Code or Codex CLI skills.
 
+**Install from GitHub (Latest Release):**
 ```bash
 uv tool install git+https://github.com/wilsonkichoi/resume-builder
 ```
 
+**Or, install locally in editable mode (For Development):**
+```bash
+uv tool install -e /path/to/resume-builder
+```
+
 This installs the package into an isolated environment at `~/.local/share/uv/tools/resume-builder/` and symlinks the `resume-builder` executable into `~/.local/bin/`. No clone or virtual environment management needed.
+
+**Or, run directly without installing (For Testing):**
+*(Note: Use `--no-cache` to ensure `uvx` picks up your latest local code edits instead of running a cached build)*
+```bash
+uvx --no-cache --from /path/to/resume-builder resume-builder generate
+```
 
 Then from your resume project directory:
 

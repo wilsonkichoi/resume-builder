@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from datetime import datetime
 from pathlib import Path
+import re
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -69,6 +70,22 @@ def _parse_skill_items(items: str) -> list[str]:
     return pills
 
 
+def _highlight_tech(text: str, technologies: list[str]) -> str:
+    """Highlight technologies in the text by wrapping them in a span."""
+    if not technologies:
+        return text
+    
+    # Sort technologies by length descending to match longer phrases first
+    techs = sorted(technologies, key=len, reverse=True)
+    
+    for tech in techs:
+        escaped_tech = re.escape(tech)
+        pattern = re.compile(rf"\b({escaped_tech})\b", flags=re.IGNORECASE)
+        text = pattern.sub(r'<span class="text-fg">\g<1></span>', text)
+        
+    return text
+
+
 def render_html(
     ir: ResumeIR,
     template_path: Path | None = None,
@@ -105,6 +122,7 @@ def render_html(
         keep_trailing_newline=True,
     )
     env.globals["parse_skill_items"] = _parse_skill_items
+    env.filters["highlight_tech"] = _highlight_tech
 
     custom_css: str | None = None
     if css_path is not None and css_path.exists():

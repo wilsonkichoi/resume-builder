@@ -75,6 +75,7 @@ class Education(BaseModel):
 
 class ResumeIR(BaseModel):
     header: Header
+    keywords: list[str] = []
     summary: Summary
     skills: list[SkillCategory] = []
     experience: list[Company] = []
