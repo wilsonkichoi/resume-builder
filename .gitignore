@@ -5,12 +5,27 @@ build/
 dist/
 wheels/
 *.egg-info
+*.egg
 
 # Virtual environments
 .venv
 
-# Test / cache
+# Test / coverage
 .pytest_cache/
+.coverage
+htmlcov/
+
+# Linter / type-checker caches
+.mypy_cache/
+.ruff_cache/
+
+# Secrets
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
 
 # OS
 .DS_Store
