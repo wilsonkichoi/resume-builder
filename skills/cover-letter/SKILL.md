@@ -89,9 +89,9 @@ If a CompanyProfile exists for the target company, also read `agents/sales-strat
 If any item is flagged, note the issue and suggest a revision. Do not block output.
 
 ### Step 6 — Output
-Save the cover letter to `cover_letter_{company-slug}_{role}.md` in the project root.
+If a tailored output directory exists for this company/role (`tailored/{date}_{company-slug}_{role}/`), save the cover letter there as `cover_letter.md` — all application materials stay co-located.
 
-If a tailored output directory exists for this company/role (`tailored/{date}_{company-slug}_{role}/`), also save a copy there so all application materials are co-located.
+Otherwise (no tailored directory — generic cover letter), save to `cover_letter_{company-slug}_{role}.md` in the project root.
 
 Present the full cover letter to the user with:
 - The verification results from Step 5
@@ -118,8 +118,7 @@ claims_narrative: X
 claims_company: X
 reviewer_flags: [list of any flagged items]
 word_count: XXX
-output_file: cover_letter_{company-slug}_{role}.md
-tailored_dir_copy: tailored/{date}_{company-slug}_{role}/cover_letter.md | null
+output_file: tailored/{date}_{company-slug}_{role}/cover_letter.md | cover_letter_{company-slug}_{role}.md
 ```
 
 ## Options
