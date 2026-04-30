@@ -109,6 +109,41 @@ Score each 1-10:
 - Below 55: Weak match — consider if this role is a stretch
 ```
 
+## Session Log
+Save to `knowledge/sessions/score_{date}_{company-slug}_{role}.yaml`:
+```yaml
+date: YYYY-MM-DD
+type: score
+company: Company Name
+slug: company-slug
+role: Role Title
+jd_hash: first-8-chars-of-sha256
+resume_source: resume.yaml | tailored_resume.yaml
+scores:
+  ats:
+    total: XX
+    keyword_match: X
+    keyword_density: X
+    section_completeness: X
+    format_compliance: X
+    contact_info: X
+    date_consistency: X
+    length: X
+    skills_alignment: X
+  hr:
+    total: XX
+    role_relevance: X
+    impact_clarity: X
+    career_progression: X
+    recency: X
+    readability: X
+    differentiation: X
+recommendations:
+  - "..."
+  - "..."
+  - "..."
+```
+
 ## Important
 - Be HONEST. A perfect 100% is virtually impossible and dishonest.
 - Target scores of 75-85% for well-matched roles.

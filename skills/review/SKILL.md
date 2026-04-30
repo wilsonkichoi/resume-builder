@@ -78,6 +78,34 @@ Merge all persona feedback into:
 - ...
 ```
 
+### Step 4 — Log Session
+Save to `knowledge/sessions/review_{date}_{company-slug}_{role}.yaml` (use `general` for company/role if no JD provided):
+```yaml
+date: YYYY-MM-DD
+type: review
+company: Company Name | general
+slug: company-slug | general
+role: Role Title | general
+resume_source: resume.yaml | tailored_resume.yaml
+personas_invoked: [ats-bot, recruiter, hiring-manager, hr-screener, technical-reviewer, engineer-peer, sales-strategist]
+scores:
+  ats_bot: X
+  recruiter: X
+  hiring_manager: X
+  hr_screener: X
+  technical_reviewer: X
+  engineer_peer: X
+  sales_strategist: X  # or null if not invoked
+consensus_strengths:
+  - "..."
+consensus_weaknesses:
+  - "..."
+action_items:
+  - "..."
+  - "..."
+  - "..."
+```
+
 ## Options
 - Review all personas: `/review`
 - Specific persona: `/review --persona engineer-peer`

@@ -42,6 +42,35 @@ After presenting results, suggest:
 - "Run `/qualify` for a deeper strategic assessment — it flips the lens to evaluate how much they need you, not just whether you meet their bar."
 - "Run `/research {company}` first if you want company-specific pain points to inform your qualification."
 
+### Step 6 — Log Session
+Save to `knowledge/sessions/match_{date}_{company-slug}_{role}.yaml`:
+```yaml
+date: YYYY-MM-DD
+type: match
+company: Company Name
+slug: company-slug
+role: Role Title
+jd_hash: first-8-chars-of-sha256
+match_score:
+  required: XX
+  preferred: XX
+  overall: XX
+required_skills:
+  matched: [list]
+  missing: [list]
+  total: N
+preferred_skills:
+  matched: [list]
+  missing: [list]
+  total: N
+transferable_skills:
+  - yours: "X"
+    theirs: "Y"
+gaps: [list of missing required skills]
+red_flags: [JD red flags identified]
+recommendations: [top tailoring recommendations]
+```
+
 ## Output Format
 ```
 ## Match Score: XX%

@@ -1,4 +1,4 @@
-version: "0.1.12"
+version: "0.1.13"
 
 # Files the plugin creates and operates on
 source_files:

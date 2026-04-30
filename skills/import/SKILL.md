@@ -196,7 +196,7 @@ education:
   institution: str
 ```
 
-## Rules
+## Anti-Fabrication Rules (MANDATORY)
 - NEVER fabricate or embellish content during import — copy what exists
 - NEVER skip the interview phase — always ask the user to confirm before writing
 - If the existing resume has content that looks wrong or inconsistent, flag it rather than silently copying

@@ -1,6 +1,7 @@
 ---
 name: setup
 description: "Bootstrap or refresh the resume-builder project. Creates project structure, writes plugin docs for the AI. Run first after installing the plugin, or after plugin updates. Use when: 'setup', 'bootstrap', 'refresh plugin docs', 'sync plugin', 'update resume-builder docs'."
+argument-hint: "[--force to overwrite existing docs]"
 ---
 
 # /setup — Bootstrap Resume Builder Project
@@ -67,7 +68,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.12 -->
+<!-- resume-builder:start v0.1.13 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.

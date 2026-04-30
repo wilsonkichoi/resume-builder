@@ -1,6 +1,7 @@
 ---
 name: generate
 description: "Generate PDF, DOCX, HTML, and Markdown from resume.yaml. Use when: 'generate resume', 'build resume', 'create pdf', 'create docx', 'update html', 'rebuild outputs'."
+argument-hint: "[--format pdf|docx|html|md] [--output-dir path] [--template-dir path]"
 ---
 
 # /generate — Generate Resume Outputs
