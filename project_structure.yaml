@@ -1,4 +1,4 @@
-version: "0.1.15"
+version: "0.1.16"
 
 # Files the plugin creates and operates on
 source_files:
@@ -56,8 +56,8 @@ generated_files:
       card-based layouts, timeline visualization, skill pills, mobile responsive
 
   - path: "tailored/{date}_{company-slug}_{role}/"
-    description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD"
-    created_by: tailor
+    description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD, cover letter if generated"
+    created_by: [tailor, cover-letter]
 
   - path: "cover_letter_*.md"
     created_by: cover-letter

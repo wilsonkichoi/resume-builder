@@ -68,7 +68,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.15 -->
+<!-- resume-builder:start v0.1.16 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -137,7 +137,7 @@ Research a company and build a CompanyProfile — pain points, tech stack, cultu
 Assess "how much do they need me?" instead of "do I meet their bar?" Scores across 6 strategic dimensions. Produces a brief with positioning angle, interview talking points, and discovery questions. Use after /research to decide go/no-go on an opportunity.
 
 ### /cover-letter
-Generate a tailored cover letter (250-400 words) with claim verification. Every factual claim must trace to `resume.yaml`. Uses CompanyProfile pain points and recent news for hooks if available.
+Generate a tailored cover letter (250-400 words) with claim verification. Every factual claim must trace to `resume.yaml`. Consumes `/match`, `/qualify`, and CompanyProfile data when available for stronger positioning. Saves to project root and copies to `tailored/{date}_{company}_{role}/` if a tailored directory exists for this application.
 
 ## How Skills Connect
 
