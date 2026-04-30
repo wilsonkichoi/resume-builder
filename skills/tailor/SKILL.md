@@ -97,6 +97,8 @@ output_files:
   - tailored/{date}_{company-slug}_{role}/resume.yaml
   - tailored/{date}_{company-slug}_{role}/resume.pdf
   - tailored/{date}_{company-slug}_{role}/resume.docx
+  - tailored/{date}_{company-slug}_{role}/index.html
+  - tailored/{date}_{company-slug}_{role}/resume.md
 ```
 
 ## Output
