@@ -86,7 +86,7 @@ type: review
 company: Company Name | general
 slug: company-slug | general
 role: Role Title | general
-resume_source: resume.yaml | tailored_resume.yaml
+resume_source: resume.yaml | tailored/{date}_{company-slug}_{role}/resume.yaml
 personas_invoked: [ats-bot, recruiter, hiring-manager, hr-screener, technical-reviewer, engineer-peer, sales-strategist]
 scores:
   ats_bot: X

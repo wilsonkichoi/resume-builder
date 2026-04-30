@@ -1,7 +1,7 @@
 ---
 name: verify
 description: "Check resume for fabrication and provenance integrity. Use when: 'verify resume', 'check claims', 'anti-fabrication check', 'audit resume'."
-argument-hint: "[path to resume.yaml or tailored_resume.yaml]"
+argument-hint: "[path to resume.yaml, e.g. tailored/2026-04-29_acme_swe/resume.yaml]"
 ---
 
 # /verify — Anti-Fabrication Verification
@@ -46,4 +46,4 @@ Verify that all claims in resume.yaml trace back to source artifacts and no fabr
 
 ## Options
 - Verify main resume: `/verify`
-- Verify tailored resume: `/verify tailored_resume.yaml`
+- Verify tailored resume: `/verify tailored/2026-04-29_acme_swe/resume.yaml`

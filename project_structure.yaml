@@ -1,4 +1,4 @@
-version: "0.1.13"
+version: "0.1.14"
 
 # Files the plugin creates and operates on
 source_files:
@@ -55,10 +55,8 @@ generated_files:
       scroll reveal animations, hero parallax, ambient glow, gradient text,
       card-based layouts, timeline visualization, skill pills, mobile responsive
 
-  - path: tailored_resume.yaml
-    created_by: tailor
-
-  - path: "tailored/"
+  - path: "tailored/{date}_{company-slug}_{role}/"
+    description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD"
     created_by: tailor
 
   - path: "cover_letter_*.md"

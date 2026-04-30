@@ -118,7 +118,7 @@ company: Company Name
 slug: company-slug
 role: Role Title
 jd_hash: first-8-chars-of-sha256
-resume_source: resume.yaml | tailored_resume.yaml
+resume_source: resume.yaml | tailored/{date}_{company-slug}_{role}/resume.yaml
 scores:
   ats:
     total: XX

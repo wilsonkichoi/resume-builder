@@ -34,7 +34,9 @@ Based on match analysis (and CompanyProfile if available), create a plan:
 - Whether to include/exclude sabbatical
 
 ### Step 3 — Apply Tailoring
-Create `tailored_resume.yaml` (never modify the original resume.yaml):
+Determine the output directory: `tailored/{date}_{company-slug}_{role}/` (e.g., `tailored/2026-04-29_acme-corp_staff-engineer/`).
+
+Create `resume.yaml` inside that directory (never modify the original `resume.yaml` in the project root):
 - Reorder skills by JD relevance
 - Reorder bullets within each role by relevance
 - Rephrase bullets to include JD keywords (preserve meaning)
@@ -42,13 +44,13 @@ Create `tailored_resume.yaml` (never modify the original resume.yaml):
 - Adjust summary paragraph for target role
 
 ### Step 4 — Verify
-Run `resume-builder verify --resume tailored_resume.yaml` to check:
+Run `resume-builder verify --resume tailored/{date}_{company-slug}_{role}/resume.yaml` to check:
 - No fabricated claims
 - All content traces to original resume.yaml
 - No metrics were modified
 
 ### Step 5 — Generate Outputs
-Run `resume-builder generate --resume tailored_resume.yaml --output-dir ./tailored/`
+Run `resume-builder generate --resume tailored/{date}_{company-slug}_{role}/resume.yaml --output-dir tailored/{date}_{company-slug}_{role}/`
 
 ### Step 5.5 — Quick Persona Check
 
@@ -76,7 +78,9 @@ Save to `knowledge/sessions/tailor_{date}_{company}_{role}.yaml`:
 date: YYYY-MM-DD
 type: tailor
 company: Company Name
+slug: company-slug
 role: Role Title
+output_dir: tailored/{date}_{company-slug}_{role}/
 match_score: { required: XX, preferred: XX, overall: XX }
 gaps: [missing skills]
 tailoring_decisions:
@@ -89,7 +93,10 @@ tailoring_decisions:
 scores:
   before: { ats: XX, hr: XX }
   after: { ats: XX, hr: XX }
-output_files: [tailored_resume.pdf, tailored_resume.docx]
+output_files:
+  - tailored/{date}_{company-slug}_{role}/resume.yaml
+  - tailored/{date}_{company-slug}_{role}/resume.pdf
+  - tailored/{date}_{company-slug}_{role}/resume.docx
 ```
 
 ## Output

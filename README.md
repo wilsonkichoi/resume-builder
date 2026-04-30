@@ -311,7 +311,7 @@ Skills work without optional inputs but produce better results with them.
 
 One command. `/tailor` handles match analysis, anti-fabrication verification, output generation, before/after scoring, and a quick check from recruiter + hiring-manager personas.
 
-**You'll have**: `tailored_resume.yaml`, tailored outputs (PDF, DOCX, HTML, MD), ATS + HR scores.
+**You'll have**: `tailored/{date}_{company}_{role}/` with resume.yaml and outputs (PDF, DOCX, HTML, MD), ATS + HR scores.
 
 | Optional add-on | Command | Why |
 |-----------------|---------|-----|

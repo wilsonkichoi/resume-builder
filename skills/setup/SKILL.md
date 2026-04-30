@@ -68,7 +68,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.13 -->
+<!-- resume-builder:start v0.1.14 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -88,7 +88,7 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 | File | Created By |
 |------|------------|
 | `resume.md`, `resume.pdf`, `resume.docx`, `index.html` | /generate |
-| `tailored_resume.yaml`, `tailored/` (PDF, DOCX, HTML, MD) | /tailor |
+| `tailored/{date}_{company}_{role}/` (resume.yaml, PDF, DOCX, HTML, MD) | /tailor |
 | `cover_letter_*.md` | /cover-letter |
 
 ### Customization Files (optional, user-created in `templates/`)
@@ -113,7 +113,7 @@ Import an existing resume into resume-builder format. Scans for existing resume 
 Generate PDF, DOCX, HTML, and Markdown from `resume.yaml`. Fully deterministic — no LLM involvement in rendering. Supports template customization via `templates/` directory.
 
 ### /tailor
-Tailor resume for a specific job description. Reorders, emphasizes, and trims while enforcing anti-fabrication. Internally runs `/match`, verifies, generates outputs, scores before/after, and does a quick persona check. Uses CompanyProfile for sharper results if available. Creates `tailored_resume.yaml` — never modifies the original.
+Tailor resume for a specific job description. Reorders, emphasizes, and trims while enforcing anti-fabrication. Internally runs `/match`, verifies, generates outputs, scores before/after, and does a quick persona check. Uses CompanyProfile for sharper results if available. Saves to `tailored/{date}_{company}_{role}/` — never modifies the original.
 
 ### /score
 Score resume against a job description using ATS (8-component) and HR (6-dimension) rubrics. Use after /generate or /tailor to measure match quality.
