@@ -25,7 +25,13 @@ Run /match analysis to understand fit, gaps, and recommendations.
 ### Step 2 — Generate Tailoring Plan
 Check `knowledge/companies/` for an existing CompanyProfile for this company. If found, load it and use `CompanyProfile.pain_points` to prioritize bullets that directly address company pain points — not just JD keyword matches.
 
-Based on match analysis (and CompanyProfile if available), create a plan:
+Check `knowledge/sessions/` for an existing `/qualify` session for this company/role. If found, use it to sharpen tailoring:
+- **Pain-solution match**: Lead with bullets that map directly to their pain points
+- **ROI potential**: Prioritize bullets with metrics that connect to their specific needs
+- **Leverage position**: Emphasize skills/experience that make you uniquely qualified
+- **Growth alignment**: If high, include career trajectory signals; if low, trim them
+
+Based on match analysis, qualify assessment (if available), and CompanyProfile (if available), create a plan:
 - Which summary bullets to lead with
 - Which skills categories to reorder/trim
 - Which experience bullets to emphasize (move up) or trim (remove)
@@ -81,6 +87,10 @@ company: Company Name
 slug: company-slug
 role: Role Title
 output_dir: tailored/{date}_{company-slug}_{role}/
+sources_used:
+  company_profile: true | false
+  match_session: session-filename or null
+  qualify_session: session-filename or null
 match_score: { required: XX, preferred: XX, overall: XX }
 gaps: [missing skills]
 tailoring_decisions:
