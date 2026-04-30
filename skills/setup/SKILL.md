@@ -51,7 +51,6 @@ Create the following directories and files. Skip anything that already exists �
 - `artifacts/.gitkeep` — create directory with keepfile
 - `.gitignore` — append these entries if they don't already exist (never overwrite):
   ```
-  knowledge/sessions/*.yaml
   .DS_Store
   __pycache__/
   *.pyc
@@ -69,7 +68,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.19 -->
+<!-- resume-builder:start v0.1.20 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -81,7 +80,7 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 |------|-------------|------------|
 | `resume.yaml` | Single source of truth for all resume content | /setup |
 | `knowledge/corrections.yaml` | Fabrication error log — records corrected claims | /setup |
-| `knowledge/sessions/*.yaml` | Session history (gitignored) | skills |
+| `knowledge/sessions/*.yaml` | Session history | skills |
 | `knowledge/companies/*.yaml` | Company research profiles | /research |
 | `artifacts/` | Project documents for /ingest — Confluence exports, diagrams, design docs | user |
 

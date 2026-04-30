@@ -1,4 +1,4 @@
-version: "0.1.19"
+version: "0.1.20"
 
 # Files the plugin creates and operates on
 source_files:
@@ -15,11 +15,10 @@ source_files:
     required: true
 
   - path: knowledge/sessions/
-    description: "Session history (YAML files, gitignored)"
+    description: "Session history (YAML files)"
     created_by: setup
     consumed_by: [tailor, match, cover-letter, qualify, research, import]
     required: true
-    gitignored: true
 
   - path: knowledge/companies/
     description: "Company research profiles (YAML files)"
