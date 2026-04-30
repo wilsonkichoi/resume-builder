@@ -37,7 +37,7 @@ Found in source directory:
 If an existing resume file is found:
 
 1. **Read and parse it** — extract all structured data:
-   - Header: name, title, location, email, LinkedIn, GitHub
+   - Header: name, title, location, email, phone (optional), LinkedIn, GitHub
    - Summary paragraph and highlight bullets
    - Skills by category
    - Experience: companies, roles, dates, bullet points
@@ -92,7 +92,7 @@ Ask clarification questions to fill gaps. Do NOT proceed until these are resolve
 - "Which types of roles are you targeting?"
 
 **Ask if missing:**
-- Contact info gaps (email, LinkedIn, GitHub)
+- Contact info gaps (email, phone, LinkedIn, GitHub)
 - Date gaps in employment history
 - Bullet points with no quantified impact — ask if metrics are available
 - Projects with no URLs — ask if they're public
@@ -153,6 +153,7 @@ header:
   title: str
   location: str
   email: str
+  phone: str | None  # optional
   linkedin: str
   github: str
 

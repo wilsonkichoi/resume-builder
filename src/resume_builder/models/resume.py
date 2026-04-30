@@ -14,6 +14,7 @@ class Header(BaseModel):
     title: str
     location: str
     email: str
+    phone: str | None = None
     linkedin: str
     github: str
 

@@ -8,7 +8,11 @@ def render_markdown(ir: ResumeIR) -> str:
 
     lines.append(f"# {ir.header.name}")
     lines.append(f"**{ir.header.title}**")
-    lines.append(f"{ir.header.location} | {ir.header.email} | {ir.header.linkedin} | {ir.header.github}")
+    contact = [ir.header.location]
+    if ir.header.phone:
+        contact.append(ir.header.phone)
+    contact.extend([ir.header.email, ir.header.linkedin, ir.header.github])
+    lines.append(" | ".join(contact))
     lines.append("")
 
     lines.append("### Professional Summary")

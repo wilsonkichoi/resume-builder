@@ -405,13 +405,20 @@ def render_docx(
     accent_rgb = _hex_to_rgb(config.colors.accent)
     contact_parts = [
         (ir.header.location, muted_rgb),
+    ]
+    if ir.header.phone:
+        contact_parts.extend([
+            ("  |  ", muted_rgb),
+            (ir.header.phone, muted_rgb),
+        ])
+    contact_parts.extend([
         ("  |  ", muted_rgb),
         (ir.header.email, muted_rgb),
         ("  |  ", muted_rgb),
         (ir.header.linkedin, accent_rgb),
         ("  |  ", muted_rgb),
         (ir.header.github, accent_rgb),
-    ]
+    ])
     for text, color in contact_parts:
         _plain_run(p_contact, text, s_contact.font_name, s_contact.size_hp, color)
 

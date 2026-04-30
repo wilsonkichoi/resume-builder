@@ -16,6 +16,7 @@ def test_header_fields():
     assert ir.header.name == "Jane Doe"
     assert "Senior Software Engineer" in ir.header.title
     assert ir.header.email == "jane@example.com"
+    assert ir.header.phone == "(555) 123-4567"
     assert ir.header.linkedin == "linkedin.com/in/janedoe"
     assert ir.header.github == "github.com/janedoe"
 

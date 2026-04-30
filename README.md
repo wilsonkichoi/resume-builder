@@ -534,6 +534,7 @@ header:
   title: "Senior Software Engineer"
   location: "San Francisco, CA"
   email: "jane@example.com"
+  phone: "(555) 123-4567"  # optional
   linkedin: "linkedin.com/in/janedoe"
   github: "github.com/janedoe"
 

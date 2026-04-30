@@ -182,12 +182,16 @@ def render_pdf(
     # ── Header ────────────────────────────────────────────────────────
     story.append(Paragraph(ir.header.name, styles["name"]))
     story.append(Paragraph(ir.header.title, styles["title"]))
-    story.append(Paragraph(
-        f"{ir.header.location} &nbsp;|&nbsp; {ir.header.email} &nbsp;|&nbsp; "
-        f"{_link(ir.header.linkedin, accent_hex)} &nbsp;|&nbsp; "
-        f"{_link(ir.header.github, accent_hex)}",
-        styles["contact"],
-    ))
+    contact_parts = [ir.header.location]
+    if ir.header.phone:
+        contact_parts.append(ir.header.phone)
+    contact_parts.append(ir.header.email)
+    contact_text = " &nbsp;|&nbsp; ".join(contact_parts)
+    contact_text += (
+        f" &nbsp;|&nbsp; {_link(ir.header.linkedin, accent_hex)}"
+        f" &nbsp;|&nbsp; {_link(ir.header.github, accent_hex)}"
+    )
+    story.append(Paragraph(contact_text, styles["contact"]))
 
     # ── Professional Summary ──────────────────────────────────────────
     story.extend(_section_heading("Professional Summary", styles, colors))
