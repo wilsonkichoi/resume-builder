@@ -68,7 +68,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.21 -->
+<!-- resume-builder:start v0.1.22 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -139,6 +139,9 @@ Assess "how much do they need me?" instead of "do I meet their bar?" Scores acro
 ### /cover-letter
 Generate a tailored cover letter (250-400 words) with claim verification. Every factual claim must trace to `resume.yaml`. Consumes `/match`, `/qualify`, and CompanyProfile data when available for stronger positioning. Saves to project root and copies to `tailored/{date}_{company}_{role}/` if a tailored directory exists for this application.
 
+### /apply
+End-to-end application pipeline. Fire-and-forget: runs research → match → qualify → tailor → score → review → cover-letter → verify in one shot. Produces tailored resume (PDF/DOCX/HTML/MD), cover letter, scores, and review. Optimized for multi-job-same-company use — company research is performed once and reused. All output lands in `tailored/{date}_{company}_{role}/`.
+
 ## How Skills Connect
 
 ```
@@ -154,6 +157,8 @@ import ──→ resume.yaml ──→ generate (outputs)
                │
                ├──→ match (called internally by tailor, cover-letter, qualify)
                │
+               ├──→ apply (runs: research → match → qualify → tailor → score → review → cover-letter → verify)
+               │
                ├──→ score
                ├──→ review
                └──→ verify
@@ -161,6 +166,7 @@ import ──→ resume.yaml ──→ generate (outputs)
 Arrows show data flow, not required ordering.
 "auto" means the skill runs it internally.
 Skills work without optional inputs but produce better results with them.
+/apply is the full pipeline — individual skills can still be run standalone.
 ```
 
 ## Workflows
@@ -169,6 +175,7 @@ Skills work without optional inputs but produce better results with them.
 |----------|------------|--------|------|
 | First-Time Setup | Just installed, no resume.yaml | setup, import, generate | 15-30 min |
 | Quick Apply | Have resume, need to tailor fast | tailor | 5-10 min |
+| Full Application | Complete pipeline, fire-and-forget | apply | 30-60 min |
 | Dream Job Deep-Dive | High-value opportunity, full prep | research, qualify, tailor, review, cover-letter | 30-60 min |
 | Resume Maintenance | Finished a project, capture achievements | ingest, generate | 10-20 min |
 | Pre-Interview Prep | Got an interview, need company intel | research, qualify, review | 15-30 min |

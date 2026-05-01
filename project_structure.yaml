@@ -1,11 +1,11 @@
-version: "0.1.21"
+version: "0.1.22"
 
 # Files the plugin creates and operates on
 source_files:
   - path: resume.yaml
     description: "Single source of truth for all resume content"
     created_by: setup
-    consumed_by: [generate, tailor, score, match, review, verify, import, cover-letter, qualify]
+    consumed_by: [generate, tailor, score, match, review, verify, import, cover-letter, qualify, apply]
     required: true
 
   - path: knowledge/corrections.yaml
@@ -17,13 +17,13 @@ source_files:
   - path: knowledge/sessions/
     description: "Session history (YAML files)"
     created_by: setup
-    consumed_by: [tailor, match, cover-letter, qualify, research, import]
+    consumed_by: [tailor, match, cover-letter, qualify, research, import, apply]
     required: true
 
   - path: knowledge/companies/
     description: "Company research profiles (YAML files)"
     created_by: research
-    consumed_by: [qualify, tailor, review, cover-letter]
+    consumed_by: [qualify, tailor, review, cover-letter, apply]
     required: false
 
   - path: artifacts/
@@ -56,7 +56,7 @@ generated_files:
 
   - path: "tailored/{date}_{company-slug}_{role}/"
     description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD, cover letter if generated"
-    created_by: [tailor, cover-letter]
+    created_by: [tailor, cover-letter, apply]
 
   - path: "cover_letter_*.md"
     created_by: cover-letter

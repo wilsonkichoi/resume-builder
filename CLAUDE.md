@@ -5,7 +5,7 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
 
 ## Architecture
 - `project_structure.yaml` — Project structure definition (developer reference). Defines source files, generated files, customization files, and not-plugin-files.
-- `skills/` — Claude Code skills (SKILL.md files). User-facing interface. 12 skills: setup, import, generate, tailor, score, match, review, verify, ingest, research, qualify, cover-letter.
+- `skills/` — Claude Code skills (SKILL.md files). User-facing interface. 13 skills: setup, import, generate, tailor, score, match, review, verify, ingest, research, qualify, cover-letter, apply.
   - `skills/setup/` — Bootstraps project structure and writes plugin docs to the consumer project's `CLAUDE.md` (marker-delimited section).
   - `skills/import/` — Imports existing resume into resume.yaml format.
 - `agents/` — Persona definitions (.agent.md files). 8 agents: ats-bot, recruiter, hiring-manager, hr-screener, technical-reviewer, engineer-peer, sales-strategist, cover-letter-reviewer. Invoked by `/review`, `/tailor`, and `/cover-letter`.

@@ -16,6 +16,7 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 - **Review** with 7 AI personas (ATS bot, recruiter, hiring manager, HR screener, technical reviewer, engineer peer, sales strategist)
 - **Verify** every claim traces back to source — catches fabricated metrics, technologies, and embellishments
 - **Cover letters** — generate tailored cover letters with claim verification
+- **Apply** — fire-and-forget end-to-end pipeline: research → match → qualify → tailor → score → review → cover-letter → verify in one shot. Optimized for multi-job-same-company use.
 - **Ingest** project artifacts to extract verified achievements with provenance
 
 ## Prerequisites
@@ -39,7 +40,7 @@ When prompted for install scope, choose **"Install for you, in this repo only"**
 
 After installation:
 
-- Skills are available as `/resume-builder:setup`, `/resume-builder:import`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:score`, `/resume-builder:match`, `/resume-builder:review`, `/resume-builder:verify`, `/resume-builder:ingest`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`
+- Skills are available as `/resume-builder:setup`, `/resume-builder:import`, `/resume-builder:generate`, `/resume-builder:tailor`, `/resume-builder:score`, `/resume-builder:match`, `/resume-builder:review`, `/resume-builder:verify`, `/resume-builder:ingest`, `/resume-builder:research`, `/resume-builder:qualify`, `/resume-builder:cover-letter`, `/resume-builder:apply`
 - Agents appear in `/agents` (e.g., `resume-builder:ats-bot`, `resume-builder:hiring-manager`, `resume-builder:cover-letter-reviewer`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 - Auto-updates when the repo is updated
@@ -60,7 +61,7 @@ codex plugin install wilsonkichoi/resume-builder
 
 After installation:
 
-- Skills are available as `/setup`, `/import`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`, `/cover-letter`
+- Skills are available as `/setup`, `/import`, `/generate`, `/tailor`, `/score`, `/match`, `/review`, `/ingest`, `/verify`, `/research`, `/qualify`, `/cover-letter`, `/apply`
 - Agents appear in `/agent` (e.g., `ats-bot`, `hiring-manager`, `engineer-peer`, `cover-letter-reviewer`)
 - MCP tools (`generate`, `verify`, `verify_against_generated`) are exposed automatically
 
@@ -242,6 +243,14 @@ Checks:
 - No previously corrected errors are reintroduced
 - No fabricated technologies or metrics
 
+### 12. Full application pipeline
+
+```
+/resume-builder:apply Acme Corp jd.txt https://acme.com/about
+```
+
+Fire-and-forget: runs the full pipeline (research → match → qualify → tailor → score → review → cover-letter → verify) in one shot. Produces all deliverables in `tailored/{date}_{company}_{role}/`. Reuses existing CompanyProfile when applying to multiple roles at the same company.
+
 **Not sure which skills to run?** See [Workflows](#workflows) for scenario-based guides.
 
 ## Workflows
@@ -254,10 +263,11 @@ For a full description of each skill, see [Quick Start](#quick-start).
 |----------|------------|--------|------|
 | [First-Time Setup](#1-first-time-setup) | Just installed, no resume.yaml | setup, import, generate | 15-30 min |
 | [Quick Apply](#2-quick-apply) | Have resume, need to tailor fast | tailor | 5-10 min |
-| [Dream Job Deep-Dive](#3-dream-job-deep-dive) | High-value opportunity, full prep | research, qualify, tailor, review, cover-letter | 30-60 min |
-| [Resume Maintenance](#4-resume-maintenance) | Finished a project, capture achievements | ingest, generate | 10-20 min |
-| [Pre-Interview Prep](#5-pre-interview-prep) | Got an interview, need company intel | research, qualify, review | 15-30 min |
-| [Opportunity Evaluation](#6-opportunity-evaluation) | Deciding whether to apply | match, qualify | 10-20 min |
+| [Full Application](#3-full-application) | Complete pipeline, fire-and-forget | apply | 30-60 min |
+| [Dream Job Deep-Dive](#4-dream-job-deep-dive) | High-value opportunity, full prep | research, qualify, tailor, review, cover-letter | 30-60 min |
+| [Resume Maintenance](#5-resume-maintenance) | Finished a project, capture achievements | ingest, generate | 10-20 min |
+| [Pre-Interview Prep](#6-pre-interview-prep) | Got an interview, need company intel | research, qualify, review | 15-30 min |
+| [Opportunity Evaluation](#7-opportunity-evaluation) | Deciding whether to apply | match, qualify | 10-20 min |
 
 ### How Skills Connect
 
@@ -274,6 +284,8 @@ import ──→ resume.yaml ──→ generate (outputs)
                │
                ├──→ match (called internally by tailor, cover-letter, qualify)
                │
+               ├──→ apply (runs: research → match → qualify → tailor → score → review → cover-letter → verify)
+               │
                ├──→ score
                ├──→ review
                └──→ verify
@@ -281,6 +293,7 @@ import ──→ resume.yaml ──→ generate (outputs)
 Arrows show data flow, not required ordering.
 "auto" means the skill runs it internally.
 Skills work without optional inputs but produce better results with them.
+/apply is the full pipeline — individual skills can still be run standalone.
 ```
 
 ### 1. First-Time Setup
@@ -318,9 +331,28 @@ One command. `/tailor` handles match analysis, anti-fabrication verification, ou
 | Cover letter | `/resume-builder:cover-letter` | If the posting requests one. Runs match internally. |
 | Full review | `/resume-builder:review` | Deeper 6-persona feedback beyond tailor's quick check. |
 
-### 3. Dream Job Deep-Dive
+### 3. Full Application
 
-**When**: High-value opportunity worth 30-60 minutes of preparation. Company research unlocks sharper tailoring, strategic positioning, sales-strategist feedback, and stronger cover letters.
+**When**: You want the complete pipeline in one shot. Fire-and-forget — no prompts, no gates. Optimal for applying to multiple roles at the same company.
+
+| Step | Command | Required? | What it does |
+|------|---------|-----------|-------------|
+| 1 | `/resume-builder:apply CompanyName jd.txt [URLs]` | Yes | Runs: research → match → qualify → tailor → score → review → cover-letter → verify |
+
+One command. Produces everything: CompanyProfile, tailored resume (4 formats), ATS/HR scores, multi-persona review, cover letter, verification report.
+
+**Multi-job optimization**: Run `/apply` again for a different role at the same company — it reuses the existing CompanyProfile and skips research.
+
+```
+/resume-builder:apply Acme jd_backend.txt https://acme.com/about    ← first run, does research
+/resume-builder:apply Acme jd_frontend.txt                          ← reuses CompanyProfile
+```
+
+**You'll have**: `tailored/{date}_{company}_{role}/` with resume.yaml, PDF, DOCX, HTML, MD, cover_letter.md, plus scores and review in session logs.
+
+### 4. Dream Job Deep-Dive
+
+**When**: High-value opportunity worth 30-60 minutes of preparation. Prefer this over `/apply` when you want interactive control at each step — review research before qualifying, approve tailoring plan, iterate on cover letter.
 
 | Step | Command | Required? | What it does |
 |------|---------|-----------|-------------|
@@ -334,7 +366,7 @@ One command. `/tailor` handles match analysis, anti-fabrication verification, ou
 
 **You'll have**: CompanyProfile, strategic qualification brief, tailored resume with outputs, 7-persona review, cover letter with claim verification.
 
-### 4. Resume Maintenance
+### 5. Resume Maintenance
 
 **When**: You finished a project or hit a milestone. Capture achievements while details are fresh.
 
@@ -347,7 +379,7 @@ One command. `/tailor` handles match analysis, anti-fabrication verification, ou
 
 **Tip**: Run this after every significant project, not just when job hunting. A resume with fresh, verified achievements is always ready.
 
-### 5. Pre-Interview Prep
+### 6. Pre-Interview Prep
 
 **When**: You already applied and got an interview. Need to understand the company and prepare talking points.
 
@@ -361,7 +393,7 @@ One command. `/tailor` handles match analysis, anti-fabrication verification, ou
 
 **Key output**: The qualify brief produces interview talking points and discovery questions — questions you ask *them* to demonstrate buyer understanding.
 
-### 6. Opportunity Evaluation
+### 7. Opportunity Evaluation
 
 **When**: You see a posting and aren't sure if it's worth applying.
 
@@ -373,7 +405,7 @@ One command. `/tailor` handles match analysis, anti-fabrication verification, ou
 
 **Decision points**:
 - After step 1: Match below 50%? Probably skip unless you have a referral.
-- After step 3: Qualify below 5.0 = consider passing. Above 7.0 = proceed to [Dream Job Deep-Dive](#3-dream-job-deep-dive).
+- After step 3: Qualify below 5.0 = consider passing. Above 7.0 = proceed to [Dream Job Deep-Dive](#4-dream-job-deep-dive).
 
 **Lightweight version**: Just `/match` alone for a 2-minute skills check. No research needed.
 
