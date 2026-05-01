@@ -37,12 +37,7 @@ Identify:
 | 50-59% | Stretch | Apply if strategic — address gaps in cover letter |
 | Below 50% | Under-qualified | Skip unless you have insider referral |
 
-### Step 5 — Next Steps
-After presenting results, suggest:
-- "Run `/qualify` for a deeper strategic assessment — it flips the lens to evaluate how much they need you, not just whether you meet their bar."
-- "Run `/research {company}` first if you want company-specific pain points to inform your qualification."
-
-### Step 6 — Log Session
+### Step 5 — Log Session (MANDATORY — do not present results until this step is complete)
 Save to `knowledge/sessions/match_{date}_{company-slug}_{role}.yaml`:
 ```yaml
 date: YYYY-MM-DD
@@ -70,6 +65,13 @@ gaps: [list of missing required skills]
 red_flags: [JD red flags identified]
 recommendations: [top tailoring recommendations]
 ```
+
+When running multiple matches in sequence, log EACH match individually as you complete it. Do not batch logging or defer it until after presentation.
+
+### Step 6 — Present Results & Next Steps
+Present the match results (see Output Format below), then suggest:
+- "Run `/qualify` for a deeper strategic assessment — it flips the lens to evaluate how much they need you, not just whether you meet their bar."
+- "Run `/research {company}` first if you want company-specific pain points to inform your qualification."
 
 ## Output Format
 ```

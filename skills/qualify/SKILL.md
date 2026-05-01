@@ -109,7 +109,7 @@ Calculate weighted average. Then produce a strategic brief:
 - What would need to change to make it viable
 - Alternative: is there a different role at this company that fits better?
 
-### Step 5 — Log Session
+### Step 5 — Log Session (MANDATORY — do not present results until this step is complete)
 Save to `knowledge/sessions/qualify_{date}_{company-slug}_{role}.yaml`:
 ```yaml
 date: YYYY-MM-DD
@@ -130,8 +130,10 @@ scores:
 recommendation: strong-pursue | pursue-with-caution | consider-passing
 ```
 
+When running multiple qualifications in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
+
 ## Output
-Present the dimensional scores as a table, followed by the strategic brief. Format:
+Present the dimensional scores as a table, followed by the strategic brief — only after Step 5 (Log Session) is complete. Format:
 
 ```
 ## Qualification: {Company} — {Role}

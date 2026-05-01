@@ -69,7 +69,7 @@ Do not consider a feature complete until all documentation is updated.
 - YAML frontmatter is required: `name`, `description` (with "Use when:" trigger phrases), `argument-hint`.
 - Structure: `# /<name>` heading → `## Purpose` → `## Anti-Fabrication Rules (MANDATORY)` (if it touches resume content) → `## Process` with numbered `### Step N — Title` steps → `## Output` → `## Options`.
 - Every skill that modifies or generates content from resume.yaml MUST run verification.
-- Every skill that produces persistent output MUST log to `knowledge/sessions/` as the final step, with a YAML schema example in the SKILL.md.
+- Every skill that produces persistent output MUST log to `knowledge/sessions/` BEFORE presenting results to the user (logging is a gate, not a cleanup step). Include a YAML schema example in the SKILL.md and mark the heading with `(MANDATORY — do not present results until this step is complete)`.
 - Skills that consume data from other skills (CompanyProfile, match sessions) should check for existing data before asking the user to provide it manually.
 
 ### Agent Conventions

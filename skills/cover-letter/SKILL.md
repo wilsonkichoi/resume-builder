@@ -88,17 +88,12 @@ If a CompanyProfile exists for the target company, also read `agents/sales-strat
 
 If any item is flagged, note the issue and suggest a revision. Do not block output.
 
-### Step 6 — Output
+### Step 6 — Save Output
 If a tailored output directory exists for this company/role (`tailored/{date}_{company-slug}_{role}/`), save the cover letter there as `cover_letter.md` — all application materials stay co-located.
 
 Otherwise (no tailored directory — generic cover letter), save to `cover_letter_{company-slug}_{role}.md` in the project root.
 
-Present the full cover letter to the user with:
-- The verification results from Step 5
-- The review results from Step 5.5
-- Word count
-
-### Step 7 — Log Session
+### Step 7 — Log Session (MANDATORY — do not present results until this step is complete)
 Save to `knowledge/sessions/cover-letter_{date}_{company}_{role}.yaml`:
 ```yaml
 date: YYYY-MM-DD
@@ -120,6 +115,14 @@ reviewer_flags: [list of any flagged items]
 word_count: XXX
 output_file: tailored/{date}_{company-slug}_{role}/cover_letter.md | cover_letter_{company-slug}_{role}.md
 ```
+
+When running multiple cover letters in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
+
+### Step 8 — Present Results
+Present the full cover letter to the user with:
+- The verification results from Step 5
+- The review results from Step 5.5
+- Word count
 
 ## Options
 - With JD file: `/cover-letter path/to/jd.txt`

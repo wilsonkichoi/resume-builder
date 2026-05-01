@@ -82,34 +82,7 @@ Score each 1-10:
    - What makes this candidate stand out?
    - Is there a unique combination of skills or experiences?
 
-## Output Format
-
-```
-## ATS Score: XX/100
-| Component | Score | Notes |
-|-----------|-------|-------|
-| Keyword Match | X/10 | ... |
-| ... | ... | ... |
-
-## HR Score: XX/100
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Role Relevance | X/10 | ... |
-| ... | ... | ... |
-
-## Top 3 Recommendations
-1. ...
-2. ...
-3. ...
-
-## Score Interpretation
-- 85-100: Strong match — apply with confidence
-- 70-84: Good match — minor optimizations recommended
-- 55-69: Moderate match — significant tailoring needed
-- Below 55: Weak match — consider if this role is a stretch
-```
-
-## Session Log
+## Session Log (MANDATORY — complete before presenting results)
 Save to `knowledge/sessions/score_{date}_{company-slug}_{role}.yaml`:
 ```yaml
 date: YYYY-MM-DD
@@ -142,6 +115,37 @@ recommendations:
   - "..."
   - "..."
   - "..."
+```
+
+When running multiple scores in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
+
+## Output Format
+
+Present the following only after the Session Log step above is complete:
+
+```
+## ATS Score: XX/100
+| Component | Score | Notes |
+|-----------|-------|-------|
+| Keyword Match | X/10 | ... |
+| ... | ... | ... |
+
+## HR Score: XX/100
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Role Relevance | X/10 | ... |
+| ... | ... | ... |
+
+## Top 3 Recommendations
+1. ...
+2. ...
+3. ...
+
+## Score Interpretation
+- 85-100: Strong match — apply with confidence
+- 70-84: Good match — minor optimizations recommended
+- 55-69: Moderate match — significant tailoring needed
+- Below 55: Weak match — consider if this role is a stretch
 ```
 
 ## Important

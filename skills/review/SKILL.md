@@ -78,7 +78,7 @@ Merge all persona feedback into:
 - ...
 ```
 
-### Step 4 — Log Session
+### Step 4 — Log Session (MANDATORY — do not present results until this step is complete)
 Save to `knowledge/sessions/review_{date}_{company-slug}_{role}.yaml` (use `general` for company/role if no JD provided):
 ```yaml
 date: YYYY-MM-DD
@@ -105,6 +105,10 @@ action_items:
   - "..."
   - "..."
 ```
+
+When running multiple reviews in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
+
+Present the consolidated review (Step 3 output) to the user only after this step is complete.
 
 ## Options
 - Review all personas: `/review`

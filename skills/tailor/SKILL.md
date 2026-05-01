@@ -78,7 +78,7 @@ Run /score against the JD to see improvement:
 - Report before/after ATS and HR scores
 - Highlight which changes had the most impact
 
-### Step 7 — Log Session
+### Step 7 — Log Session (MANDATORY — do not present results until this step is complete)
 Save to `knowledge/sessions/tailor_{date}_{company}_{role}.yaml`:
 ```yaml
 date: YYYY-MM-DD
@@ -111,5 +111,7 @@ output_files:
   - tailored/{date}_{company-slug}_{role}/resume.md
 ```
 
+When running multiple tailoring passes in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
+
 ## Output
-Present the tailored resume with a diff summary showing what changed and why.
+Present the tailored resume with a diff summary showing what changed and why — only after Step 7 (Log Session) is complete.

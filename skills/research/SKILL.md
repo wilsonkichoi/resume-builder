@@ -89,14 +89,8 @@ Ask: "Is anything here wrong, missing, or outdated? Anything you know from conve
 
 Apply corrections. The user's direct knowledge overrides web research — mark user-provided corrections with `source: "user-provided"` and `confidence: "high"`.
 
-### Step 7 — Persist and Log
+### Step 7 — Persist and Log (MANDATORY — do not present results until this step is complete)
 Save the CompanyProfile to `knowledge/companies/{slug}.yaml`.
-
-Report:
-- Total facts captured vs. unknowns
-- Number of inferences vs. directly-sourced facts
-- Sources used
-- Suggested next steps: "Run `/qualify` to assess strategic fit" or "Provide more sources for a sharper profile"
 
 Log session to `knowledge/sessions/`:
 ```yaml
@@ -112,6 +106,15 @@ unknowns: [list of fields with no data]
 pain_points_identified: N
 output_file: knowledge/companies/{slug}.yaml
 ```
+
+When running multiple research sessions in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
+
+### Step 8 — Report
+Present to the user:
+- Total facts captured vs. unknowns
+- Number of inferences vs. directly-sourced facts
+- Sources used
+- Suggested next steps: "Run `/qualify` to assess strategic fit" or "Provide more sources for a sharper profile"
 
 ## Output
 The CompanyProfile YAML file in `knowledge/companies/`, plus a summary presented to the user with facts, inferences, unknowns, and recommended next steps.
