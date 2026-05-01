@@ -219,7 +219,7 @@ Produces a strategic brief with positioning recommendations or reasons to pass.
 /resume-builder:review
 ```
 
-Gets feedback from up to 7 AI personas. (Sales Strategist persona activates when a CompanyProfile exists.)
+Gets feedback from up to 7 AI personas. Automatically loads all available prior context (CompanyProfile, match/qualify/tailor/score sessions) so each persona gives informed feedback — e.g., the Technical Reviewer uses tailor decisions to distinguish intentional reframes from fabrication. Reviews the tailored resume when one exists. Sales Strategist activates when a CompanyProfile exists.
 
 | Persona | Focus |
 |---------|-------|

@@ -68,7 +68,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.1.22 -->
+<!-- resume-builder:start v0.1.23 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -122,7 +122,7 @@ Score resume against a job description using ATS (8-component) and HR (6-dimensi
 Quick gap analysis — match resume skills against a job description. Identifies missing skills, weak areas, transferable skills, and overcovered areas. Use for a fast 2-minute skills check before deciding whether to apply.
 
 ### /review
-Multi-persona resume review with up to 7 AI personas (ATS bot, recruiter, hiring manager, HR screener, technical reviewer, engineer peer, sales strategist). Sales strategist activates when a CompanyProfile exists. Use for deep feedback beyond /tailor's quick check.
+Multi-persona resume review with up to 7 AI personas (ATS bot, recruiter, hiring manager, HR screener, technical reviewer, engineer peer, sales strategist). Automatically discovers and loads all available prior context — CompanyProfile, match/qualify/tailor/score sessions — so personas give informed feedback rather than cold reads. Sales strategist activates when a CompanyProfile exists. Reviews the tailored resume when one exists. Use for deep feedback beyond /tailor's quick check.
 
 ### /verify
 Anti-fabrication verification. Checks all claims trace to source, no fabricated metrics or technologies, no previously corrected errors reintroduced.
