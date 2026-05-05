@@ -26,6 +26,8 @@ def render_markdown(ir: ResumeIR) -> str:
 
     lines.append("### Skills")
     for skill in ir.skills:
+        if skill.hidden:
+            continue
         lines.append(f"**{skill.category}:** {skill.items}")
     lines.append("")
     lines.append("---")
@@ -34,6 +36,8 @@ def render_markdown(ir: ResumeIR) -> str:
     lines.append("### Professional Experience")
     lines.append("")
     for company in ir.experience:
+        if company.hidden:
+            continue
         lines.append(f"#### **{company.company}** | {company.location}")
         if company.description:
             lines.append(f"*{company.description}*")

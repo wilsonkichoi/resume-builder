@@ -584,10 +584,8 @@
           <h2 class="section-heading text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight gradient-text mt-3">Professional Experience</h2>
         </div>
 
-        {% for company in ir.experience %}
-        {%- if company.company == "Sabbatical" %}
-        {#- Sabbatical — skip rendering, it's a gap year -#}
-        {%- elif loop.first %}
+        {% for company in ir.experience if not company.hidden %}
+        {%- if loop.first %}
         {#- First company: timeline dot style -#}
         <div class="reveal mb-12">
           <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1">
@@ -632,7 +630,7 @@
           </div>
         </div>
         {%- else %}
-        {#- Non-first, non-sabbatical companies: left border style -#}
+        {#- Non-first companies: left border style -#}
         <div class="reveal">
           <div class="section-divider mb-10"></div>
           <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1">

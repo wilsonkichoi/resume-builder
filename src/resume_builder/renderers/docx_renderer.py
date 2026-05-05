@@ -438,7 +438,7 @@ def render_docx(
     # SKILLS
     # ===================================================================
     _add_section_heading(doc, "Skills", ctx)
-    _add_skills_table(doc, ir.skills, ctx)
+    _add_skills_table(doc, [s for s in ir.skills if not s.hidden], ctx)
 
     # ===================================================================
     # PROFESSIONAL EXPERIENCE
@@ -448,6 +448,8 @@ def render_docx(
     s_company_desc = resolve_docx_style("company_desc", config)
 
     for company in ir.experience:
+        if company.hidden:
+            continue
         _add_subheading(doc, company.company, company.location, ctx)
 
         if company.description:

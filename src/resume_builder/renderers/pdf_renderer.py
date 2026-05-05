@@ -202,7 +202,7 @@ def render_pdf(
     # ── Skills ────────────────────────────────────────────────────────
     story.extend(_section_heading("Skills", styles, colors))
     story.append(_skills_table(
-        [(skill.category, skill.items) for skill in ir.skills],
+        [(skill.category, skill.items) for skill in ir.skills if not skill.hidden],
         styles,
         colors,
     ))
@@ -210,6 +210,8 @@ def render_pdf(
     # ── Professional Experience ───────────────────────────────────────
     story.extend(_section_heading("Professional Experience", styles, colors))
     for company in ir.experience:
+        if company.hidden:
+            continue
         story.extend(_company_header(
             name=company.company,
             location=company.location,

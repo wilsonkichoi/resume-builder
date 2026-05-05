@@ -59,6 +59,7 @@ class Company(BaseModel):
     description: str | None = None
     dates: str
     roles: list[Role] = []
+    hidden: bool = False
 
 
 class Project(BaseModel):
