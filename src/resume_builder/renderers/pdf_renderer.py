@@ -199,14 +199,6 @@ def render_pdf(
     for sb in ir.summary.bullets:
         story.append(_bullet(f"{_b(sb.label + ':')} {sb.text}", styles))
 
-    # ── Skills ────────────────────────────────────────────────────────
-    story.extend(_section_heading("Skills", styles, colors))
-    story.append(_skills_table(
-        [(skill.category, skill.items) for skill in ir.skills if not skill.hidden],
-        styles,
-        colors,
-    ))
-
     # ── Professional Experience ───────────────────────────────────────
     story.extend(_section_heading("Professional Experience", styles, colors))
     for company in ir.experience:
@@ -226,6 +218,14 @@ def render_pdf(
                 story.extend(_role_desc(role.description, styles))
             for bul in role.bullets:
                 story.append(_bullet(_format_bullet(bul), styles))
+
+    # ── Skills ────────────────────────────────────────────────────────
+    story.extend(_section_heading("Skills", styles, colors))
+    story.append(_skills_table(
+        [(skill.category, skill.items) for skill in ir.skills if not skill.hidden],
+        styles,
+        colors,
+    ))
 
     # ── Personal Projects ─────────────────────────────────────────────
     story.extend(_section_heading("Personal Projects", styles, colors))

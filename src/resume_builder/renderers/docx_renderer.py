@@ -435,12 +435,6 @@ def render_docx(
         _add_bullet(doc, f"**{sb.label}:** {sb.text}", num_id, ctx)
 
     # ===================================================================
-    # SKILLS
-    # ===================================================================
-    _add_section_heading(doc, "Skills", ctx)
-    _add_skills_table(doc, [s for s in ir.skills if not s.hidden], ctx)
-
-    # ===================================================================
     # PROFESSIONAL EXPERIENCE
     # ===================================================================
     _add_section_heading(doc, "Professional Experience", ctx)
@@ -466,6 +460,12 @@ def render_docx(
                 _add_role_description(doc, role.description, ctx)
             for bullet in role.bullets:
                 _add_bullet(doc, _format_bullet_text(bullet), num_id, ctx)
+
+    # ===================================================================
+    # SKILLS
+    # ===================================================================
+    _add_section_heading(doc, "Skills", ctx)
+    _add_skills_table(doc, [s for s in ir.skills if not s.hidden], ctx)
 
     # ===================================================================
     # PERSONAL PROJECTS
