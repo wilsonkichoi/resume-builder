@@ -92,7 +92,7 @@ Apply corrections. The user's direct knowledge overrides web research — mark u
 ### Step 7 — Persist and Log (MANDATORY — do not present results until this step is complete)
 Save the CompanyProfile to `knowledge/companies/{slug}.yaml`.
 
-Log session to `knowledge/sessions/`:
+Log session to `knowledge/sessions/research_{date}_{slug}.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: research
