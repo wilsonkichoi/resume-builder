@@ -23,9 +23,9 @@ Generate a cover letter tailored to a specific job description using resume.yaml
 ### Step 1 — Gather Inputs
 - Read `resume.yaml` from the project root.
 - Accept JD as file path or pasted text. A JD is **required** — a cover letter without a target is generic and weak.
-- Check `knowledge/companies/` for an existing CompanyProfile. If found, load it — this replaces the need to ask the user for company research. Use `CompanyProfile.pain_points` for problem-solver hooks, `CompanyProfile.recent_news` for specific-company-knowledge hooks, and `CompanyProfile.mission_vision` + `CompanyProfile.culture_signals` for the closing paragraph.
-- Check `knowledge/sessions/` for existing `/match` sessions for this company/role. If found, read the match analysis to leverage gap data, transferable skills, and tailoring recommendations.
-- Check `knowledge/sessions/` for existing `/qualify` sessions for this company/role. If found, use the strategic brief to strengthen positioning — lead with pain-solution match evidence, use leverage signals for confident tone, and reference ROI potential metrics in the qualification paragraph.
+- Check `knowledge/sessions/{slug}/company.yaml` for an existing CompanyProfile. If found, load it — this replaces the need to ask the user for company research. Use `CompanyProfile.pain_points` for problem-solver hooks, `CompanyProfile.recent_news` for specific-company-knowledge hooks, and `CompanyProfile.mission_vision` + `CompanyProfile.culture_signals` for the closing paragraph.
+- Check `knowledge/sessions/{slug}/{role-slug}/` for existing `/match` sessions (`*_match.yaml`, latest by date). If found, read the match analysis to leverage gap data, transferable skills, and tailoring recommendations.
+- Check `knowledge/sessions/{slug}/{role-slug}/` for existing `/qualify` sessions (`*_qualify.yaml`, latest by date). If found, use the strategic brief to strengthen positioning — lead with pain-solution match evidence, use leverage signals for confident tone, and reference ROI potential metrics in the qualification paragraph.
 - Ask the user for optional inputs:
   - **Company research** *(skip if CompanyProfile exists)*: "Do you know anything specific about this company — mission, recent news, team culture, specific projects? This strengthens the opening hook."
   - **Talking points**: "Any specific experiences or angles you want to emphasize?"
@@ -89,18 +89,17 @@ If a CompanyProfile exists for the target company, also read `agents/sales-strat
 If any item is flagged, note the issue and suggest a revision. Do not block output.
 
 ### Step 6 — Save Output
-If a tailored output directory exists for this company/role (`tailored/{date}_{company-slug}_{role}/`), save the cover letter there as `cover_letter.md` — all application materials stay co-located.
-
-Otherwise (no tailored directory — generic cover letter), save to `cover_letter_{company-slug}_{role}.md` in the project root.
+Save the cover letter to `knowledge/sessions/{company-slug}/{role-slug}/tailored/cover_letter.md` — all application materials stay co-located. Create the `tailored/` directory if it doesn't exist.
 
 ### Step 7 — Log Session (MANDATORY — do not present results until this step is complete)
-Save to `knowledge/sessions/cover-letter_{date}_{company}_{role}.yaml`:
+Save to `knowledge/sessions/{company-slug}/{role-slug}/{date}_cover-letter.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: cover-letter
 company: Company Name
 slug: company-slug
 role: Role Title
+role_slug: role-slug
 sources_used:
   company_profile: true | false
   match_session: session-filename or null
@@ -113,7 +112,20 @@ claims_narrative: X
 claims_company: X
 reviewer_flags: [list of any flagged items]
 word_count: XXX
-output_file: tailored/{date}_{company-slug}_{role}/cover_letter.md | cover_letter_{company-slug}_{role}.md
+output_file: knowledge/sessions/{company-slug}/{role-slug}/tailored/cover_letter.md
+```
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):
+```markdown
+---
+
+## {date} cover-letter
+
+**Hook**: {hook_type}
+**Word count**: {XXX}
+**Claims**: {verified} verified, {narrative} narrative, {company} company-knowledge
+**Flags**: {list of reviewer flags, or "none"}
+**Output**: knowledge/sessions/{company-slug}/{role-slug}/tailored/cover_letter.md
 ```
 
 When running multiple cover letters in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

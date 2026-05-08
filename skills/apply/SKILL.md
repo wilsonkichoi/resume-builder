@@ -17,67 +17,67 @@ Optimized for multi-job-same-company use: company research is performed once and
 3. No fabrication is acceptable regardless of pipeline speed or convenience
 
 ## Session Logging Contract (MANDATORY)
-Each step performs its sub-skill's analytical work inline. After completing each step, you MUST create that sub-skill's session file per its SKILL.md logging schema. The session file is a **gate** — do not proceed to the next step until the file is written to disk.
+Each step performs its sub-skill's analytical work inline. After completing each step, you MUST create that sub-skill's session file per its SKILL.md logging schema AND append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md`. The session file is a **gate** — do not proceed to the next step until the file is written to disk.
 
 Session files created during this pipeline:
-1. `knowledge/sessions/research_{date}_{slug}.yaml` (if research performed)
-2. `knowledge/sessions/match_{date}_{company-slug}_{role}.yaml`
-3. `knowledge/sessions/qualify_{date}_{company-slug}_{role}.yaml`
-4. `knowledge/sessions/tailor_{date}_{company-slug}_{role}.yaml`
-5. `knowledge/sessions/score_{date}_{company-slug}_{role}.yaml`
-6. `knowledge/sessions/review_{date}_{company-slug}_{role}.yaml`
-7. `knowledge/sessions/cover-letter_{date}_{company-slug}_{role}.yaml`
-8. `knowledge/sessions/apply_{date}_{company-slug}_{role}.yaml` (aggregate, last)
+1. `knowledge/sessions/{slug}/{date}_research.yaml` (if research performed)
+2. `knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml`
+3. `knowledge/sessions/{slug}/{role-slug}/{date}_qualify.yaml`
+4. `knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml`
+5. `knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml`
+6. `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml`
+7. `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml`
+8. `knowledge/sessions/{slug}/{role-slug}/{date}_apply.yaml` (aggregate, last)
 
 ## Process
 
 ### Step 1 — Research (conditional)
-Extract the company name from the JD or user input. Check `knowledge/companies/{slug}.yaml` for an existing CompanyProfile.
+Extract the company name from the JD or user input. Check `knowledge/sessions/{slug}/company.yaml` for an existing CompanyProfile.
 
 - **If profile exists**: Skip research. Log: "Reusing existing CompanyProfile for {company} (researched {date})."
 - **If no profile exists**: Run `/research` with any links the user provided. Use non-interactive mode — do not ask for additional sources, work with what's given plus web search.
-  **LOG GATE**: Create `knowledge/sessions/research_{date}_{slug}.yaml` per `/research` Step 7 schema. Do not proceed to Step 2 until this file is written.
+  **LOG GATE**: Create `knowledge/sessions/{slug}/{date}_research.yaml` per `/research` Step 7 schema. Do not proceed to Step 2 until this file is written.
 
 ### Step 2 — Match
 Run `/match` against the JD. Do not prompt the user — proceed directly with resume.yaml and the JD.
 
 This produces: match scores, gap analysis, transferable skills, and tailoring recommendations.
 
-**LOG GATE**: Create `knowledge/sessions/match_{date}_{company-slug}_{role}.yaml` per `/match` Step 5 schema. Do not proceed to Step 3 until this file is written.
+**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml` per `/match` Step 5 schema. Do not proceed to Step 3 until this file is written.
 
 ### Step 3 — Qualify
 Run `/qualify` using the CompanyProfile and JD. Do not prompt the user for culture preferences — score culture_fit with available signals and note confidence as low if preferences are unknown.
 
 This produces: dimensional scores, weighted average, and strategic brief.
 
-**LOG GATE**: Create `knowledge/sessions/qualify_{date}_{company-slug}_{role}.yaml` per `/qualify` Step 5 schema. Do not proceed to Step 4 until this file is written.
+**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_qualify.yaml` per `/qualify` Step 5 schema. Do not proceed to Step 4 until this file is written.
 
 ### Step 4 — Tailor
 Run `/tailor` against the JD. This internally:
 - Uses the CompanyProfile pain points for prioritization
 - Uses the match session for gap awareness
 - Uses the qualify session for positioning
-- Produces tailored resume.yaml in `tailored/{date}_{company-slug}_{role}/`
+- Produces tailored resume.yaml in `knowledge/sessions/{slug}/{role-slug}/tailored/`
 - Generates PDF, DOCX, HTML, MD outputs
 - Runs its own quick persona check
 
 Do not prompt for tailoring preferences — use match/qualify data to make decisions.
 
-**LOG GATE**: Create `knowledge/sessions/tailor_{date}_{company-slug}_{role}.yaml` per `/tailor` Step 7 schema. Do not proceed to Step 5 until this file is written.
+**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml` per `/tailor` Step 7 schema. Do not proceed to Step 5 until this file is written.
 
 ### Step 5 — Score
-Run `/score` against the JD using the tailored resume (`tailored/{date}_{company-slug}_{role}/resume.yaml`).
+Run `/score` against the JD using the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`).
 
 This produces: ATS and HR scores with component breakdowns.
 
-**LOG GATE**: Create `knowledge/sessions/score_{date}_{company-slug}_{role}.yaml` per `/score` Session Log schema. Do not proceed to Step 6 until this file is written.
+**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml` per `/score` Session Log schema. Do not proceed to Step 6 until this file is written.
 
 ### Step 6 — Review
 Run `/review` with the JD as context, evaluating the tailored resume. All personas report findings.
 
 This is report-only — findings do not feed back into tailoring.
 
-**LOG GATE**: Create `knowledge/sessions/review_{date}_{company-slug}_{role}.yaml` per `/review` Step 4 schema. Do not proceed to Step 7 until this file is written.
+**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml` per `/review` Step 4 schema. Do not proceed to Step 7 until this file is written.
 
 ### Step 7 — Cover Letter
 Run `/cover-letter` using the JD. This internally:
@@ -85,41 +85,42 @@ Run `/cover-letter` using the JD. This internally:
 - Uses the match session for gap mitigation
 - Uses the qualify session for positioning angle
 - Auto-selects the strongest hook type based on available data
-- Saves to `tailored/{date}_{company-slug}_{role}/cover_letter.md`
+- Saves to `knowledge/sessions/{slug}/{role-slug}/tailored/cover_letter.md`
 
 Do not prompt for hook preference or talking points — auto-select based on qualify scores:
 - Pain-solution match >= 7 → problem-solver hook
 - ROI potential >= 7 → impressive-achievement hook
 - Otherwise → specific-company-knowledge hook (if CompanyProfile exists) or impressive-achievement hook
 
-**LOG GATE**: Create `knowledge/sessions/cover-letter_{date}_{company-slug}_{role}.yaml` per `/cover-letter` Step 7 schema. Do not proceed to Step 8 until this file is written.
+**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml` per `/cover-letter` Step 7 schema. Do not proceed to Step 8 until this file is written.
 
 ### Step 8 — Verify
-Run `/verify` on the tailored resume (`tailored/{date}_{company-slug}_{role}/resume.yaml`).
+Run `/verify` on the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`).
 
 Report status: PASS or FAIL with details. Do not block output delivery on verification — report it alongside results.
 
 ### Step 9 — Validate and Log Aggregate (MANDATORY — do not present results until this step is complete)
 
 **Validation**: Confirm these sub-session files exist on disk (created at LOG GATEs above). If any is missing, create it now:
-- `knowledge/sessions/research_{date}_{slug}.yaml` (if research was performed)
-- `knowledge/sessions/match_{date}_{company-slug}_{role}.yaml`
-- `knowledge/sessions/qualify_{date}_{company-slug}_{role}.yaml`
-- `knowledge/sessions/tailor_{date}_{company-slug}_{role}.yaml`
-- `knowledge/sessions/score_{date}_{company-slug}_{role}.yaml`
-- `knowledge/sessions/review_{date}_{company-slug}_{role}.yaml`
-- `knowledge/sessions/cover-letter_{date}_{company-slug}_{role}.yaml`
+- `knowledge/sessions/{slug}/{date}_research.yaml` (if research was performed)
+- `knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml`
+- `knowledge/sessions/{slug}/{role-slug}/{date}_qualify.yaml`
+- `knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml`
+- `knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml`
+- `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml`
+- `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml`
 
-**Aggregate session**: Save to `knowledge/sessions/apply_{date}_{company-slug}_{role}.yaml`:
+**Aggregate session**: Save to `knowledge/sessions/{slug}/{role-slug}/{date}_apply.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: apply
 company: Company Name
 slug: company-slug
 role: Role Title
-output_dir: tailored/{date}_{company-slug}_{role}/
+role_slug: role-slug
+output_dir: knowledge/sessions/{slug}/{role-slug}/tailored/
 research_skipped: true | false
-company_profile: knowledge/companies/{slug}.yaml
+company_profile: knowledge/sessions/{slug}/company.yaml
 sub_sessions:
   research: session-filename or null
   match: session-filename
@@ -136,12 +137,25 @@ scores:
   hr: XX
 verification: pass | fail
 output_files:
-  - tailored/{date}_{company-slug}_{role}/resume.yaml
-  - tailored/{date}_{company-slug}_{role}/resume.pdf
-  - tailored/{date}_{company-slug}_{role}/resume.docx
-  - tailored/{date}_{company-slug}_{role}/index.html
-  - tailored/{date}_{company-slug}_{role}/resume.md
-  - tailored/{date}_{company-slug}_{role}/cover_letter.md
+  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml
+  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.pdf
+  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.docx
+  - knowledge/sessions/{slug}/{role-slug}/tailored/index.html
+  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.md
+  - knowledge/sessions/{slug}/{role-slug}/tailored/cover_letter.md
+```
+
+Append to `knowledge/sessions/{slug}/{role-slug}/summary.md`:
+```markdown
+---
+
+## {date} apply
+
+**Pipeline**: research({skipped?}) → match → qualify → tailor → score → review → cover-letter → verify
+**Match**: {overall}% | **Qualify**: {weighted_avg}/10 ({recommendation})
+**ATS**: {score}/100 | **HR**: {score}/100
+**Verification**: {PASS|FAIL}
+**Output**: knowledge/sessions/{slug}/{role-slug}/tailored/
 ```
 
 ## Output
@@ -167,7 +181,7 @@ Present a consolidated summary only after Step 9 is complete:
 - Consensus score: X.X/10
 
 ### Deliverables
-All files in `tailored/{date}_{company-slug}_{role}/`:
+All files in `knowledge/sessions/{slug}/{role-slug}/tailored/`:
 - resume.yaml (tailored)
 - resume.pdf
 - resume.docx

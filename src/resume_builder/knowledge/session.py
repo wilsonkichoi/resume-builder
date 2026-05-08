@@ -7,6 +7,8 @@ from pathlib import Path
 
 import yaml
 
+from resume_builder.knowledge.company import slugify
+
 
 SESSIONS_DIR = Path("knowledge/sessions")
 
@@ -93,10 +95,14 @@ class SessionStore:
 
     def list_sessions(self, skill: str | None = None) -> list[Session]:
         sessions = []
-        for path in sorted(self.sessions_dir.glob("*.yaml")):
+        for path in sorted(self.sessions_dir.rglob("*.yaml")):
+            if path.name == "company.yaml":
+                continue
             with path.open() as f:
                 data = yaml.safe_load(f)
             if data is None:
+                continue
+            if "id" not in data or "skill" not in data:
                 continue
             session = Session.from_dict(data)
             if skill is None or session.skill == skill:
@@ -108,3 +114,28 @@ class SessionStore:
         if since:
             sessions = [s for s in sessions if s.started_at >= since]
         return sessions
+
+    def session_path(
+        self, company_slug: str, role_slug: str | None, skill: str, date: str
+    ) -> Path:
+        if role_slug:
+            return self.sessions_dir / company_slug / role_slug / f"{date}_{skill}.yaml"
+        return self.sessions_dir / company_slug / f"{date}_{skill}.yaml"
+
+    def company_profile_path(self, company_slug: str) -> Path:
+        return self.sessions_dir / company_slug / "company.yaml"
+
+    def tailored_dir(self, company_slug: str, role_slug: str) -> Path:
+        return self.sessions_dir / company_slug / role_slug / "tailored"
+
+    def summary_path(self, company_slug: str, role_slug: str) -> Path:
+        return self.sessions_dir / company_slug / role_slug / "summary.md"
+
+    def find_latest(
+        self, company_slug: str, role_slug: str, skill: str
+    ) -> Path | None:
+        dir_path = self.sessions_dir / company_slug / role_slug
+        if not dir_path.is_dir():
+            return None
+        matches = sorted(dir_path.glob(f"*_{skill}.yaml"), reverse=True)
+        return matches[0] if matches else None

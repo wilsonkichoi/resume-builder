@@ -12,9 +12,9 @@ from resume_builder.models.company import (
 
 @pytest.fixture()
 def tmp_companies(tmp_path):
-    companies_dir = tmp_path / "companies"
-    companies_dir.mkdir()
-    return companies_dir
+    sessions_dir = tmp_path / "sessions"
+    sessions_dir.mkdir()
+    return sessions_dir
 
 
 def _make_profile(name: str = "Acme Corp", slug: str = "acme-corp") -> CompanyProfile:
@@ -69,7 +69,8 @@ class TestCompanyStore:
         path = store.save(profile)
 
         assert path.exists()
-        assert path.name == "acme-corp.yaml"
+        assert path.name == "company.yaml"
+        assert path.parent.name == "acme-corp"
 
         loaded = store.load("acme-corp")
         assert loaded.basics.name == "Acme Corp"
@@ -117,9 +118,9 @@ class TestCompanyStore:
         assert store.delete("acme-corp") is False
 
     def test_mkdir_on_init(self, tmp_path):
-        companies_dir = tmp_path / "new" / "nested" / "companies"
-        store = CompanyStore(companies_dir)
-        assert companies_dir.exists()
+        sessions_dir = tmp_path / "new" / "nested" / "sessions"
+        store = CompanyStore(sessions_dir)
+        assert sessions_dir.exists()
 
     def test_overwrite_on_save(self, tmp_companies):
         store = CompanyStore(tmp_companies)

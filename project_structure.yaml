@@ -1,4 +1,4 @@
-version: "0.1.26"
+version: "0.2.0"
 
 # Files the plugin creates and operates on
 source_files:
@@ -15,16 +15,10 @@ source_files:
     required: true
 
   - path: knowledge/sessions/
-    description: "Session history (YAML files)"
+    description: "Hierarchical session history: {company-slug}/company.yaml, {company-slug}/{role-slug}/{date}_{skill}.yaml, {company-slug}/{role-slug}/tailored/, {company-slug}/{role-slug}/summary.md"
     created_by: setup
-    consumed_by: [tailor, match, cover-letter, qualify, research, import, apply]
+    consumed_by: [tailor, match, cover-letter, qualify, research, review, score, import, apply]
     required: true
-
-  - path: knowledge/companies/
-    description: "Company research profiles (YAML files)"
-    created_by: research
-    consumed_by: [qualify, tailor, review, cover-letter, apply]
-    required: false
 
   - path: artifacts/
     description: "Project documents for /ingest — Confluence exports, architecture diagrams, design docs, etc."
@@ -54,12 +48,13 @@ generated_files:
       scroll reveal animations, hero parallax, ambient glow, gradient text,
       card-based layouts, timeline visualization, skill pills, mobile responsive
 
-  - path: "tailored/{date}_{company-slug}_{role}/"
-    description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD, cover letter if generated"
+  - path: "knowledge/sessions/{company-slug}/{role-slug}/tailored/"
+    description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD, cover letter"
     created_by: [tailor, cover-letter, apply]
 
-  - path: "cover_letter_*.md"
-    created_by: cover-letter
+  - path: "knowledge/sessions/{company-slug}/{role-slug}/summary.md"
+    description: "Append-only skill run history — one section per skill execution"
+    created_by: [match, qualify, tailor, score, review, cover-letter, apply]
 
 # Optional user customization files
 customization_files:

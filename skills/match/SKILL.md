@@ -38,13 +38,14 @@ Identify:
 | Below 50% | Under-qualified | Skip unless you have insider referral |
 
 ### Step 5 — Log Session (MANDATORY — do not present results until this step is complete)
-Save to `knowledge/sessions/match_{date}_{company-slug}_{role}.yaml`:
+Save to `knowledge/sessions/{company-slug}/{role-slug}/{date}_match.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: match
 company: Company Name
 slug: company-slug
 role: Role Title
+role_slug: role-slug
 jd_hash: first-8-chars-of-sha256
 match_score:
   required: XX
@@ -64,6 +65,19 @@ transferable_skills:
 gaps: [list of missing required skills]
 red_flags: [JD red flags identified]
 recommendations: [top tailoring recommendations]
+```
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):
+```markdown
+---
+
+## {date} match
+
+**Score**: {overall}% overall (Required: {required}%, Preferred: {preferred}%)
+**Gaps**: {list of missing required skills}
+**Strengths**: {top matched skills}
+**Transferable**: {list of transferable skill mappings}
+**Recommendation**: {assessment from Step 4 table}
 ```
 
 When running multiple matches in sequence, log EACH match individually as you complete it. Do not batch logging or defer it until after presentation.

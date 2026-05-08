@@ -16,7 +16,7 @@ Invoke up to 7 independent review personas, each evaluating the resume from thei
 4. **hr-screener** — Compliance (gaps, red flags, culture fit)
 5. **technical-reviewer** — Peer review (technical accuracy, overstatement)
 6. **engineer-peer** — Staff/principal engineer (architecture depth, hands-on signal, overclaim detection)
-7. **sales-strategist** *(conditional)* — B2B sales lens: selling solutions vs. features (only when a CompanyProfile exists in `knowledge/companies/` for the target company)
+7. **sales-strategist** *(conditional)* — B2B sales lens: selling solutions vs. features (only when a CompanyProfile exists at `knowledge/sessions/{slug}/company.yaml` for the target company)
 
 ## Process
 
@@ -25,18 +25,18 @@ Read resume.yaml (and optionally a JD for targeted feedback).
 
 If a JD is provided, extract the company name/slug and role, then discover all available prior context:
 
-1. **CompanyProfile**: Check `knowledge/companies/{slug}.yaml`. If found, load it — this enables the sales-strategist persona and enriches all personas with buyer context (pain points, tech stack, culture, key people).
+1. **CompanyProfile**: Check `knowledge/sessions/{slug}/company.yaml`. If found, load it — this enables the sales-strategist persona and enriches all personas with buyer context (pain points, tech stack, culture, key people).
 
-2. **Session artifacts**: Check `knowledge/sessions/` for any matching sessions for this company/role. Load all that exist:
-   - `match_{date}_{slug}_{role}.yaml` — gap analysis, skill coverage percentages, missing skills. Tells personas what the resume is strong/weak on relative to this JD.
-   - `qualify_{date}_{slug}_{role}.yaml` — weighted qualification score, dimension breakdown, pursuit recommendation. Gives personas strategic context on overall fit.
-   - `tailor_{date}_{slug}_{role}.yaml` — tailoring decisions made (emphasized, trimmed, rephrased), before/after scores. Critical for technical-reviewer: distinguishes intentional reframing from accidental fabrication.
-   - `score_{date}_{slug}_{role}.yaml` — ATS/HR score breakdown. Gives personas quantitative baseline to reference.
-   - `research_{date}_{slug}.yaml` — research session metadata (redundant if CompanyProfile exists, but load if CompanyProfile is missing).
+2. **Session artifacts**: Check `knowledge/sessions/{slug}/{role-slug}/` for matching sessions. Load all that exist (use `*_{skill}.yaml` glob, latest by date prefix):
+   - `*_match.yaml` — gap analysis, skill coverage percentages, missing skills. Tells personas what the resume is strong/weak on relative to this JD.
+   - `*_qualify.yaml` — weighted qualification score, dimension breakdown, pursuit recommendation. Gives personas strategic context on overall fit.
+   - `*_tailor.yaml` — tailoring decisions made (emphasized, trimmed, rephrased), before/after scores. Critical for technical-reviewer: distinguishes intentional reframing from accidental fabrication.
+   - `*_score.yaml` — ATS/HR score breakdown. Gives personas quantitative baseline to reference.
+   - Company-level: `knowledge/sessions/{slug}/*_research.yaml` — research session metadata (redundant if CompanyProfile exists, but load if CompanyProfile is missing).
 
-   Use glob matching (e.g., `*_{slug}_{role}.yaml`) since dates vary. If multiple sessions exist for the same type, use the most recent.
+   If multiple sessions exist for the same type, use the most recent (highest date prefix).
 
-3. **Resume source**: If a tailor session exists, check whether a tailored resume exists at the path in `tailor.output_dir`. If so, review the **tailored** resume (not the base resume.yaml) unless the user explicitly requests otherwise. Note which resume is being reviewed in the output.
+3. **Resume source**: If a tailor session exists, check whether a tailored resume exists at `knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`. If so, review the **tailored** resume (not the base resume.yaml) unless the user explicitly requests otherwise. Note which resume is being reviewed in the output.
 
 Assemble all discovered context into a **context bundle** that will be passed to every persona in Step 2.
 
@@ -106,20 +106,21 @@ Merge all persona feedback into:
 ```
 
 ### Step 4 — Log Session (MANDATORY — do not present results until this step is complete)
-Save to `knowledge/sessions/review_{date}_{company-slug}_{role}.yaml` (use `general` for company/role if no JD provided):
+Save to `knowledge/sessions/{company-slug}/{role-slug}/{date}_review.yaml` (use `general/general` for company/role if no JD provided):
 ```yaml
 date: YYYY-MM-DD
 type: review
 company: Company Name | general
 slug: company-slug | general
 role: Role Title | general
-resume_source: resume.yaml | tailored/{date}_{company-slug}_{role}/resume.yaml
+role_slug: role-slug | general
+resume_source: resume.yaml | knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml
 context_loaded:
-  company_profile: knowledge/companies/{slug}.yaml | null
-  match_session: knowledge/sessions/match_{date}_{slug}_{role}.yaml | null
-  qualify_session: knowledge/sessions/qualify_{date}_{slug}_{role}.yaml | null
-  tailor_session: knowledge/sessions/tailor_{date}_{slug}_{role}.yaml | null
-  score_session: knowledge/sessions/score_{date}_{slug}_{role}.yaml | null
+  company_profile: knowledge/sessions/{slug}/company.yaml | null
+  match_session: knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml | null
+  qualify_session: knowledge/sessions/{slug}/{role-slug}/{date}_qualify.yaml | null
+  tailor_session: knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml | null
+  score_session: knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml | null
 personas_invoked: [ats-bot, recruiter, hiring-manager, hr-screener, technical-reviewer, engineer-peer, sales-strategist]
 scores:
   ats_bot: X
@@ -137,6 +138,19 @@ action_items:
   - "..."
   - "..."
   - "..."
+```
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):
+```markdown
+---
+
+## {date} review
+
+**Personas**: {N} invoked
+**Consensus score**: {average of all persona scores}/10
+**Top strength**: {first consensus strength}
+**Top weakness**: {first consensus weakness}
+**Priority action**: {first action item}
 ```
 
 When running multiple reviews in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

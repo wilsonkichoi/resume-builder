@@ -83,15 +83,16 @@ Score each 1-10:
    - Is there a unique combination of skills or experiences?
 
 ## Session Log (MANDATORY — complete before presenting results)
-Save to `knowledge/sessions/score_{date}_{company-slug}_{role}.yaml`:
+Save to `knowledge/sessions/{company-slug}/{role-slug}/{date}_score.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: score
 company: Company Name
 slug: company-slug
 role: Role Title
+role_slug: role-slug
 jd_hash: first-8-chars-of-sha256
-resume_source: resume.yaml | tailored/{date}_{company-slug}_{role}/resume.yaml
+resume_source: resume.yaml | knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml
 scores:
   ats:
     total: XX
@@ -115,6 +116,18 @@ recommendations:
   - "..."
   - "..."
   - "..."
+```
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):
+```markdown
+---
+
+## {date} score
+
+**ATS**: {total}/100 (keyword match: {X}, skills alignment: {X})
+**HR**: {total}/100 (role relevance: {X}, impact clarity: {X})
+**Resume**: {resume_source}
+**Top recommendation**: {first recommendation}
 ```
 
 When running multiple scores in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

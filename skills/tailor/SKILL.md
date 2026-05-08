@@ -23,9 +23,9 @@ Create a tailored version of resume.yaml optimized for a specific job descriptio
 Run /match analysis to understand fit, gaps, and recommendations.
 
 ### Step 2 — Generate Tailoring Plan
-Check `knowledge/companies/` for an existing CompanyProfile for this company. If found, load it and use `CompanyProfile.pain_points` to prioritize bullets that directly address company pain points — not just JD keyword matches.
+Check `knowledge/sessions/{slug}/company.yaml` for an existing CompanyProfile for this company. If found, load it and use `CompanyProfile.pain_points` to prioritize bullets that directly address company pain points — not just JD keyword matches.
 
-Check `knowledge/sessions/` for an existing `/qualify` session for this company/role. If found, use it to sharpen tailoring:
+Check `knowledge/sessions/{slug}/{role-slug}/` for an existing `/qualify` session (`*_qualify.yaml`, latest by date). If found, use it to sharpen tailoring:
 - **Pain-solution match**: Lead with bullets that map directly to their pain points
 - **ROI potential**: Prioritize bullets with metrics that connect to their specific needs
 - **Leverage position**: Emphasize skills/experience that make you uniquely qualified
@@ -40,7 +40,7 @@ Based on match analysis, qualify assessment (if available), and CompanyProfile (
 - Whether to include/exclude sabbatical
 
 ### Step 3 — Apply Tailoring
-Determine the output directory: `tailored/{date}_{company-slug}_{role}/` (e.g., `tailored/2026-04-29_acme-corp_staff-engineer/`).
+Determine the output directory: `knowledge/sessions/{company-slug}/{role-slug}/tailored/` (e.g., `knowledge/sessions/acme-corp/staff-engineer/tailored/`).
 
 Create `resume.yaml` inside that directory (never modify the original `resume.yaml` in the project root):
 - Reorder skills by JD relevance
@@ -50,13 +50,13 @@ Create `resume.yaml` inside that directory (never modify the original `resume.ya
 - Adjust summary paragraph for target role
 
 ### Step 4 — Verify
-Run `resume-builder verify --resume tailored/{date}_{company-slug}_{role}/resume.yaml` to check:
+Run `resume-builder verify --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml` to check:
 - No fabricated claims
 - All content traces to original resume.yaml
 - No metrics were modified
 
 ### Step 5 — Generate Outputs
-Run `resume-builder generate --resume tailored/{date}_{company-slug}_{role}/resume.yaml --output-dir tailored/{date}_{company-slug}_{role}/`
+Run `resume-builder generate --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml --output-dir knowledge/sessions/{company-slug}/{role-slug}/tailored/`
 
 ### Step 5.5 — Quick Persona Check
 
@@ -79,14 +79,15 @@ Run /score against the JD to see improvement:
 - Highlight which changes had the most impact
 
 ### Step 7 — Log Session (MANDATORY — do not present results until this step is complete)
-Save to `knowledge/sessions/tailor_{date}_{company}_{role}.yaml`:
+Save to `knowledge/sessions/{company-slug}/{role-slug}/{date}_tailor.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: tailor
 company: Company Name
 slug: company-slug
 role: Role Title
-output_dir: tailored/{date}_{company-slug}_{role}/
+role_slug: role-slug
+output_dir: knowledge/sessions/{company-slug}/{role-slug}/tailored/
 sources_used:
   company_profile: true | false
   match_session: session-filename or null
@@ -104,11 +105,23 @@ scores:
   before: { ats: XX, hr: XX }
   after: { ats: XX, hr: XX }
 output_files:
-  - tailored/{date}_{company-slug}_{role}/resume.yaml
-  - tailored/{date}_{company-slug}_{role}/resume.pdf
-  - tailored/{date}_{company-slug}_{role}/resume.docx
-  - tailored/{date}_{company-slug}_{role}/index.html
-  - tailored/{date}_{company-slug}_{role}/resume.md
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.pdf
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.docx
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/index.html
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.md
+```
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):
+```markdown
+---
+
+## {date} tailor
+
+**Decisions**: Emphasized {N} bullets, trimmed {N}, rephrased {N}
+**Scores**: ATS {before}→{after}, HR {before}→{after}
+**Gaps addressed**: {list}
+**Output**: knowledge/sessions/{company-slug}/{role-slug}/tailored/
 ```
 
 When running multiple tailoring passes in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

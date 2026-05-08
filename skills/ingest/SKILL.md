@@ -69,13 +69,15 @@ After user approval:
 1. Update resume.yaml with approved content (set `verified: true` on confirmed items)
 2. Update skills.yaml if new technologies were approved
 3. Run `resume-builder verify` to confirm provenance integrity
-4. Log the session to `knowledge/sessions/ingest_{date}_{project}.yaml`
+4. Log the session to `knowledge/sessions/projects/{date}_ingest_{project-slug}.yaml`
 
 ## Session Log Format
+Save to `knowledge/sessions/projects/{date}_ingest_{project-slug}.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: ingest
 project: project-name
+project_slug: project-slug
 artifacts_analyzed:
   - type: source_code
     path: /path/to/project

@@ -20,13 +20,14 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
   - `parser/` — YAML to ResumeIR.
   - `renderers/` — ResumeIR to md, pdf, docx, html. Accepts optional TemplateConfig for style customization.
   - `verification/provenance.py` — ClaimRegistry, diff checker, corrections integration.
-  - `knowledge/` — SessionStore, AchievementStore, and CompanyStore (data layer, no files shipped).
+  - `knowledge/` — SessionStore, AchievementStore, and CompanyStore (data layer, no files shipped). Hierarchical layout: `sessions/{company-slug}/company.yaml`, `sessions/{company-slug}/{role-slug}/{date}_{skill}.yaml`, `sessions/{company-slug}/{role-slug}/tailored/`, `sessions/{company-slug}/{role-slug}/summary.md`.
+- `scripts/migrate_sessions.py` — One-time migration from flat session layout to hierarchical (v0.1.x → v0.2.0).
 - `.mcp.json` — MCP server config loaded by Claude Code when plugin is installed.
 - `.claude-plugin/plugin.json` — Claude Code plugin manifest for distribution.
 - `.claude-plugin/marketplace.json` — Claude Code marketplace manifest for plugin discovery.
 - `.codex-plugin/plugin.json` — Codex CLI plugin manifest.
 - `.codex-plugin/mcp.json` — Codex CLI MCP server config.
-- `tests/` — 126 tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
+- `tests/` — 136 tests against `tests/fixtures/sample_resume.yaml`. Never test against real resume data.
 
 ## Setup
 ```bash

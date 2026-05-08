@@ -22,13 +22,13 @@ This is the "Sell me this pen" approach — uncover the buyer's needs before pit
 ## Process
 
 ### Step 1 — Gather Inputs
-- Check `knowledge/companies/` for an existing CompanyProfile. If none exists, tell the user: "No company profile found. Run `/research {company}` first for a sharper qualification, or I can do a lightweight assessment from the JD alone."
+- Check `knowledge/sessions/{slug}/company.yaml` for an existing CompanyProfile. If none exists, tell the user: "No company profile found. Run `/research {company}` first for a sharper qualification, or I can do a lightweight assessment from the JD alone."
 - Read `resume.yaml` from the project root.
 - Accept JD as file path or pasted text (optional but recommended).
 - If a CompanyProfile exists, check its `researched_at` date. If older than 30 days, warn: "This profile was researched on {date}. Company data may be outdated. Consider re-running `/research`."
 
 ### Step 2 — Run /match if Needed
-If a JD is provided and no existing `/match` session exists for this company/role, run `/match` analysis. This provides the baseline skills-based fit data. `/qualify` layers the strategic assessment on top — they are complementary, not redundant.
+If a JD is provided and no existing `/match` session exists for this company/role (check `knowledge/sessions/{slug}/{role-slug}/*_match.yaml`), run `/match` analysis. This provides the baseline skills-based fit data. `/qualify` layers the strategic assessment on top — they are complementary, not redundant.
 
 ### Step 3 — Dimensional Scoring
 Score each dimension 1-10. For each score, cite the specific evidence from CompanyProfile and resume.yaml that drove it. If evidence is insufficient, note it as "insufficient data" with a confidence qualifier.
@@ -110,15 +110,16 @@ Calculate weighted average. Then produce a strategic brief:
 - Alternative: is there a different role at this company that fits better?
 
 ### Step 5 — Log Session (MANDATORY — do not present results until this step is complete)
-Save to `knowledge/sessions/qualify_{date}_{company-slug}_{role}.yaml`:
+Save to `knowledge/sessions/{company-slug}/{role-slug}/{date}_qualify.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: qualify
 company: Company Name
 slug: company-slug
 role: Role Title
+role_slug: role-slug
 company_profile_used: true/false
-match_session_used: session-id or null
+match_session_used: session-filename or null
 scores:
   pain_solution_match: { score: X, confidence: high/medium/low }
   value_density: { score: X, confidence: high/medium/low }
@@ -128,6 +129,18 @@ scores:
   roi_potential: { score: X, confidence: high/medium/low }
   weighted_average: X.X
 recommendation: strong-pursue | pursue-with-caution | consider-passing
+```
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):
+```markdown
+---
+
+## {date} qualify
+
+**Weighted Average**: {X.X}/10 — {recommendation}
+**Top dimension**: {highest scoring dimension} {score}/10
+**Lowest**: {lowest scoring dimension} {score}/10 ({confidence} confidence)
+**Position**: {one-line from strategic brief}
 ```
 
 When running multiple qualifications in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

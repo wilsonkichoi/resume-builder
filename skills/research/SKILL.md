@@ -34,7 +34,7 @@ Ask the user what they have. Accept URLs and documents in priority order:
 
 Always ask: "Do you have any of these? The more sources, the sharper the profile."
 
-Check `knowledge/companies/` for an existing profile for this company. If found, ask: "I have an existing profile from {date}. Update it with new sources, or start fresh?"
+Check `knowledge/sessions/{slug}/company.yaml` for an existing profile for this company. If found, ask: "I have an existing profile from {date}. Update it with new sources, or start fresh?"
 
 ### Step 2 — Process User-Provided Documents
 For each provided document or URL, fetch and extract structured facts. Tag every fact with its source URL. Separate stated facts from inferences. Note source dates — recent sources are higher confidence.
@@ -90,9 +90,9 @@ Ask: "Is anything here wrong, missing, or outdated? Anything you know from conve
 Apply corrections. The user's direct knowledge overrides web research — mark user-provided corrections with `source: "user-provided"` and `confidence: "high"`.
 
 ### Step 7 — Persist and Log (MANDATORY — do not present results until this step is complete)
-Save the CompanyProfile to `knowledge/companies/{slug}.yaml`.
+Save the CompanyProfile to `knowledge/sessions/{slug}/company.yaml`.
 
-Log session to `knowledge/sessions/research_{date}_{slug}.yaml`:
+Log session to `knowledge/sessions/{slug}/{date}_research.yaml`:
 ```yaml
 date: YYYY-MM-DD
 type: research
@@ -104,7 +104,20 @@ facts_extracted: N
 inferences_made: N
 unknowns: [list of fields with no data]
 pain_points_identified: N
-output_file: knowledge/companies/{slug}.yaml
+output_file: knowledge/sessions/{slug}/company.yaml
+```
+
+Append to `knowledge/sessions/{slug}/summary.md` (create with `# {Company Name}` header if it doesn't exist):
+```markdown
+---
+
+## {date} research
+
+**Sources**: {N} provided, {N} fetched
+**Facts**: {N} extracted, {N} inferences
+**Pain points**: {N} identified (severities: {high/medium/low breakdown})
+**Unknowns**: {list of fields with no data}
+**Output**: knowledge/sessions/{slug}/company.yaml
 ```
 
 When running multiple research sessions in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
@@ -117,7 +130,7 @@ Present to the user:
 - Suggested next steps: "Run `/qualify` to assess strategic fit" or "Provide more sources for a sharper profile"
 
 ## Output
-The CompanyProfile YAML file in `knowledge/companies/`, plus a summary presented to the user with facts, inferences, unknowns, and recommended next steps.
+The CompanyProfile YAML file at `knowledge/sessions/{slug}/company.yaml`, plus a summary presented to the user with facts, inferences, unknowns, and recommended next steps.
 
 ## Options
 - With company name: `/research Acme Corp`
