@@ -17,7 +17,12 @@ Optimized for multi-job-same-company use: company research is performed once and
 3. No fabrication is acceptable regardless of pipeline speed or convenience
 
 ## Session Logging Contract (MANDATORY)
-Each step performs its sub-skill's analytical work inline. After completing each step, you MUST create that sub-skill's session file per its SKILL.md logging schema AND append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md`. The session file is a **gate** — do not proceed to the next step until the file is written to disk.
+Each step performs its sub-skill's analytical work inline. Every LOG GATE requires TWO writes before you may proceed:
+
+1. **Session YAML** — the structured session file per the sub-skill's SKILL.md schema
+2. **Summary append** — read the sub-skill's SKILL.md, find its "Append to summary.md" template, and execute it exactly
+
+Both writes are gates. Do not proceed to the next step until BOTH are on disk. If you skip the summary append and only write the YAML, you have violated this contract.
 
 Session files created during this pipeline:
 1. `knowledge/sessions/{slug}/{date}_research.yaml` (if research performed)
@@ -36,21 +41,21 @@ Extract the company name from the JD or user input. Check `knowledge/sessions/{s
 
 - **If profile exists**: Skip research. Log: "Reusing existing CompanyProfile for {company} (researched {date})."
 - **If no profile exists**: Run `/research` with any links the user provided. Use non-interactive mode — do not ask for additional sources, work with what's given plus web search.
-  **LOG GATE**: Create `knowledge/sessions/{slug}/{date}_research.yaml` per `/research` Step 7 schema. Do not proceed to Step 2 until this file is written.
+  **LOG GATE**: (1) Create `knowledge/sessions/{slug}/{date}_research.yaml` per `/research` Step 7 schema. (2) Read `skills/research/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/summary.md`. Do not proceed to Step 2 until both writes are on disk.
 
 ### Step 2 — Match
 Run `/match` against the JD. Do not prompt the user — proceed directly with resume.yaml and the JD.
 
 This produces: match scores, gap analysis, transferable skills, and tailoring recommendations.
 
-**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml` per `/match` Step 5 schema. Do not proceed to Step 3 until this file is written.
+**LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml` per `/match` Step 5 schema. (2) Read `skills/match/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 3 until both writes are on disk.
 
 ### Step 3 — Qualify
 Run `/qualify` using the CompanyProfile and JD. Do not prompt the user for culture preferences — score culture_fit with available signals and note confidence as low if preferences are unknown.
 
 This produces: dimensional scores, weighted average, and strategic brief.
 
-**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_qualify.yaml` per `/qualify` Step 5 schema. Do not proceed to Step 4 until this file is written.
+**LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_qualify.yaml` per `/qualify` Step 5 schema. (2) Read `skills/qualify/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 4 until both writes are on disk.
 
 ### Step 4 — Tailor
 Run `/tailor` against the JD. This internally:
@@ -63,21 +68,21 @@ Run `/tailor` against the JD. This internally:
 
 Do not prompt for tailoring preferences — use match/qualify data to make decisions.
 
-**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml` per `/tailor` Step 7 schema. Do not proceed to Step 5 until this file is written.
+**LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml` per `/tailor` Step 7 schema. (2) Read `skills/tailor/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 5 until both writes are on disk.
 
 ### Step 5 — Score
 Run `/score` against the JD using the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`).
 
 This produces: ATS and HR scores with component breakdowns.
 
-**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml` per `/score` Session Log schema. Do not proceed to Step 6 until this file is written.
+**LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml` per `/score` Session Log schema. (2) Read `skills/score/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 6 until both writes are on disk.
 
 ### Step 6 — Review
 Run `/review` with the JD as context, evaluating the tailored resume. All personas report findings.
 
 This is report-only — findings do not feed back into tailoring.
 
-**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml` per `/review` Step 4 schema. Do not proceed to Step 7 until this file is written.
+**LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml` per `/review` Step 4 schema. (2) Read `skills/review/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 7 until both writes are on disk.
 
 ### Step 7 — Cover Letter
 Run `/cover-letter` using the JD. This internally:
@@ -92,12 +97,14 @@ Do not prompt for hook preference or talking points — auto-select based on qua
 - ROI potential >= 7 → impressive-achievement hook
 - Otherwise → specific-company-knowledge hook (if CompanyProfile exists) or impressive-achievement hook
 
-**LOG GATE**: Create `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml` per `/cover-letter` Step 7 schema. Do not proceed to Step 8 until this file is written.
+**LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml` per `/cover-letter` Step 7 schema. (2) Read `skills/cover-letter/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 8 until both writes are on disk.
 
 ### Step 8 — Verify
 Run `/verify` on the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`).
 
 Report status: PASS or FAIL with details. Do not block output delivery on verification — report it alongside results.
+
+**LOG GATE**: Read `skills/verify/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Write before proceeding to Step 9.
 
 ### Step 9 — Validate and Log Aggregate (MANDATORY — do not present results until this step is complete)
 
@@ -109,6 +116,8 @@ Report status: PASS or FAIL with details. Do not block output delivery on verifi
 - `knowledge/sessions/{slug}/{role-slug}/{date}_score.yaml`
 - `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml`
 - `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml`
+
+**Summary validation**: Read `knowledge/sessions/{slug}/{role-slug}/summary.md`. Confirm it contains section headings for each sub-skill that ran (e.g., `## {date} match`, `## {date} qualify`, etc.). If any sub-skill's summary entry is missing, read that sub-skill's SKILL.md, find its "Append to summary.md" template, and append the filled entry now.
 
 **Aggregate session**: Save to `knowledge/sessions/{slug}/{role-slug}/{date}_apply.yaml`:
 ```yaml
@@ -145,7 +154,7 @@ output_files:
   - knowledge/sessions/{slug}/{role-slug}/tailored/cover_letter.md
 ```
 
-Append to `knowledge/sessions/{slug}/{role-slug}/summary.md`:
+Append closing entry to `knowledge/sessions/{slug}/{role-slug}/summary.md` (by this point, summary.md already contains individual entries from each LOG GATE above — this is the final closing marker):
 ```markdown
 ---
 
