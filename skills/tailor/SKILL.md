@@ -118,9 +118,14 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create wit
 
 ## {date} tailor
 
-**Decisions**: Emphasized {N} bullets, trimmed {N}, rephrased {N}
+**Strategy**: {1-2 sentence summary of tailoring approach and rationale}
+**Key changes from base resume**:
+- {change category}: {what changed and why}
+- {change category}: {what changed and why}
+- {change category}: {what changed and why}
+**Content removed**: {what was trimmed and why it's noise for this buyer}
 **Scores**: ATS {before}→{after}, HR {before}→{after}
-**Gaps addressed**: {list}
+**Gaps remaining**: {what tailoring couldn't fix — cover letter territory}
 **Output**: knowledge/sessions/{company-slug}/{role-slug}/tailored/
 ```
 

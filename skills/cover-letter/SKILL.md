@@ -121,10 +121,11 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create wit
 
 ## {date} cover-letter
 
-**Hook**: {hook_type}
-**Word count**: {XXX}
-**Claims**: {verified} verified, {narrative} narrative, {company} company-knowledge
-**Flags**: {list of reviewer flags, or "none"}
+**Hook**: {hook_type} — "{paraphrase of opening hook}"
+**Structure**: {what each paragraph establishes — e.g., "Opens with JD quote re: X, maps Y experience to their Z problem, addresses W gap via transferable skill, closes with ask about team"}
+**Gaps mitigated**: {which match gaps the cover letter addresses and how}
+**Claims**: {verified} verified, {narrative} narrative | **Word count**: {XXX}
+**Reviewer check**: {any flags, or "all clear"}
 **Output**: knowledge/sessions/{company-slug}/{role-slug}/tailored/cover_letter.md
 ```
 

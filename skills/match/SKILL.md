@@ -73,11 +73,17 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create wit
 
 ## {date} match
 
-**Score**: {overall}% overall (Required: {required}%, Preferred: {preferred}%)
-**Gaps**: {list of missing required skills}
-**Strengths**: {top matched skills}
-**Transferable**: {list of transferable skill mappings}
-**Recommendation**: {assessment from Step 4 table}
+**Score**: {overall}% overall (Required: {required}% — {N}/{M}, Preferred: {preferred}% — {N}/{M})
+**Assessment**: {recommendation} — {one-sentence why}
+**Strongest matches** (with evidence):
+- {skill}: {where demonstrated — role name + brief}
+- {skill}: {where demonstrated}
+- {skill}: {where demonstrated}
+**Gaps** (required but missing/weak):
+- {gap}: {why it matters for this role}
+- {gap}: {why it matters}
+**Transferable**: {your skill} → {their requirement} ({justification})
+**Top tailoring recs**: {1} {rec}; {2} {rec}
 ```
 
 When running multiple matches in sequence, log EACH match individually as you complete it. Do not batch logging or defer it until after presentation.

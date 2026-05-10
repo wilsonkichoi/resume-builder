@@ -44,6 +44,18 @@ Verify that all claims in resume.yaml trace back to source artifacts and no fabr
 - X/Y projects have artifact links
 ```
 
+## Session Log
+
+Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (if it exists — verify does not create it):
+```markdown
+---
+
+## {date} verify
+
+**Status**: {PASS|FAIL} — {N} bullets and {N} projects checked
+**Issues**: {brief list of errors/warnings, or "none — all claims verified"}
+```
+
 ## Options
 - Verify main resume: `/verify`
 - Verify tailored resume: `/verify tailored/2026-04-29_acme_swe/resume.yaml`

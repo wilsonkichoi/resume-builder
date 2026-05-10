@@ -149,13 +149,12 @@ Append to `knowledge/sessions/{slug}/{role-slug}/summary.md`:
 ```markdown
 ---
 
-## {date} apply
+## {date} apply — Pipeline Complete
 
-**Pipeline**: research({skipped?}) → match → qualify → tailor → score → review → cover-letter → verify
-**Match**: {overall}% | **Qualify**: {weighted_avg}/10 ({recommendation})
-**ATS**: {score}/100 | **HR**: {score}/100
-**Verification**: {PASS|FAIL}
+**Pipeline**: research({skipped?}) → match → qualify → tailor → score → review → cover-letter → verify({PASS|FAIL})
+**Scores**: Match {overall}% | Qualify {weighted_avg}/10 ({recommendation}) | ATS {score}/100 | HR {score}/100
 **Output**: knowledge/sessions/{slug}/{role-slug}/tailored/
+**Bottom line**: {1-2 sentence synthesis — what this means for the application, key strength to lead with, key risk to prepare for}
 ```
 
 ## Output

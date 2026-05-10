@@ -146,11 +146,19 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create wit
 
 ## {date} review
 
-**Personas**: {N} invoked
-**Consensus score**: {average of all persona scores}/10
-**Top strength**: {first consensus strength}
-**Top weakness**: {first consensus weakness}
-**Priority action**: {first action item}
+**Consensus score**: {average}/10 across {N} personas
+**Per-persona**:
+- **{Persona}** ({score}/10): {one-sentence key finding}
+- **{Persona}** ({score}/10): {one-sentence key finding}
+- **{Persona}** ({score}/10): {one-sentence key finding}
+- ...
+**Consensus strengths**: {2-3 agreed-upon strengths}
+**Consensus weaknesses**: {2-3 agreed-upon concerns}
+**Top interview questions from review**:
+1. {question derived from persona findings}
+2. {question}
+3. {question}
+**Priority actions**: {1} {action}; {2} {action}; {3} {action}
 ```
 
 When running multiple reviews in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

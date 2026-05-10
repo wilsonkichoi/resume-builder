@@ -138,9 +138,13 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create wit
 ## {date} qualify
 
 **Weighted Average**: {X.X}/10 — {recommendation}
-**Top dimension**: {highest scoring dimension} {score}/10
-**Lowest**: {lowest scoring dimension} {score}/10 ({confidence} confidence)
-**Position**: {one-line from strategic brief}
+| Dimension | Score | Key rationale |
+|-----------|-------|---------------|
+| {dimension} | {X}/10 | {one-liner evidence or gap} |
+| {dimension} | {X}/10 | {one-liner} |
+| ... | ... | ... |
+**Positioning**: {1-2 sentences — the angle that makes you compelling for THIS role}
+**Key risk**: {the gap or concern most likely to derail, and how to mitigate}
 ```
 
 When running multiple qualifications in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

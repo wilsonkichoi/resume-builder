@@ -113,11 +113,17 @@ Append to `knowledge/sessions/{slug}/summary.md` (create with `# {Company Name}`
 
 ## {date} research
 
-**Sources**: {N} provided, {N} fetched
-**Facts**: {N} extracted, {N} inferences
-**Pain points**: {N} identified (severities: {high/medium/low breakdown})
-**Unknowns**: {list of fields with no data}
-**Output**: knowledge/sessions/{slug}/company.yaml
+**Company**: {name} — {1-sentence description of what they do and who they serve}
+**Scale**: {size, revenue/funding stage, customer count, key volume metrics}
+**Tech signals**: {top technologies mentioned in JD, careers page, or engineering blog}
+**Pain points** ({N} identified):
+- [{severity}] {pain point} — {brief evidence}
+- [{severity}] {pain point} — {brief evidence}
+- [{severity}] {pain point} — {brief evidence}
+**Hiring signals**: {what this hire tells you about their priorities — other open roles, team growth, etc.}
+**Key people**: {hiring manager, notable leads if discovered}
+**Unknowns**: {fields with no data}
+**Sources**: {N} provided, {N} fetched | **Output**: knowledge/sessions/{slug}/company.yaml
 ```
 
 When running multiple research sessions in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.

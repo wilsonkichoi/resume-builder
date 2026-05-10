@@ -124,10 +124,19 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create wit
 
 ## {date} score
 
-**ATS**: {total}/100 (keyword match: {X}, skills alignment: {X})
-**HR**: {total}/100 (role relevance: {X}, impact clarity: {X})
+| ATS ({total}/100) | HR ({total}/100) |
+|---|---|
+| Keyword match: {X} | Role fit: {X} |
+| Format: {X} | Career trajectory: {X} |
+| Experience relevance: {X} | Impact evidence: {X} |
+| Skills alignment: {X} | Growth potential: {X} |
+| Quantification: {X} | Communication: {X} |
+| Recency: {X} | Culture signals: {X} |
 **Resume**: {resume_source}
-**Top recommendation**: {first recommendation}
+**Top 3 recommendations**:
+1. {specific actionable rec}
+2. {specific actionable rec}
+3. {specific actionable rec}
 ```
 
 When running multiple scores in sequence, log EACH run individually as you complete it. Do not batch logging or defer it until after presentation.
