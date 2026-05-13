@@ -117,7 +117,20 @@ Report status: PASS or FAIL with details. Do not block output delivery on verifi
 - `knowledge/sessions/{slug}/{role-slug}/{date}_review.yaml`
 - `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml`
 
-**Summary validation**: Read `knowledge/sessions/{slug}/{role-slug}/summary.md`. Confirm it contains section headings for each sub-skill that ran (e.g., `## {date} match`, `## {date} qualify`, etc.). If any sub-skill's summary entry is missing, read that sub-skill's SKILL.md, find its "Append to summary.md" template, and append the filled entry now.
+**Summary reconstruction**: Overwrite `knowledge/sessions/{slug}/{role-slug}/summary.md` by rebuilding it deterministically from session data:
+
+1. Write the header: `# {Company Name} — {Role Title}`
+2. List all session YAML files in `knowledge/sessions/{slug}/{role-slug}/` matching `{date}_*.yaml` (sorted by filename)
+3. For each session file (excluding `_apply.yaml`):
+   a. Read the session YAML to extract its data
+   b. Read the corresponding sub-skill's SKILL.md (e.g., `skills/match/SKILL.md` for `_match.yaml`)
+   c. Find the "Append to summary.md" template in that SKILL.md
+   d. Fill the template with data from the session YAML
+   e. Append the filled entry to summary.md
+4. Also check for `knowledge/sessions/{slug}/{date}_research.yaml` — if it exists and the company-level `summary.md` doesn't have a research entry, rebuild `knowledge/sessions/{slug}/summary.md` using `skills/research/SKILL.md`'s template
+5. Append the final "apply — Pipeline Complete" closing entry (per template below)
+
+This guarantees completeness — the summary is derived from the actual session files on disk, not from trusting that each inline LOG GATE append happened correctly.
 
 **Aggregate session**: Save to `knowledge/sessions/{slug}/{role-slug}/{date}_apply.yaml`:
 ```yaml

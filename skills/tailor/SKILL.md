@@ -12,10 +12,11 @@ Create a tailored version of resume.yaml optimized for a specific job descriptio
 ## Anti-Fabrication Rules (MANDATORY)
 1. NEVER add technologies, metrics, or experiences not in resume.yaml
 2. NEVER modify quantified metrics
-3. You MAY reorder sections and bullets
-4. You MAY emphasize or trim existing content
-5. You MAY rephrase bullets to use JD keywords IF meaning is preserved
-6. ALWAYS run verification after tailoring
+3. You MAY reorder and trim skills categories
+4. You MAY adjust header.title to align with the target role
+5. You MAY rewrite the summary paragraph using JD keywords IF meaning is preserved
+6. You MUST NOT modify experience, projects, or education sections in any way
+7. ALWAYS run verification after tailoring
 
 ## Process
 
@@ -32,22 +33,21 @@ Check `knowledge/sessions/{slug}/{role-slug}/` for an existing `/qualify` sessio
 - **Growth alignment**: If high, include career trajectory signals; if low, trim them
 
 Based on match analysis, qualify assessment (if available), and CompanyProfile (if available), create a plan:
-- Which summary bullets to lead with
-- Which skills categories to reorder/trim
-- Which experience bullets to emphasize (move up) or trim (remove)
-- Which projects to include/exclude based on skills.yaml role tags
-- Which keywords from JD to inject into existing bullets
-- Whether to include/exclude sabbatical
+- How to adjust header.title to align with target role
+- Which summary paragraph adjustments to make (keywords, positioning)
+- Which skills categories to reorder or trim for JD relevance
 
 ### Step 3 — Apply Tailoring
 Determine the output directory: `knowledge/sessions/{company-slug}/{role-slug}/tailored/` (e.g., `knowledge/sessions/acme-corp/staff-engineer/tailored/`).
 
 Create `resume.yaml` inside that directory (never modify the original `resume.yaml` in the project root):
-- Reorder skills by JD relevance
-- Reorder bullets within each role by relevance
-- Rephrase bullets to include JD keywords (preserve meaning)
-- Remove irrelevant bullets and projects
-- Adjust summary paragraph for target role
+- **header.title**: Adjust to align with the target role title/level
+- **header** (other fields): Copy verbatim from baseline
+- **summary**: Rewrite for target role using JD keywords (preserve factual claims)
+- **skills**: Reorder categories by JD relevance, trim categories with no JD overlap
+- **experience**: Copy verbatim from baseline — no reordering, rephrasing, or trimming
+- **projects**: Copy verbatim from baseline — no changes
+- **education**: Copy verbatim from baseline — no changes
 
 ### Step 4 — Verify
 Run `resume-builder verify --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml` to check:

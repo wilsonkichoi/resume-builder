@@ -168,7 +168,7 @@ Analyzes source code, READMEs, infrastructure-as-code, and git history. Extracts
 /resume-builder:tailor
 ```
 
-Paste a job description. The skill reorders, emphasizes, and trims your resume for the target role while enforcing anti-fabrication rules. (Runs `/match`, `/verify`, and `/score` internally. For sharper results, run `/research` first.)
+Paste a job description. The skill adjusts your title, rewrites the summary, and reorders/trims skills for JD relevance — experience and projects are copied verbatim. Anti-fabrication enforced. (Runs `/match`, `/verify`, and `/score` internally. For sharper results, run `/research` first.)
 
 ### 6. Score your resume
 
