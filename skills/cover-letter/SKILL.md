@@ -7,22 +7,27 @@ argument-hint: "[path to job description or paste JD text]"
 # /cover-letter — Generate Tailored Cover Letter
 
 ## Purpose
-Generate a cover letter tailored to a specific job description using resume.yaml as the source of truth. Every factual claim must trace back to resume.yaml — narrative synthesis is allowed, fabrication is not.
+Generate a cover letter tailored to a specific job description using wilson-resume.yml as the source of truth. Every factual claim must trace back to wilson-resume.yml; narrative synthesis is allowed, fabrication is not.
 
 ## Anti-Fabrication Rules (MANDATORY)
-1. NEVER add technologies, metrics, or experiences not in resume.yaml
-2. NEVER modify quantified metrics from resume.yaml
+1. NEVER add technologies, metrics, or experiences not in wilson-resume.yml
+2. NEVER modify quantified metrics from wilson-resume.yml
 3. NEVER invent company knowledge the user did not provide
 4. You MAY synthesize narrative connecting multiple verified resume facts
 5. You MAY reference company information provided by the user or from public knowledge
 6. You MAY frame gaps positively but NEVER claim skills that do not exist
 7. ALWAYS run claim verification after drafting
 
+## Writing Style Rules (MANDATORY)
+- NEVER use em-dash (—) or en-dash (–) in generated text. Use commas, periods, or semicolons instead.
+- NEVER use hyphens (-) as separators between clauses. Hyphens are only for compound words (e.g., "full-stack").
+- Prefer direct, concrete language. Avoid filler phrases.
+
 ## Process
 
 ### Step 1 — Gather Inputs
-- Read `resume.yaml` from the project root.
-- Accept JD as file path or pasted text. A JD is **required** — a cover letter without a target is generic and weak.
+- Read `wilson-resume.yml` from the project root.
+- Accept JD as file path or pasted text. A JD is **required**; a cover letter without a target is generic and weak.
 - Check `knowledge/sessions/{slug}/company.yaml` for an existing CompanyProfile. If found, load it — this replaces the need to ask the user for company research. Use `CompanyProfile.pain_points` for problem-solver hooks, `CompanyProfile.recent_news` for specific-company-knowledge hooks, and `CompanyProfile.mission_vision` + `CompanyProfile.culture_signals` for the closing paragraph.
 - Check `knowledge/sessions/{slug}/{role-slug}/` for existing `/match` sessions (`*_match.yaml`, latest by date). If found, read the match analysis to leverage gap data, transferable skills, and tailoring recommendations.
 - Check `knowledge/sessions/{slug}/{role-slug}/` for existing `/qualify` sessions (`*_qualify.yaml`, latest by date). If found, use the strategic brief to strengthen positioning — lead with pain-solution match evidence, use leverage signals for confident tone, and reference ROI potential metrics in the qualification paragraph.
@@ -54,17 +59,17 @@ Present the plan to the user for approval before drafting.
 Write the cover letter following this structure (250-400 words total):
 
 - **Paragraph 1 (2-3 sentences)**: Hook + position identification. Name the company and role. Open with the selected hook type.
-- **Paragraph 2 (3-5 sentences)**: Strongest qualification with metrics. Pull directly from resume.yaml bullets. Use X-Y-Z formula evidence from the most relevant experience.
+- **Paragraph 2 (3-5 sentences)**: Strongest qualification with metrics. Pull directly from wilson-resume.yml bullets. Use X-Y-Z formula evidence from the most relevant experience.
 - **Paragraph 3 (2-4 sentences)**: Additional value + gap mitigation. Connect secondary qualifications. Address the biggest gap with a transferable skill or genuine framing.
 - **Paragraph 4 (2-3 sentences)**: Closing with call-to-action. Express enthusiasm, reference a specific company value or project, and include a clear next-step ask.
 
 ### Step 5 — Claim Verification
-For every factual claim in the draft, verify it traces to resume.yaml:
+For every factual claim in the draft, verify it traces to wilson-resume.yml:
 
 ```
 ## Claim Verification
-- [VERIFIED] "reduced p99 latency by 76%" <- resume.yaml > Company > Role > bullet
-- [VERIFIED] "built event pipeline handling 2M events/day" <- resume.yaml > Company > Role > bullet
+- [VERIFIED] "reduced p99 latency by 76%" <- wilson-resume.yml > Company > Role > bullet
+- [VERIFIED] "built event pipeline handling 2M events/day" <- wilson-resume.yml > Company > Role > bullet
 - [NARRATIVE] "This combination of API optimization and event-driven architecture..." <- synthesis of verified claims
 - [COMPANY] "Your team's recent work on [X]..." <- user-provided research, not a resume claim
 ```

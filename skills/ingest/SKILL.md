@@ -57,7 +57,7 @@ Each bullet must include:
 
 ### Step 5 — Propose Updates
 Present to the user:
-1. **Proposed resume.yaml additions** — new project entry and/or new role bullets
+1. **Proposed wilson-resume.yml additions** — new project entry and/or new role bullets
 2. **Proposed skills.yaml additions** — new technologies with role tags
 3. **Flags** — anything that needs user confirmation (inferred metrics, scope claims)
 4. **Questions** — ask about metrics you couldn't find in artifacts
@@ -66,7 +66,7 @@ Wait for user review and approval before making any changes.
 
 ### Step 6 — Apply and Verify
 After user approval:
-1. Update resume.yaml with approved content (set `verified: true` on confirmed items)
+1. Update wilson-resume.yml with approved content (set `verified: true` on confirmed items)
 2. Update skills.yaml if new technologies were approved
 3. Run `resume-builder verify` to confirm provenance integrity
 4. Log the session to `knowledge/sessions/projects/{date}_ingest_{project-slug}.yaml`
@@ -96,5 +96,5 @@ skills_added: [new skills]
 ## Output Requirements
 - Present findings in a clear, structured format
 - Clearly separate VERIFIED facts from INFERRED claims
-- Always ask before modifying resume.yaml
+- Always ask before modifying wilson-resume.yml
 - Bold key technologies and metrics in proposed bullets

@@ -12,12 +12,12 @@ mcp = FastMCP(
 
 @mcp.tool()
 def generate(
-    resume_path: str = "resume.yaml",
+    resume_path: str = "wilson-resume.yml",
     formats: str = "pdf,docx,html,md",
     output_dir: str = ".",
     template_dir: str | None = None,
 ) -> str:
-    """Generate resume outputs (pdf, docx, html, md) from resume.yaml. Optionally pass template_dir for style customization."""
+    """Generate resume outputs (pdf, docx, html, md) from resume YAML. Optionally pass template_dir for style customization."""
     fmt_list = [f.strip() for f in formats.split(",")]
     results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir)
     lines = [f"{r.format}: {r.path} ({r.size:,} bytes)" for r in results]
@@ -26,9 +26,9 @@ def generate(
 
 @mcp.tool()
 def verify(
-    resume_path: str = "resume.yaml",
+    resume_path: str = "wilson-resume.yml",
 ) -> str:
-    """Verify provenance of all claims in resume.yaml. Checks that every bullet and project has verified: true."""
+    """Verify provenance of all claims. Checks that every bullet and project has verified: true."""
     result = verify_provenance(resume_path)
     if result.unverified:
         items = "\n".join(f"  - {u}" for u in result.unverified)
@@ -38,11 +38,11 @@ def verify(
 
 @mcp.tool()
 def verify_against_generated(
-    resume_path: str = "resume.yaml",
-    generated_path: str = "resume.md",
+    resume_path: str = "wilson-resume.yml",
+    generated_path: str = "wilson-resume.md",
     corrections_path: str = "knowledge/corrections.yaml",
 ) -> str:
-    """Anti-fabrication check: compare a generated/tailored resume against the source resume.yaml. Detects fabricated claims, altered metrics, and reintroduced corrections."""
+    """Anti-fabrication check: compare a generated/tailored resume against the source YAML. Detects fabricated claims, altered metrics, and reintroduced corrections."""
     report = verify_generated(resume_path, generated_path, corrections_path)
 
     lines = []

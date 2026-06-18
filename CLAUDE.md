@@ -7,7 +7,7 @@ Reusable Claude Code plugin for resume management. Ships skills, agents, an MCP 
 - `project_structure.yaml` — Project structure definition (developer reference). Defines source files, generated files, customization files, and not-plugin-files.
 - `skills/` — Claude Code skills (SKILL.md files). User-facing interface. 13 skills: setup, import, generate, tailor, score, match, review, verify, ingest, research, qualify, cover-letter, apply.
   - `skills/setup/` — Bootstraps project structure and writes plugin docs to the consumer project's `CLAUDE.md` (marker-delimited section).
-  - `skills/import/` — Imports existing resume into resume.yaml format.
+  - `skills/import/` — Imports existing resume into wilson-resume.yml format.
 - `agents/` — Persona definitions (.agent.md files). 8 agents: ats-bot, recruiter, hiring-manager, hr-screener, technical-reviewer, engineer-peer, sales-strategist, cover-letter-reviewer. Invoked by `/review`, `/tailor`, and `/cover-letter`.
 - `src/resume_builder/` — Python package.
   - `core.py` — Shared logic used by both CLI and MCP server.
@@ -38,7 +38,7 @@ uv run pytest tests/ -v
 ## Development Rules
 
 ### Anti-Fabrication Is Highest Priority
-Every skill and agent must enforce anti-fabrication. This is not optional. If you add a skill that touches resume content, it MUST include an `## Anti-Fabrication Rules (MANDATORY)` section. If you add an agent that suggests rewrites, it MUST constrain rewrites to facts in resume.yaml.
+Every skill and agent must enforce anti-fabrication. This is not optional. If you add a skill that touches resume content, it MUST include an `## Anti-Fabrication Rules (MANDATORY)` section. If you add an agent that suggests rewrites, it MUST constrain rewrites to facts in wilson-resume.yml.
 
 ### Version Bump Is Mandatory
 Every change that adds, modifies, or removes user-facing functionality MUST include a version bump. Default to the smallest unit possible — patch unless there's a strong reason to go higher:
@@ -69,7 +69,7 @@ Do not consider a feature complete until all documentation is updated.
 - File: `skills/<name>/SKILL.md`
 - YAML frontmatter is required: `name`, `description` (with "Use when:" trigger phrases), `argument-hint`.
 - Structure: `# /<name>` heading → `## Purpose` → `## Anti-Fabrication Rules (MANDATORY)` (if it touches resume content) → `## Process` with numbered `### Step N — Title` steps → `## Output` → `## Options`.
-- Every skill that modifies or generates content from resume.yaml MUST run verification.
+- Every skill that modifies or generates content from wilson-resume.yml MUST run verification.
 - Every skill that produces persistent output MUST log to `knowledge/sessions/` BEFORE presenting results to the user (logging is a gate, not a cleanup step). Include a YAML schema example in the SKILL.md and mark the heading with `(MANDATORY — do not present results until this step is complete)`.
 - Skills that consume data from other skills (CompanyProfile, match sessions) should check for existing data before asking the user to provide it manually.
 
@@ -78,7 +78,7 @@ Do not consider a feature complete until all documentation is updated.
 - YAML frontmatter is required: `name`, `description`.
 - Structure: `# Name — Subtitle` → persona paragraph → `## Your Perspective` → `## Evaluation Criteria` (numbered, with 1-10 rubric scales) → `## Output Format` → `## Rules`.
 - Every agent MUST produce: Strengths, Weaknesses, Score (1-10), and Action Items.
-- Agents that suggest rewrites MUST constrain to facts in resume.yaml — they reframe truth, they don't invent it.
+- Agents that suggest rewrites MUST constrain to facts in wilson-resume.yml; they reframe truth, they don't invent it.
 - When wiring a new agent into `/review`, update: the Personas list, the Step 2 agent definitions list, and the Step 3 summary table in `skills/review/SKILL.md`.
 
 ### Python Conventions

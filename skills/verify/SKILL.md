@@ -1,13 +1,13 @@
 ---
 name: verify
 description: "Check resume for fabrication and provenance integrity. Use when: 'verify resume', 'check claims', 'anti-fabrication check', 'audit resume'."
-argument-hint: "[path to resume.yaml, e.g. tailored/2026-04-29_acme_swe/resume.yaml]"
+argument-hint: "[path to wilson-resume.yml, e.g. tailored/2026-04-29_acme_swe/wilson-resume.yml]"
 ---
 
 # /verify — Anti-Fabrication Verification
 
 ## Purpose
-Verify that all claims in resume.yaml trace back to source artifacts and no fabrication has occurred.
+Verify that all claims in wilson-resume.yml trace back to source artifacts and no fabrication has occurred.
 
 ## Process
 
@@ -58,4 +58,4 @@ Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (if it exis
 
 ## Options
 - Verify main resume: `/verify`
-- Verify tailored resume: `/verify tailored/2026-04-29_acme_swe/resume.yaml`
+- Verify tailored resume: `/verify tailored/2026-04-29_acme_swe/wilson-resume.yml`

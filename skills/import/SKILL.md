@@ -1,13 +1,13 @@
 ---
 name: import
-description: "Import an existing resume into resume-builder format. Scans for existing resume files, interviews the user, then writes resume.yaml. Use when: 'import resume', 'migrate resume', 'convert resume'."
+description: "Import an existing resume into resume-builder format. Scans for existing resume files, interviews the user, then writes wilson-resume.yml. Use when: 'import resume', 'migrate resume', 'convert resume'."
 argument-hint: "[path to existing resume files or project documents]"
 ---
 
 # /import — Import Existing Resume
 
 ## Purpose
-Import an existing resume into `resume.yaml` format. Scans for existing documents, interviews the user to fill gaps, and writes the structured YAML. Assumes `/setup` has already run (project structure and CLAUDE.md docs exist).
+Import an existing resume into `wilson-resume.yml` format. Scans for existing documents, interviews the user to fill gaps, and writes the structured YAML. Assumes `/setup` has already run (project structure and CLAUDE.md docs exist).
 
 ## Process
 
@@ -15,7 +15,7 @@ Import an existing resume into `resume.yaml` format. Scans for existing document
 
 Scan the current directory and one level of subdirectories for existing resume artifacts. If the user provides an external path (e.g., `/import ../resume/`), scan that path as well.
 
-**Resume files**: Scan for resume artifacts in any common format (YAML, markdown, PDF, DOCX, JSON, HTML). Prioritize `resume.yaml` if it already exists in resume-builder format.
+**Resume files**: Scan for resume artifacts in any common format (YAML, markdown, PDF, DOCX, JSON, HTML). Prioritize `wilson-resume.yml` if it already exists in resume-builder format.
 
 **External documents** (when the user provides an external path):
 - Read and understand any document format found (HTML exports, PDFs, markdown, text files, etc.)
@@ -27,7 +27,7 @@ Scan the current directory and one level of subdirectories for existing resume a
 Found in source directory:
   ✓ resume.md (8.8 KB) — markdown resume (will parse)
   ✓ projects/ (15 HTML exports) — project documentation (will parse)
-  ✗ skills.yaml — NOT a plugin file (skill data goes in resume.yaml)
+  ✗ skills.yaml — NOT a plugin file (skill data goes in wilson-resume.yml)
   ✗ generate_resume_pdf.py — NOT needed (replaced by /generate)
   ✗ index.html — NOT needed (replaced by /generate HTML output)
 ```
@@ -110,7 +110,7 @@ Present the complete plan before writing:
 ```
 Ready to import. Here's what I'll write:
 
-  WRITE  resume.yaml  — 20 bullets, 4 projects, all provenance set to manual+verified
+  WRITE  wilson-resume.yml  — 20 bullets, 4 projects, all provenance set to manual+verified
   
   Provenance: all bullets marked source:"manual", verified:true
   
@@ -123,7 +123,7 @@ Wait for explicit user confirmation before writing.
 
 After user confirms:
 
-1. **Write `resume.yaml`** with full provenance on every bullet:
+1. **Write `wilson-resume.yml`** with full provenance on every bullet:
    ```yaml
    provenance: { source: "manual", artifacts: [], verified: true }
    ```
@@ -132,7 +132,7 @@ After user confirms:
 
 3. **Report results**:
    ```
-   ✓ resume.yaml written — 20 bullets, 4 projects, all verified
+   ✓ wilson-resume.yml written — 20 bullets, 4 projects, all verified
    ✓ resume-builder verify passed
    
    Next steps:
@@ -145,7 +145,7 @@ After user confirms:
 
 ## Resume.yaml Schema Reference
 
-The generated resume.yaml must conform to this structure:
+The generated wilson-resume.yml must conform to this structure:
 
 ```yaml
 header:
@@ -202,4 +202,4 @@ education:
 - NEVER skip the interview phase — always ask the user to confirm before writing
 - If the existing resume has content that looks wrong or inconsistent, flag it rather than silently copying
 - Set ALL provenance to `source: "manual", verified: true` for content imported from user's existing resume
-- If `resume.yaml` already has content, ask before overwriting
+- If `wilson-resume.yml` already has content, ask before overwriting

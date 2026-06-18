@@ -1,8 +1,8 @@
-version: "0.2.3"
+version: "0.2.4"
 
 # Files the plugin creates and operates on
 source_files:
-  - path: resume.yaml
+  - path: wilson-resume.yml
     description: "Single source of truth for all resume content"
     created_by: setup
     consumed_by: [generate, tailor, score, match, review, verify, import, cover-letter, qualify, apply]
@@ -28,19 +28,19 @@ source_files:
 
 # Files generated as output (do not edit directly)
 generated_files:
-  - path: resume.md
+  - path: wilson-resume.md
     format: markdown
     created_by: generate
 
-  - path: resume.pdf
+  - path: wilson-resume.pdf
     format: pdf
     created_by: generate
 
-  - path: resume.docx
+  - path: wilson-resume.docx
     format: docx
     created_by: generate
 
-  - path: index.html
+  - path: wilson-resume.html
     format: html
     created_by: generate
     description: >
@@ -49,7 +49,7 @@ generated_files:
       card-based layouts, timeline visualization, skill pills, mobile responsive
 
   - path: "knowledge/sessions/{company-slug}/{role-slug}/tailored/"
-    description: "Per-application tailored output — resume.yaml, PDF, DOCX, HTML, MD, cover letter"
+    description: "Per-application tailored output: wilson-resume.yml, PDF, DOCX, HTML, MD, cover letter"
     created_by: [tailor, cover-letter, apply]
 
   - path: "knowledge/sessions/{company-slug}/{role-slug}/summary.md"
@@ -79,7 +79,7 @@ plugin_docs:
 # Files that are NOT part of the plugin (common in legacy resume projects)
 not_plugin_files:
   - pattern: "skills.yaml"
-    reason: "External skill inventory. Skill data belongs in resume.yaml under the skills: section."
+    reason: "External skill inventory. Skill data belongs in wilson-resume.yml under the skills: section."
   - pattern: "generate_resume_*.py"
     reason: "Legacy generation script. Replaced by resume-builder generate."
   - pattern: "generate_resume_*.js"

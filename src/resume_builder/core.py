@@ -41,24 +41,26 @@ def generate_outputs(
     ir = parse_resume(resume_path)
     results: list[GenerateResult] = []
 
+    stem = resume_path.stem
+
     for fmt in formats:
         if fmt == "md":
             from resume_builder.renderers.markdown_renderer import render_markdown
-            out_path = output / "resume.md"
+            out_path = output / f"{stem}.md"
             out_path.write_text(render_markdown(ir))
         elif fmt == "pdf":
             from resume_builder.renderers.pdf_renderer import render_pdf
-            out_path = output / "resume.pdf"
+            out_path = output / f"{stem}.pdf"
             config = load_template_config(resolved_dir, "pdf")
             render_pdf(ir, str(out_path), config=config)
         elif fmt == "docx":
             from resume_builder.renderers.docx_renderer import render_docx
-            out_path = output / "resume.docx"
+            out_path = output / f"{stem}.docx"
             config = load_template_config(resolved_dir, "docx")
             render_docx(ir, str(out_path), config=config)
         elif fmt == "html":
             from resume_builder.renderers.html_renderer import render_html
-            out_path = output / "index.html"
+            out_path = output / f"{stem}.html"
             tmpl_path, css_path = discover_html_template(resolved_dir)
             out_path.write_text(render_html(ir, template_path=tmpl_path, css_path=css_path))
         else:

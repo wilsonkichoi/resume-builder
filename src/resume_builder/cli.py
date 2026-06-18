@@ -16,11 +16,11 @@ def main():
 
 @main.command()
 @click.option("--format", "formats", default="pdf,docx,html,md", help="Comma-separated output formats")
-@click.option("--resume", "resume_path", default="resume.yaml", type=click.Path(exists=True), help="Path to resume.yaml")
+@click.option("--resume", "resume_path", default="wilson-resume.yml", type=click.Path(exists=True), help="Path to resume YAML file")
 @click.option("--output-dir", default=".", type=click.Path(), help="Output directory")
-@click.option("--template-dir", default=None, type=click.Path(exists=True), help="Directory with template overrides (default: templates/ next to resume.yaml)")
+@click.option("--template-dir", default=None, type=click.Path(exists=True), help="Directory with template overrides (default: templates/ next to resume)")
 def generate(formats: str, resume_path: str, output_dir: str, template_dir: str | None):
-    """Generate resume outputs from resume.yaml."""
+    """Generate resume outputs from YAML source."""
     console.print(f"[bold]Parsing[/bold] {resume_path}")
     fmt_list = [f.strip() for f in formats.split(",")]
     results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir)
@@ -29,11 +29,11 @@ def generate(formats: str, resume_path: str, output_dir: str, template_dir: str 
 
 
 @main.command()
-@click.option("--resume", "resume_path", default="resume.yaml", type=click.Path(exists=True))
+@click.option("--resume", "resume_path", default="wilson-resume.yml", type=click.Path(exists=True))
 @click.option("--generated", "generated_path", default=None, type=click.Path(exists=True), help="Path to generated/tailored output to verify against source")
 @click.option("--corrections", "corrections_path", default="knowledge/corrections.yaml", type=click.Path(), help="Path to corrections.yaml")
 def verify(resume_path: str, generated_path: str | None, corrections_path: str):
-    """Verify provenance of all claims in resume.yaml."""
+    """Verify provenance of all claims in resume YAML."""
     result = verify_provenance(resume_path)
 
     if result.unverified:

@@ -23,7 +23,7 @@ This is the "Sell me this pen" approach — uncover the buyer's needs before pit
 
 ### Step 1 — Gather Inputs
 - Check `knowledge/sessions/{slug}/company.yaml` for an existing CompanyProfile. If none exists, tell the user: "No company profile found. Run `/research {company}` first for a sharper qualification, or I can do a lightweight assessment from the JD alone."
-- Read `resume.yaml` from the project root.
+- Read `wilson-resume.yml` from the project root.
 - Accept JD as file path or pasted text (optional but recommended).
 - If a CompanyProfile exists, check its `researched_at` date. If older than 30 days, warn: "This profile was researched on {date}. Company data may be outdated. Consider re-running `/research`."
 
@@ -31,10 +31,10 @@ This is the "Sell me this pen" approach — uncover the buyer's needs before pit
 If a JD is provided and no existing `/match` session exists for this company/role (check `knowledge/sessions/{slug}/{role-slug}/*_match.yaml`), run `/match` analysis. This provides the baseline skills-based fit data. `/qualify` layers the strategic assessment on top — they are complementary, not redundant.
 
 ### Step 3 — Dimensional Scoring
-Score each dimension 1-10. For each score, cite the specific evidence from CompanyProfile and resume.yaml that drove it. If evidence is insufficient, note it as "insufficient data" with a confidence qualifier.
+Score each dimension 1-10. For each score, cite the specific evidence from CompanyProfile and wilson-resume.yml that drove it. If evidence is insufficient, note it as "insufficient data" with a confidence qualifier.
 
 #### 1. Pain-Solution Match (weight: 25%)
-Map CompanyProfile pain points against resume.yaml experience bullets.
+Map CompanyProfile pain points against wilson-resume.yml experience bullets.
 - 1-3: Your experience doesn't address their core problems
 - 4-6: Some overlap, but you'd be learning on the job
 - 7-8: Direct experience with 1-2 of their key pain points

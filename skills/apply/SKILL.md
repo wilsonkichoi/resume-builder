@@ -44,7 +44,7 @@ Extract the company name from the JD or user input. Check `knowledge/sessions/{s
   **LOG GATE**: (1) Create `knowledge/sessions/{slug}/{date}_research.yaml` per `/research` Step 7 schema. (2) Read `skills/research/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/summary.md`. Do not proceed to Step 2 until both writes are on disk.
 
 ### Step 2 — Match
-Run `/match` against the JD. Do not prompt the user — proceed directly with resume.yaml and the JD.
+Run `/match` against the JD. Do not prompt the user — proceed directly with wilson-resume.yml and the JD.
 
 This produces: match scores, gap analysis, transferable skills, and tailoring recommendations.
 
@@ -62,7 +62,7 @@ Run `/tailor` against the JD. This internally:
 - Uses the CompanyProfile pain points for prioritization
 - Uses the match session for gap awareness
 - Uses the qualify session for positioning
-- Produces tailored resume.yaml in `knowledge/sessions/{slug}/{role-slug}/tailored/`
+- Produces tailored wilson-resume.yml in `knowledge/sessions/{slug}/{role-slug}/tailored/`
 - Generates PDF, DOCX, HTML, MD outputs
 - Runs its own quick persona check
 
@@ -71,7 +71,7 @@ Do not prompt for tailoring preferences — use match/qualify data to make decis
 **LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_tailor.yaml` per `/tailor` Step 7 schema. (2) Read `skills/tailor/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 5 until both writes are on disk.
 
 ### Step 5 — Score
-Run `/score` against the JD using the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`).
+Run `/score` against the JD using the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.yml`).
 
 This produces: ATS and HR scores with component breakdowns.
 
@@ -100,7 +100,7 @@ Do not prompt for hook preference or talking points — auto-select based on qua
 **LOG GATE**: (1) Create `knowledge/sessions/{slug}/{role-slug}/{date}_cover-letter.yaml` per `/cover-letter` Step 7 schema. (2) Read `skills/cover-letter/SKILL.md` → find the "Append to summary.md" template → append that filled template to `knowledge/sessions/{slug}/{role-slug}/summary.md`. Do not proceed to Step 8 until both writes are on disk.
 
 ### Step 8 — Verify
-Run `/verify` on the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`).
+Run `/verify` on the tailored resume (`knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.yml`).
 
 Report status: PASS or FAIL with details. Do not block output delivery on verification — report it alongside results.
 
@@ -159,11 +159,11 @@ scores:
   hr: XX
 verification: pass | fail
 output_files:
-  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml
-  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.pdf
-  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.docx
-  - knowledge/sessions/{slug}/{role-slug}/tailored/index.html
-  - knowledge/sessions/{slug}/{role-slug}/tailored/resume.md
+  - knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.yml
+  - knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.pdf
+  - knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.docx
+  - knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.html
+  - knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.md
   - knowledge/sessions/{slug}/{role-slug}/tailored/cover_letter.md
 ```
 
@@ -203,11 +203,11 @@ Present a consolidated summary only after Step 9 is complete:
 
 ### Deliverables
 All files in `knowledge/sessions/{slug}/{role-slug}/tailored/`:
-- resume.yaml (tailored)
-- resume.pdf
-- resume.docx
-- index.html
-- resume.md
+- wilson-resume.yml (tailored)
+- wilson-resume.pdf
+- wilson-resume.docx
+- wilson-resume.html
+- wilson-resume.md
 - cover_letter.md
 
 ### Strategic Position
