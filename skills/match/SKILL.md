@@ -7,7 +7,7 @@ argument-hint: "[path to job description or paste JD text]"
 # /match — JD Matching + Gap Analysis
 
 ## Purpose
-Analyze how well wilson-resume.yml matches a specific job description. Identify gaps, strengths, and strategic fit.
+Analyze how well resume.yaml matches a specific job description. Identify gaps, strengths, and strategic fit.
 
 ## Process
 
@@ -15,14 +15,14 @@ Analyze how well wilson-resume.yml matches a specific job description. Identify 
 Parse the JD to extract requirements, preferences, experience level, domain terminology, and red flags.
 
 ### Step 2 — Match Against Resume
-Read wilson-resume.yml and skills.yaml, then score:
+Read resume.yaml and skills.yaml, then score:
 - **Required skills match**: weight 70% — how many required skills are demonstrated?
 - **Preferred skills match**: weight 30% — how many preferred skills are present?
 - For each skill: check both the Skills section AND Experience bullets for evidence
 
 ### Step 3 — Gap Analysis
 Identify:
-- **Missing required skills** — skills the JD requires that are not in wilson-resume.yml
+- **Missing required skills** — skills the JD requires that are not in resume.yaml
 - **Weak areas** — skills mentioned but not demonstrated in experience bullets
 - **Transferable skills** — things you have that map to requirements differently named
 - **Overcovered areas** — sections with heavy emphasis that the JD doesn't care about

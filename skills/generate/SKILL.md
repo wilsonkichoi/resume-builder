@@ -1,27 +1,27 @@
 ---
 name: generate
-description: "Generate PDF, DOCX, HTML, and Markdown from wilson-resume.yml. Use when: 'generate resume', 'build resume', 'create pdf', 'create docx', 'update html', 'rebuild outputs'."
+description: "Generate PDF, DOCX, HTML, and Markdown from resume.yaml. Use when: 'generate resume', 'build resume', 'create pdf', 'create docx', 'update html', 'rebuild outputs'."
 argument-hint: "[--format pdf|docx|html|md] [--output-dir path] [--template-dir path]"
 ---
 
 # /generate — Generate Resume Outputs
 
 ## Purpose
-Run the deterministic generation pipeline. No LLM content generation — pure parsing and rendering from wilson-resume.yml.
+Run the deterministic generation pipeline. No LLM content generation — pure parsing and rendering from resume.yaml.
 
 ## Process
 
-1. Verify `wilson-resume.yml` exists in the project
+1. Verify `resume.yaml` exists in the project
 2. Run: `resume-builder generate --format pdf,docx,html,md --output-dir .`
 3. Report which files were generated and their sizes
 4. Run: `resume-builder verify` to confirm provenance integrity
 
 ## Default Output Features
 
-- **HTML** (`wilson-resume.html`) — Portfolio-quality page with: dark/light theme toggle (localStorage), spotlight hover on cards, scroll reveal animations, hero parallax, ambient background glow, gradient text shimmer, card-based layouts with hover lift, timeline visualization, interactive skill pills, full mobile responsiveness, prefers-reduced-motion support. Built in, no configuration needed.
-- **PDF** (`wilson-resume.pdf`) — Clean professional document. Customizable via `templates/pdf_styles.yaml`.
-- **DOCX** (`wilson-resume.docx`) — Word document. Same style schema as PDF via `templates/docx_styles.yaml`.
-- **Markdown** (`wilson-resume.md`) — GitHub-flavored markdown. No styling.
+- **HTML** (`index.html`) — Portfolio-quality page with: dark/light theme toggle (localStorage), spotlight hover on cards, scroll reveal animations, hero parallax, ambient background glow, gradient text shimmer, card-based layouts with hover lift, timeline visualization, interactive skill pills, full mobile responsiveness, prefers-reduced-motion support. Built in, no configuration needed.
+- **PDF** (`resume.pdf`) — Clean professional document. Customizable via `templates/pdf_styles.yaml`.
+- **DOCX** (`resume.docx`) — Word document. Same style schema as PDF via `templates/docx_styles.yaml`.
+- **Markdown** (`resume.md`) — GitHub-flavored markdown. No styling.
 
 ## Options
 - Generate all formats: `resume-builder generate`
@@ -30,7 +30,7 @@ Run the deterministic generation pipeline. No LLM content generation — pure pa
 
 ## Template Customization
 
-Users can customize the appearance of generated outputs by placing files in a `templates/` directory next to `wilson-resume.yml`:
+Users can customize the appearance of generated outputs by placing files in a `templates/` directory next to `resume.yaml`:
 
 - `templates/pdf_styles.yaml` — Override PDF colors, fonts, margins, and style properties
 - `templates/docx_styles.yaml` — Override DOCX colors, fonts, margins, and style properties
@@ -41,10 +41,10 @@ To get started: `resume-builder template-export`
 
 When generating with templates: `resume-builder generate --template-dir templates`
 
-Or just place a `templates/` directory next to `wilson-resume.yml` — auto-discovered.
+Or just place a `templates/` directory next to `resume.yaml` — auto-discovered.
 
 ## Notes
 - This command is fully deterministic, same input always produces same output
 - No LLM involvement in the rendering pipeline
 - If the resume YAML has been modified by /ingest or /tailor, regenerate to update all outputs
-- Output filenames are derived from the input file stem (e.g., wilson-resume.yml produces wilson-resume.pdf)
+- Output filenames are fixed: `resume.md`, `resume.pdf`, `resume.docx`, and `index.html` (HTML is named `index.html` so it can be served directly by GitHub Pages)

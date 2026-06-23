@@ -12,7 +12,7 @@ mcp = FastMCP(
 
 @mcp.tool()
 def generate(
-    resume_path: str = "wilson-resume.yml",
+    resume_path: str = "resume.yaml",
     formats: str = "pdf,docx,html,md",
     output_dir: str = ".",
     template_dir: str | None = None,
@@ -26,7 +26,7 @@ def generate(
 
 @mcp.tool()
 def verify(
-    resume_path: str = "wilson-resume.yml",
+    resume_path: str = "resume.yaml",
 ) -> str:
     """Verify provenance of all claims. Checks that every bullet and project has verified: true."""
     result = verify_provenance(resume_path)
@@ -38,8 +38,8 @@ def verify(
 
 @mcp.tool()
 def verify_against_generated(
-    resume_path: str = "wilson-resume.yml",
-    generated_path: str = "wilson-resume.md",
+    resume_path: str = "resume.yaml",
+    generated_path: str = "resume.md",
     corrections_path: str = "knowledge/corrections.yaml",
 ) -> str:
     """Anti-fabrication check: compare a generated/tailored resume against the source YAML. Detects fabricated claims, altered metrics, and reintroduced corrections."""

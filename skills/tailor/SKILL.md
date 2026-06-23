@@ -10,7 +10,7 @@ argument-hint: "[path to job description or paste JD text]"
 Create a tailored version of the resume YAML optimized for a specific job description while enforcing anti-fabrication rules.
 
 ## Anti-Fabrication Rules (MANDATORY)
-1. NEVER add technologies, metrics, or experiences not in wilson-resume.yml
+1. NEVER add technologies, metrics, or experiences not in resume.yaml
 2. NEVER modify quantified metrics
 3. You MAY reorder and trim skills categories
 4. You MAY adjust header.title to align with the target role
@@ -46,7 +46,7 @@ Based on match analysis, qualify assessment (if available), and CompanyProfile (
 ### Step 3 — Apply Tailoring
 Determine the output directory: `knowledge/sessions/{company-slug}/{role-slug}/tailored/` (e.g., `knowledge/sessions/acme-corp/staff-engineer/tailored/`).
 
-Create `wilson-resume.yml` inside that directory (never modify the original resume YAML in the project root):
+Create `resume.yaml` inside that directory (never modify the original resume YAML in the project root):
 - **header.title**: Adjust to align with the target role title/level
 - **header** (other fields): Copy verbatim from baseline
 - **summary**: Rewrite for target role using JD keywords (preserve factual claims)
@@ -56,13 +56,13 @@ Create `wilson-resume.yml` inside that directory (never modify the original resu
 - **education**: Copy verbatim from baseline — no changes
 
 ### Step 4 — Verify
-Run `resume-builder verify --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.yml` to check:
+Run `resume-builder verify --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml` to check:
 - No fabricated claims
 - All content traces to original resume YAML
 - No metrics were modified
 
 ### Step 5 — Generate Outputs
-Run `resume-builder generate --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.yml --output-dir knowledge/sessions/{company-slug}/{role-slug}/tailored/`
+Run `resume-builder generate --resume knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml --output-dir knowledge/sessions/{company-slug}/{role-slug}/tailored/`
 
 ### Step 5.5 — Quick Persona Check
 
@@ -111,11 +111,11 @@ scores:
   before: { ats: XX, hr: XX }
   after: { ats: XX, hr: XX }
 output_files:
-  - knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.yml
-  - knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.pdf
-  - knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.docx
-  - knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.html
-  - knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.md
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.pdf
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.docx
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/index.html
+  - knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.md
 ```
 
 Append to `knowledge/sessions/{company-slug}/{role-slug}/summary.md` (create with `# {Company Name} — {Role Title}` header if it doesn't exist):

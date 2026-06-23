@@ -92,7 +92,7 @@ slug: company-slug
 role: Role Title
 role_slug: role-slug
 jd_hash: first-8-chars-of-sha256
-resume_source: wilson-resume.yml | knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.yml
+resume_source: resume.yaml | knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml
 scores:
   ats:
     total: XX

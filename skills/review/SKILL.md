@@ -21,7 +21,7 @@ Invoke up to 7 independent review personas, each evaluating the resume from thei
 ## Process
 
 ### Step 1 — Prepare Context
-Read wilson-resume.yml (and optionally a JD for targeted feedback).
+Read resume.yaml (and optionally a JD for targeted feedback).
 
 If a JD is provided, extract the company name/slug and role, then discover all available prior context:
 
@@ -36,7 +36,7 @@ If a JD is provided, extract the company name/slug and role, then discover all a
 
    If multiple sessions exist for the same type, use the most recent (highest date prefix).
 
-3. **Resume source**: If a tailor session exists, check whether a tailored resume exists at `knowledge/sessions/{slug}/{role-slug}/tailored/wilson-resume.yml`. If so, review the **tailored** resume (not the base wilson-resume.yml) unless the user explicitly requests otherwise. Note which resume is being reviewed in the output.
+3. **Resume source**: If a tailor session exists, check whether a tailored resume exists at `knowledge/sessions/{slug}/{role-slug}/tailored/resume.yaml`. If so, review the **tailored** resume (not the base resume.yaml) unless the user explicitly requests otherwise. Note which resume is being reviewed in the output.
 
 Assemble all discovered context into a **context bundle** that will be passed to every persona in Step 2.
 
@@ -114,7 +114,7 @@ company: Company Name | general
 slug: company-slug | general
 role: Role Title | general
 role_slug: role-slug | general
-resume_source: wilson-resume.yml | knowledge/sessions/{company-slug}/{role-slug}/tailored/wilson-resume.yml
+resume_source: resume.yaml | knowledge/sessions/{company-slug}/{role-slug}/tailored/resume.yaml
 context_loaded:
   company_profile: knowledge/sessions/{slug}/company.yaml | null
   match_session: knowledge/sessions/{slug}/{role-slug}/{date}_match.yaml | null
