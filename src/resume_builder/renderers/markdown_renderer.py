@@ -66,7 +66,7 @@ def render_markdown(ir: ResumeIR) -> str:
     lines.append("### Personal Projects")
     lines.append("")
     for project in ir.projects:
-        lines.append(f"**{project.name}** — [{project.url.replace('https://', '')}]({project.url})")
+        lines.append(f"**{project.name}**: [{project.url.replace('https://', '')}]({project.url})")
         lines.append(project.description)
         lines.append("")
 

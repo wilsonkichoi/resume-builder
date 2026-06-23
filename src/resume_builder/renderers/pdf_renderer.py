@@ -232,7 +232,7 @@ def render_pdf(
     for project in ir.projects:
         url_display = project.url.removeprefix("https://")
         story.append(Paragraph(
-            f"{_b(project.name)} — {_link(url_display, accent_hex)}",
+            f"{_b(project.name)}: {_link(url_display, accent_hex)}",
             styles["project_title"],
         ))
         story.append(Paragraph(project.description, styles["project_desc"]))

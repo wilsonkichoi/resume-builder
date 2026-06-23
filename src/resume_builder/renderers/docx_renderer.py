@@ -479,7 +479,7 @@ def render_docx(
         p_proj = doc.add_paragraph()
         _set_spacing(p_proj, before=100, after=40)
         _bold_run(p_proj, project.name, s_proj.font_name, s_proj.size_hp)
-        _plain_run(p_proj, " — ", s_proj.font_name, s_proj.size_hp)
+        _plain_run(p_proj, ": ", s_proj.font_name, s_proj.size_hp)
         display_url = project.url.replace("https://", "").replace("http://", "")
         _plain_run(p_proj, display_url, s_proj.font_name, s_proj.size_hp, accent_rgb)
 
