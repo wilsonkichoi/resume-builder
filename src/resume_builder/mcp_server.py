@@ -16,10 +16,11 @@ def generate(
     formats: str = "pdf,docx,html,md",
     output_dir: str = ".",
     template_dir: str | None = None,
+    output_name: str | None = None,
 ) -> str:
-    """Generate resume outputs (pdf, docx, html, md) from resume YAML. Optionally pass template_dir for style customization."""
+    """Generate resume outputs (pdf, docx, html, md) from resume YAML. Optionally pass template_dir for style customization. output_name sets the basename for pdf/docx/md (default: output_name in YAML, else 'resume'); HTML is always index.html."""
     fmt_list = [f.strip() for f in formats.split(",")]
-    results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir)
+    results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir, output_name=output_name)
     lines = [f"{r.format}: {r.path} ({r.size:,} bytes)" for r in results]
     return f"Generated {len(results)} file(s):\n" + "\n".join(lines)
 

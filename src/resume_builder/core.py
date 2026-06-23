@@ -25,6 +25,7 @@ def generate_outputs(
     formats: list[str],
     output_dir: str | Path = ".",
     template_dir: str | Path | None = None,
+    output_name: str | None = None,
 ) -> list[GenerateResult]:
     resume_path = Path(resume_path)
     output = Path(output_dir)
@@ -39,21 +40,24 @@ def generate_outputs(
     resolved_dir = discover_template_dir(template_dir, resume_path)
 
     ir = parse_resume(resume_path)
+    # Output stem: explicit arg wins, then the resume's own output_name, else "resume".
+    # HTML is always index.html so it can be served directly by GitHub Pages.
+    stem = output_name or ir.output_name or "resume"
     results: list[GenerateResult] = []
 
     for fmt in formats:
         if fmt == "md":
             from resume_builder.renderers.markdown_renderer import render_markdown
-            out_path = output / "resume.md"
+            out_path = output / f"{stem}.md"
             out_path.write_text(render_markdown(ir))
         elif fmt == "pdf":
             from resume_builder.renderers.pdf_renderer import render_pdf
-            out_path = output / "resume.pdf"
+            out_path = output / f"{stem}.pdf"
             config = load_template_config(resolved_dir, "pdf")
             render_pdf(ir, str(out_path), config=config)
         elif fmt == "docx":
             from resume_builder.renderers.docx_renderer import render_docx
-            out_path = output / "resume.docx"
+            out_path = output / f"{stem}.docx"
             config = load_template_config(resolved_dir, "docx")
             render_docx(ir, str(out_path), config=config)
         elif fmt == "html":

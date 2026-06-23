@@ -77,6 +77,7 @@ class Education(BaseModel):
 
 class ResumeIR(BaseModel):
     header: Header
+    output_name: str | None = None
     keywords: list[str] = []
     summary: Summary
     skills: list[SkillCategory] = []

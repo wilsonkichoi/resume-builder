@@ -152,7 +152,7 @@ Scans for existing resume files (PDF, DOCX, Markdown, YAML), interviews you to f
 /resume-builder:generate
 ```
 
-Generates `resume.md`, `resume.pdf`, `resume.docx`, and `index.html` from `resume.yaml`.
+Generates `resume.md`, `resume.pdf`, `resume.docx`, and `index.html` from `resume.yaml`. To personalize the pdf/docx/md basename, add a top-level `output_name:` to `resume.yaml` (e.g. `output_name: wilson_resume`) or pass `--output-name`; `index.html` stays fixed for GitHub Pages.
 
 ### 4. Add achievements from a project
 

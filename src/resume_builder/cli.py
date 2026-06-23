@@ -19,11 +19,12 @@ def main():
 @click.option("--resume", "resume_path", default="resume.yaml", type=click.Path(exists=True), help="Path to resume YAML file")
 @click.option("--output-dir", default=".", type=click.Path(), help="Output directory")
 @click.option("--template-dir", default=None, type=click.Path(exists=True), help="Directory with template overrides (default: templates/ next to resume)")
-def generate(formats: str, resume_path: str, output_dir: str, template_dir: str | None):
+@click.option("--output-name", default=None, help="Basename for pdf/docx/md outputs (default: output_name in resume YAML, else 'resume'). HTML is always index.html.")
+def generate(formats: str, resume_path: str, output_dir: str, template_dir: str | None, output_name: str | None):
     """Generate resume outputs from YAML source."""
     console.print(f"[bold]Parsing[/bold] {resume_path}")
     fmt_list = [f.strip() for f in formats.split(",")]
-    results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir)
+    results = generate_outputs(resume_path, fmt_list, output_dir, template_dir=template_dir, output_name=output_name)
     for r in results:
         console.print(f"[green]✓[/green] Generated {r.path} ({r.size:,} bytes)")
 

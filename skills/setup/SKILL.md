@@ -32,6 +32,8 @@ Create the following directories and files. Skip anything that already exists �
     linkedin: ""
     github: ""
 
+  # output_name: ""  # optional: basename for pdf/docx/md outputs (default "resume"); HTML is always index.html
+
   summary:
     paragraph: ""
     bullets: []
@@ -68,7 +70,7 @@ Write the plugin documentation to the consumer project's `CLAUDE.md`:
 **The section must contain the following content.** Write it exactly — this is the AI's reference guide for all future sessions:
 
 ```markdown
-<!-- resume-builder:start v0.2.5 -->
+<!-- resume-builder:start v0.2.6 -->
 # Resume Builder Plugin
 
 A Claude Code plugin for resume management. Parse, generate, tailor, score, and verify resumes with anti-fabrication enforcement. Includes company research and strategic qualification to approach job search like a sales professional — understand the buyer's pain before pitching.
@@ -90,6 +92,8 @@ A Claude Code plugin for resume management. Parse, generate, tailor, score, and 
 |------|------------|
 | `resume.md`, `resume.pdf`, `resume.docx`, `index.html` | /generate |
 | `knowledge/sessions/{company}/{role}/tailored/` (resume.yaml, PDF, DOCX, HTML, MD, cover letter) | /tailor, /cover-letter, /apply |
+
+> The pdf/docx/md basename defaults to `resume`. Set a top-level `output_name:` in `resume.yaml` (e.g. `wilson_resume`) to personalize it for every `/generate`. HTML is always `index.html`.
 
 ### Customization Files (optional, user-created in `templates/`)
 `pdf_styles.yaml` (PDF) | `docx_styles.yaml` (DOCX, same schema) | `resume.html.j2` (full HTML replacement) | `style.css` (CSS overrides)

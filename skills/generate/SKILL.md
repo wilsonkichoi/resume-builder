@@ -27,6 +27,13 @@ Run the deterministic generation pipeline. No LLM content generation — pure pa
 - Generate all formats: `resume-builder generate`
 - Specific format: `resume-builder generate --format pdf`
 - Custom output directory: `resume-builder generate --output-dir ./output`
+- Custom output basename: `resume-builder generate --output-name wilson_resume`
+
+## Output Naming
+- `pdf`, `docx`, and `md` outputs share a basename. Default is `resume` (`resume.pdf`, `resume.docx`, `resume.md`).
+- To personalize the basename for every run, add a top-level `output_name:` field to `resume.yaml` (e.g. `output_name: wilson_resume`). The skill picks it up automatically; no flag needed.
+- The `--output-name` flag overrides the YAML value for a single run.
+- HTML is always written as `index.html` regardless of `output_name`, so it can be served directly by GitHub Pages.
 
 ## Template Customization
 
@@ -47,4 +54,4 @@ Or just place a `templates/` directory next to `resume.yaml` — auto-discovered
 - This command is fully deterministic, same input always produces same output
 - No LLM involvement in the rendering pipeline
 - If the resume YAML has been modified by /ingest or /tailor, regenerate to update all outputs
-- Output filenames are fixed: `resume.md`, `resume.pdf`, `resume.docx`, and `index.html` (HTML is named `index.html` so it can be served directly by GitHub Pages)
+- Output filenames: `<output_name>.md`, `<output_name>.pdf`, `<output_name>.docx` (default basename `resume`) plus `index.html` (always named this so it can be served directly by GitHub Pages). See Output Naming above.
